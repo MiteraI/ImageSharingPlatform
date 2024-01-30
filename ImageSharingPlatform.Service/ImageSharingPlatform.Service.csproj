@@ -10,4 +10,8 @@
     <ProjectReference Include="..\ImageSharingPlatform.Repository\ImageSharingPlatform.Repository.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\Interfaces\" />
+  </ItemGroup>
+
 </Project>
