@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace ImageSharingPlatform.Repository.Repositories
 {
-    public class ImageCategoryRepository : GenericRepository<ImageCategory, Guid>, IImageCategoryRepository
+    public class ReadOnlyUserRepository : ReadOnlyGenericRepository<User, Guid>, IReadOnlyUserRepository
     {
-        public ImageCategoryRepository(IUnitOfWork context) : base(context)
+        public ReadOnlyUserRepository(IUnitOfWork context) : base(context)
         {
         }
     }

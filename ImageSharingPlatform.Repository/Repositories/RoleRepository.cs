@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ImageSharingPlatform.Repository.Repositories
 {
-    public class RoleRepository : GenericRepository<SharedImage, Guid>, IRoleRepository
+    public class RoleRepository : GenericRepository<Role, Guid>, IRoleRepository
     {
         public RoleRepository(IUnitOfWork context) : base(context)
         {

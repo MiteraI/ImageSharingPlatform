@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ImageSharingPlatform.Repository.Repositories.Interfaces
 {
-    public interface ISharedImageRepository : IGenericRepository<SharedImage, Guid>
+    public interface IImageRequestRepository : IGenericRepository<ImageRequest, Guid>
     {
     }
 }
