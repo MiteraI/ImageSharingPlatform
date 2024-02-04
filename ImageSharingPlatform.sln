@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageSharingPlatform", "ImageSharingPlatform\ImageSharingPlatform.csproj", "{C9F367F7-4B64-4D65-B819-133ACE3FA7EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageSharingPlatform", "ImageSharingPlatform\ImageSharingPlatform.csproj", "{C9F367F7-4B64-4D65-B819-133ACE3FA7EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageSharingPlatform.Domain", "ImageSharingPlatform.Domain\ImageSharingPlatform.Domain.csproj", "{32EC36A5-54B5-437E-AB0A-A6DFF4977A58}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageSharingPlatform.Domain", "ImageSharingPlatform.Domain\ImageSharingPlatform.Domain.csproj", "{32EC36A5-54B5-437E-AB0A-A6DFF4977A58}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageSharingPlatform.Repository", "ImageSharingPlatform.Repository\ImageSharingPlatform.Repository.csproj", "{34D88A14-B0DA-44B0-B49F-907FE11AC5C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageSharingPlatform.Repository", "ImageSharingPlatform.Repository\ImageSharingPlatform.Repository.csproj", "{34D88A14-B0DA-44B0-B49F-907FE11AC5C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageSharingPlatform.Service", "ImageSharingPlatform.Service\ImageSharingPlatform.Service.csproj", "{1B76757B-4943-43AD-994B-5866CFE9445C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageSharingPlatform.Service", "ImageSharingPlatform.Service\ImageSharingPlatform.Service.csproj", "{1B76757B-4943-43AD-994B-5866CFE9445C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,3 +1,5 @@
+using ImageSharingPlatform;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -11,6 +13,12 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+
+builder.Services.AddHttpContextAccessor();
+
+var startup = new Startup();
+
+startup.ConfigureServices(builder.Services, builder.Configuration);
 
 var app = builder.Build();
 

@@ -15,7 +15,7 @@ namespace ImageSharingPlatform.Domain.Entities
         public int Rating { get; set; }
 
         [Column("comment")]
-        public string Comment { get; set; }
+        public string? Comment { get; set; }
 
         [Column("created_at")]
         public DateTime CreatedAt { get; set; }

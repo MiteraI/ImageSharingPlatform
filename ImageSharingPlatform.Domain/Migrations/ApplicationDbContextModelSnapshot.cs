@@ -17,10 +17,10 @@ namespace ImageSharingPlatform.Domain.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.25")
+                .HasAnnotation("ProductVersion", "8.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("ImageSharingPlatform.Domain.Entities.ImageCategory", b =>
                 {
@@ -34,7 +34,6 @@ namespace ImageSharingPlatform.Domain.Migrations
                         .HasColumnName("category_name");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("description");
 
@@ -62,7 +61,7 @@ namespace ImageSharingPlatform.Domain.Migrations
                         .HasColumnType("nvarchar(256)")
                         .HasColumnName("description");
 
-                    b.Property<DateTime>("ExpectedCompleteTime")
+                    b.Property<DateTime?>("ExpectedCompleteTime")
                         .HasColumnType("datetime2")
                         .HasColumnName("complete_time");
 
@@ -103,7 +102,6 @@ namespace ImageSharingPlatform.Domain.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Comment")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("comment");
 
@@ -159,7 +157,6 @@ namespace ImageSharingPlatform.Domain.Migrations
                         .HasColumnName("created_at");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("description");
 
@@ -182,7 +179,6 @@ namespace ImageSharingPlatform.Domain.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AvatarUrl")
-                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)")
                         .HasColumnName("avatar_url");
@@ -194,20 +190,17 @@ namespace ImageSharingPlatform.Domain.Migrations
                         .HasColumnName("email");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
-                        .ValueGeneratedOnUpdateSometimes()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("first_name");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
-                        .ValueGeneratedOnUpdateSometimes()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
-                        .HasColumnName("first_name");
+                        .HasColumnName("last_name");
 
                     b.Property<string>("Password")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("password");
 

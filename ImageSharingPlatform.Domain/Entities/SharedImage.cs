@@ -20,7 +20,7 @@ namespace ImageSharingPlatform.Domain.Entities
         public ImageCategory? ImageCategory { get; set; }
 
         [Column("description")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [Column("created_at")]
         public DateTime CreatedAt { get; set;}

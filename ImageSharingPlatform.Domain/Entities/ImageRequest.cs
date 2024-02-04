@@ -29,7 +29,7 @@ namespace ImageSharingPlatform.Domain.Entities
         public DateTime CreateTime { get; set; }
 
         [Column("complete_time")]
-        public DateTime ExpectedCompleteTime { get; set; }
+        public DateTime? ExpectedCompleteTime { get; set; }
 
         [Column("image")]
         public byte[]? ImageBlob { get; set; }

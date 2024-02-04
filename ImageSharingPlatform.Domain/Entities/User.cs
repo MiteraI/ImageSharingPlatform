@@ -14,22 +14,22 @@ namespace ImageSharingPlatform.Domain.Entities
         public string Username { get; set; }
 
         [Column("password")]
-        public string? Password { get; set; }
+        public string Password { get; set; }
 
         [StringLength(50)]
         [MaxLength(50)]
         [Column("first_name")]
-        public string FirstName { get; set; }
+        public string? FirstName { get; set; }
 
         [StringLength(50)]
         [MaxLength(50)]
-        [Column("first_name")]
-        public string LastName { get; set; }
+        [Column("last_name")]
+        public string? LastName { get; set; }
 
         [Url]
         [StringLength(256)]
         [Column("avatar_url")]
-        public string AvatarUrl { get; set; }
+        public string? AvatarUrl { get; set; }
 
         [EmailAddress]
         [MinLength(5)]

@@ -13,6 +13,6 @@ namespace ImageSharingPlatform.Domain.Entities
         public string CategoryName { get; set; }
 
         [Column("description")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
     }
 }
