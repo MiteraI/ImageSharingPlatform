@@ -1,0 +1,33 @@
+﻿@page "/register"
+@model ImageSharingPlatform.Pages.Authentication.RegisterModel
+@{
+}
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly"></div>
+    <div>
+        <label asp-for="InputUser.Username"></label>
+        <input asp-for="InputUser.Username"/>
+    </div>
+    <div>
+        <label asp-for="InputUser.Password" type="password"></label>
+        <input asp-for="InputUser.Password"/>
+    </div>
+    <div>
+        <label asp-for="InputUser.FirstName" type="text"></label>
+        <input asp-for="InputUser.FirstName"/>
+    </div>
+    <div>
+        <label asp-for="InputUser.LastName" type="text"></label>
+        <input asp-for="InputUser.LastName"/>
+    </div>
+    <div>
+        <label asp-for="InputUser.AvatarUrl" type="text"></label>
+        <input asp-for="InputUser.AvatarUrl"/>
+    </div>
+    <div>
+        <label asp-for="InputUser.Email" type="email"></label>
+        <input asp-for="InputUser.Email"/>
+    </div>
+    <button type="submit">Register</button>
+</form>

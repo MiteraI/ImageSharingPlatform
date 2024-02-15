@@ -29,7 +29,8 @@ namespace ImageSharingPlatform.Service.Services
 
         public User LoginUser(string username, string password)
         {
-            var loginUser = _userRepository.FindByUsername(password);
+            var loginUser = _userRepository.FindByUsername(username);
+            //var userList = _userRepository.GetAllAsync().Result.ToList();
             if (loginUser == null)
             {
                 throw new Exception("User not found");
