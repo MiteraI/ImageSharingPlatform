@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ImageSharingPlatform.Domain.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240204072457_FirstMigration")]
+    [Migration("20240219161841_FirstMigration")]
     partial class FirstMigration
     {
         /// <inheritdoc />
@@ -59,14 +59,9 @@ namespace ImageSharingPlatform.Domain.Migrations
                         .HasColumnName("created_at");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)")
                         .HasColumnName("description");
-
-                    b.Property<DateTime?>("ExpectedCompleteTime")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("complete_time");
 
                     b.Property<byte[]>("ImageBlob")
                         .HasColumnType("varbinary(max)")
@@ -98,6 +93,64 @@ namespace ImageSharingPlatform.Domain.Migrations
                     b.ToTable("image_request", (string)null);
                 });
 
+            modelBuilder.Entity("ImageSharingPlatform.Domain.Entities.OwnedSubscription", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("PurchasedTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("SubscriptionPackageId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SubscriptionPackageId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("owned_subscription", (string)null);
+                });
+
+            modelBuilder.Entity("ImageSharingPlatform.Domain.Entities.RequestDetail", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double?>("NewPrice")
+                        .HasColumnType("float");
+
+                    b.Property<Guid?>("RequestId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RequestId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RequestDetails");
+                });
+
             modelBuilder.Entity("ImageSharingPlatform.Domain.Entities.Review", b =>
                 {
                     b.Property<Guid>("Id")
@@ -112,19 +165,19 @@ namespace ImageSharingPlatform.Domain.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("created_at");
 
-                    b.Property<Guid?>("ImageId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("Rating")
                         .HasColumnType("int")
                         .HasColumnName("rating");
+
+                    b.Property<Guid?>("SharedImageId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ImageId");
+                    b.HasIndex("SharedImageId");
 
                     b.HasIndex("UserId");
 
@@ -166,6 +219,19 @@ namespace ImageSharingPlatform.Domain.Migrations
                     b.Property<Guid?>("ImageCategoryId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("ImageName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("image_name");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("image_url");
+
+                    b.Property<bool>("IsPremium")
+                        .HasColumnType("bit")
+                        .HasColumnName("is_premium");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ArtistId");
@@ -173,6 +239,30 @@ namespace ImageSharingPlatform.Domain.Migrations
                     b.HasIndex("ImageCategoryId");
 
                     b.ToTable("shared_image", (string)null);
+                });
+
+            modelBuilder.Entity("ImageSharingPlatform.Domain.Entities.SubscriptionPackage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ArtistId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArtistId")
+                        .IsUnique()
+                        .HasFilter("[ArtistId] IS NOT NULL");
+
+                    b.ToTable("subscription_package", (string)null);
                 });
 
             modelBuilder.Entity("ImageSharingPlatform.Domain.Entities.User", b =>
@@ -185,6 +275,10 @@ namespace ImageSharingPlatform.Domain.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)")
                         .HasColumnName("avatar_url");
+
+                    b.Property<long>("Balance")
+                        .HasColumnType("bigint")
+                        .HasColumnName("balance");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -249,17 +343,47 @@ namespace ImageSharingPlatform.Domain.Migrations
                     b.Navigation("RequesterUser");
                 });
 
-            modelBuilder.Entity("ImageSharingPlatform.Domain.Entities.Review", b =>
+            modelBuilder.Entity("ImageSharingPlatform.Domain.Entities.OwnedSubscription", b =>
                 {
-                    b.HasOne("ImageSharingPlatform.Domain.Entities.SharedImage", "Image")
+                    b.HasOne("ImageSharingPlatform.Domain.Entities.SubscriptionPackage", "SubscriptionPackage")
                         .WithMany()
-                        .HasForeignKey("ImageId");
+                        .HasForeignKey("SubscriptionPackageId");
 
                     b.HasOne("ImageSharingPlatform.Domain.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
 
-                    b.Navigation("Image");
+                    b.Navigation("SubscriptionPackage");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ImageSharingPlatform.Domain.Entities.RequestDetail", b =>
+                {
+                    b.HasOne("ImageSharingPlatform.Domain.Entities.ImageRequest", "Request")
+                        .WithMany()
+                        .HasForeignKey("RequestId");
+
+                    b.HasOne("ImageSharingPlatform.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Request");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ImageSharingPlatform.Domain.Entities.Review", b =>
+                {
+                    b.HasOne("ImageSharingPlatform.Domain.Entities.SharedImage", "SharedImage")
+                        .WithMany("Reviews")
+                        .HasForeignKey("SharedImageId");
+
+                    b.HasOne("ImageSharingPlatform.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("SharedImage");
 
                     b.Navigation("User");
                 });
@@ -280,6 +404,15 @@ namespace ImageSharingPlatform.Domain.Migrations
                     b.Navigation("ImageCategory");
                 });
 
+            modelBuilder.Entity("ImageSharingPlatform.Domain.Entities.SubscriptionPackage", b =>
+                {
+                    b.HasOne("ImageSharingPlatform.Domain.Entities.User", "Artist")
+                        .WithOne()
+                        .HasForeignKey("ImageSharingPlatform.Domain.Entities.SubscriptionPackage", "ArtistId");
+
+                    b.Navigation("Artist");
+                });
+
             modelBuilder.Entity("UserRole", b =>
                 {
                     b.HasOne("ImageSharingPlatform.Domain.Entities.Role", null)
@@ -293,6 +426,11 @@ namespace ImageSharingPlatform.Domain.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ImageSharingPlatform.Domain.Entities.SharedImage", b =>
+                {
+                    b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618
         }

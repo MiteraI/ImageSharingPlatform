@@ -17,7 +17,7 @@ namespace ImageSharingPlatform.Domain.Entities
 
         [Column("description")]
         [StringLength(256)]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [Column("price")]
         public double Price { get; set; }
@@ -27,9 +27,6 @@ namespace ImageSharingPlatform.Domain.Entities
 
         [Column("created_at")]
         public DateTime CreateTime { get; set; }
-
-        [Column("complete_time")]
-        public DateTime? ExpectedCompleteTime { get; set; }
 
         [Column("image")]
         public byte[]? ImageBlob { get; set; }

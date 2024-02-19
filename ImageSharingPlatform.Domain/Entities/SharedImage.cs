@@ -9,11 +9,9 @@ namespace ImageSharingPlatform.Domain.Entities
 {
     public class SharedImage : BaseEntity<Guid>
     {
-        [Column("image_name")]
         public string ImageName;
             
-        [Column("image_url")]
-        public string ImageUrl;
+        public string? ImageUrl;
 
         public Guid? ImageCategoryId { get; set; }
 
@@ -24,9 +22,12 @@ namespace ImageSharingPlatform.Domain.Entities
 
         [Column("created_at")]
         public DateTime CreatedAt { get; set;}
+        public bool IsPremium { get; set; }
 
         public Guid? ArtistId { get; set; }
 
         public User? Artist { get; set; }
+
+        public ICollection<Review>? Reviews { get; set; }
     }
 }

@@ -19,6 +19,9 @@ namespace ImageSharingPlatform.Domain.Entities
         public DbSet<ImageCategory> ImageCategories { get; set; }
         public DbSet<ImageRequest> ImageRequests { get; set; }
         public DbSet<SharedImage> SharedImages { get; set; }
+        public DbSet<RequestDetail> RequestDetails { get; set; }
+        public DbSet<SubscriptionPackage> SubscriptionPackages { get; set; }
+        public DbSet<OwnedSubscription> OwnedSubscriptions { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -66,6 +69,10 @@ namespace ImageSharingPlatform.Domain.Entities
 
             modelBuilder.Entity<SharedImage>(si =>
             {
+                si.Property(si => si.ImageName).HasColumnName("image_name");
+                si.Property(si => si.ImageUrl).HasColumnName("image_url");
+                si.Property(si => si.IsPremium).HasColumnName("is_premium");
+
                 si.HasOne(si => si.Artist).WithMany().HasForeignKey(si => si.ArtistId);
 
                 si.HasOne(si => si.ImageCategory).WithMany().HasForeignKey(si => si.ImageCategoryId).OnDelete(DeleteBehavior.SetNull);
@@ -76,8 +83,6 @@ namespace ImageSharingPlatform.Domain.Entities
             modelBuilder.Entity<Review>(review =>
             {
                 review.HasOne(r => r.User).WithMany().HasForeignKey(r => r.UserId);
-
-                review.HasOne(r => r.Image).WithMany().HasForeignKey(r => r.ImageId);
 
                 review.ToTable("review");
             });
@@ -90,6 +95,18 @@ namespace ImageSharingPlatform.Domain.Entities
 
                 ir.ToTable("image_request");
             });
+
+            modelBuilder.Entity<SubscriptionPackage>(sp =>
+            {
+				sp.ToTable("subscription_package");
+
+                sp.HasOne(sp => sp.Artist).WithOne().HasForeignKey<SubscriptionPackage>(sp => sp.ArtistId);
+			});
+
+            modelBuilder.Entity<OwnedSubscription>(os =>
+            {
+				os.ToTable("owned_subscription");
+			});
         }
     }
 }

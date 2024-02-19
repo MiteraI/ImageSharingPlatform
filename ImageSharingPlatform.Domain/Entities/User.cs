@@ -37,6 +37,9 @@ namespace ImageSharingPlatform.Domain.Entities
         [Column("email")]
         public string Email { get; set; }
 
+		[Column("balance")]
+		public long Balance { get; set; }
+
         public ICollection<Role>? Roles { get; set; }
     }
 }

@@ -24,9 +24,9 @@ namespace ImageSharingPlatform.Domain.Entities
 
         public User? User { get; set; }
 
-        public Guid? ImageId { get; set; }
+        public Guid? SharedImageId { get; set; }
 
-        public SharedImage? Image { get; set; }
+        public SharedImage? SharedImage { get; set; }
 
     }
 }
