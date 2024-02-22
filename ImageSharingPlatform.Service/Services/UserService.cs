@@ -27,10 +27,9 @@ namespace ImageSharingPlatform.Service.Services
             return newUser;
         }
 
-        public User LoginUser(string username, string password)
+        public async Task<User> LoginUser(string username, string password)
         {
-            var loginUser = _userRepository.FindByUsername(username);
-            //var userList = _userRepository.GetAllAsync().Result.ToList();
+            var loginUser = await _userRepository.FindByUsername(username);
             if (loginUser == null)
             {
                 throw new Exception("User not found");

@@ -9,6 +9,6 @@ namespace ImageSharingPlatform.Repository.Repositories.Interfaces
 {
     public interface IUserRepository : IGenericRepository<User, Guid>
     {
-        User FindByUsername(string username);
+        Task<User> FindByUsername(string username);
     }
 }

@@ -27,7 +27,7 @@ namespace ImageSharingPlatform.Pages.Authentication
         {
             if (!string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password))
             {
-                var result = _userService.LoginUser(Username, Password);
+                var result = await _userService.LoginUser(Username, Password);
 
                 if (result != null)
                 {

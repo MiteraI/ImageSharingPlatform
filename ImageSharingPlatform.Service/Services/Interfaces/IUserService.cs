@@ -11,6 +11,6 @@ namespace ImageSharingPlatform.Service.Services.Interfaces
     {
         Task<User> RegisterUser(User user);
 
-        User LoginUser(string username, string password);
+        Task<User> LoginUser(string username, string password);
     }
 }
