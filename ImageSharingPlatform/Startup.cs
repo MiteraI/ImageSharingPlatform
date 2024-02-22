@@ -9,7 +9,9 @@ namespace ImageSharingPlatform
             services
                 .AddDatabaseModule(configuration)
                 .AddReposiotoryModule()
-                .AddServiceModule();
+                .AddServiceModule()
+                .AddAzureBlobModule()
+                .AddVnpayModule();
         }
     }
 }
