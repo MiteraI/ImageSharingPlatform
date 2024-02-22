@@ -8,16 +8,17 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using ImageSharingPlatform.Domain.Entities;
 using ImageSharingPlatform.Repository.Repositories.Interfaces;
 using ImageSharingPlatform.Service.Utils;
+using ImageSharingPlatform.Service.Services.Interfaces;
 
 namespace ImageSharingPlatform.Pages.UserMng
 {
     public class CreateModel : PageModel
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUserService _userService;
 
-        public CreateModel(IUserRepository userRepository)
+        public CreateModel(IUserService userService)
         {
-            _userRepository = userRepository;
+            _userService = userService;
         }
 
         public IActionResult OnGet()
@@ -35,10 +36,12 @@ namespace ImageSharingPlatform.Pages.UserMng
                 return Page();
             }
 
-            User.Password = PasswordHasher.HashPassword(User.Password);
+            var user = await _userService.CreateUser(User);
 
-            _userRepository.Add(User);
-            await _userRepository.SaveChangesAsync();
+            if (user == null)
+            {
+                return Page();
+            }
 
             return RedirectToPage("./Index");
         }

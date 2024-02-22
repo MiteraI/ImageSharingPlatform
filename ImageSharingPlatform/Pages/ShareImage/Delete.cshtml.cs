@@ -7,16 +7,18 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ImageSharingPlatform.Domain.Entities;
 using ImageSharingPlatform.Repository.Repositories.Interfaces;
+using ImageSharingPlatform.Service.Services.Interfaces;
+using ImageSharingPlatform.Service.Services;
 
 namespace ImageSharingPlatform.Pages.ShareImage
 {
     public class DeleteModel : PageModel
     {
-        private readonly ISharedImageRepository _sharedImageRepository;
+        private readonly ISharedImageService _sharedImageService;
 
-        public DeleteModel(ISharedImageRepository sharedImageRepository)
+        public DeleteModel(ISharedImageService sharedImageService)
         {
-            _sharedImageRepository = sharedImageRepository;
+            _sharedImageService = sharedImageService;
         }
 
         [BindProperty]
@@ -24,7 +26,7 @@ namespace ImageSharingPlatform.Pages.ShareImage
 
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
-            SharedImage = await _sharedImageRepository.GetOneAsync(id);
+            SharedImage = await _sharedImageService.GetSharedImageByIdAsync(id);
 
             if (SharedImage == null)
             {
@@ -35,13 +37,12 @@ namespace ImageSharingPlatform.Pages.ShareImage
 
         public async Task<IActionResult> OnPostAsync(Guid id)
         {
-            SharedImage = await _sharedImageRepository.GetOneAsync(id);
-
-            if (SharedImage != null)
+            if (id == null)
             {
-                await _sharedImageRepository.DeleteAsync(SharedImage);
-                await _sharedImageRepository.SaveChangesAsync();
+                return NotFound();
             }
+
+            SharedImage = await _sharedImageService.DeleteSharedImage(SharedImage.Id);
 
             return RedirectToPage("./Index");
         }

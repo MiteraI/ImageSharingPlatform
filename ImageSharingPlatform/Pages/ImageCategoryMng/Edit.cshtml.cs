@@ -8,16 +8,18 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ImageSharingPlatform.Domain.Entities;
 using ImageSharingPlatform.Repository.Repositories.Interfaces;
+using ImageSharingPlatform.Service.Services.Interfaces;
+using ImageSharingPlatform.Service.Services;
 
 namespace ImageSharingPlatform.Pages.ImageCategoryMng
 {
     public class EditModel : PageModel
     {
-        private readonly IImageCategoryRepository _imageCategoryRepository;
+        private readonly IImageCategoryService _imageCategoryService;
 
-        public EditModel(IImageCategoryRepository imageCategoryRepository)
+        public EditModel(IImageCategoryService imageCategoryService)
         {
-            _imageCategoryRepository = imageCategoryRepository;
+            _imageCategoryService = imageCategoryService;
         }
 
         [BindProperty]
@@ -30,7 +32,7 @@ namespace ImageSharingPlatform.Pages.ImageCategoryMng
                 return NotFound();
             }
 
-            ImageCategory = await _imageCategoryRepository.GetOneAsync(id);
+            ImageCategory = await _imageCategoryService.GetImageCategoryByIdAsync(id);
 
             if (ImageCategory == null)
             {
@@ -48,12 +50,11 @@ namespace ImageSharingPlatform.Pages.ImageCategoryMng
 
             try
             {
-                _imageCategoryRepository.Update(ImageCategory);
-                await _imageCategoryRepository.SaveChangesAsync();
+                var sharedimage = _imageCategoryService.EditImageCategory(ImageCategory);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!await _imageCategoryRepository.Exists(x => x.Id == ImageCategory.Id))
+                if (!await _imageCategoryService.ImageCategoryExistsAsync(x => x.Id == ImageCategory.Id))
                 {
                     return NotFound();
                 }

@@ -7,27 +7,28 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ImageSharingPlatform.Domain.Entities;
 using ImageSharingPlatform.Repository.Repositories.Interfaces;
+using ImageSharingPlatform.Service.Services.Interfaces;
 
 namespace ImageSharingPlatform.Pages.ShareImage
 {
     public class CreateModel : PageModel
     {
-        private readonly ISharedImageRepository _sharedImageRepository;
+        private readonly ISharedImageService _sharedImageService;
         // Assuming you have other services or repositories to fetch Users and ImageCategories
-        private readonly IUserRepository _userRepository;
-        private readonly IImageCategoryRepository _imageCategoryRepository;
+        private readonly IUserService _userService;
+        private readonly IImageCategoryService _imageCategoryService;
 
-        public CreateModel(ISharedImageRepository sharedImageRepository, IUserRepository userRepository, IImageCategoryRepository imageCategoryRepository)
+        public CreateModel(ISharedImageService sharedImageService, IUserService userService, IImageCategoryService imageCategoryService)
         {
-            _sharedImageRepository = sharedImageRepository;
-            _userRepository = userRepository;
-            _imageCategoryRepository = imageCategoryRepository;
+            _sharedImageService = sharedImageService;
+            _userService = userService;
+            _imageCategoryService = imageCategoryService;
         }
 
         public async Task<IActionResult> OnGet()
         {
-            var users = await _userRepository.GetAllAsync();
-            var categories = await _imageCategoryRepository.GetAllAsync();
+            var users = await _userService.GetAllUsersAsync();
+            var categories = await _imageCategoryService.GetAllImageCategoriesAsync();
 
             ViewData["ArtistId"] = new SelectList(users, "Id", "Name"); // Assuming "Name" is a property you want to display
             ViewData["ImageCategoryId"] = new SelectList(categories, "Id", "Name");
@@ -45,8 +46,12 @@ namespace ImageSharingPlatform.Pages.ShareImage
                 return Page();
             }
 
-            _sharedImageRepository.Add(SharedImage);
-            await _sharedImageRepository.SaveChangesAsync();
+            var sharedimage = await _sharedImageService.CreateSharedImage(SharedImage);
+
+            if (sharedimage == null)
+            {
+                return Page();
+            }
 
             return RedirectToPage("./Index");
         }

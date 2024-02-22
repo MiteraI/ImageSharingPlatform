@@ -8,16 +8,17 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ImageSharingPlatform.Domain.Entities;
 using ImageSharingPlatform.Repository.Repositories.Interfaces;
+using ImageSharingPlatform.Service.Services.Interfaces;
 
 namespace ImageSharingPlatform.Pages.UserMng
 {
     public class EditModel : PageModel
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUserService _userService;
 
-        public EditModel(IUserRepository userRepository)
+        public EditModel(IUserService userService)
         {
-            _userRepository = userRepository;
+            _userService = userService;
         }
 
         [BindProperty]
@@ -30,7 +31,7 @@ namespace ImageSharingPlatform.Pages.UserMng
                 return NotFound();
             }
 
-            User = await _userRepository.GetOneAsync(id);
+            User = await _userService.GetUserByIdAsync(id);
             if (User == null)
             {
                 return NotFound();
@@ -47,12 +48,11 @@ namespace ImageSharingPlatform.Pages.UserMng
 
             try
             {
-                _userRepository.Update(User);
-                await _userRepository.SaveChangesAsync();
+               var user = await _userService.EditUser(User);
             }
             catch (DbUpdateConcurrencyException)
             {
-                var exist = _userRepository.Exists(x => x.Id == User.Id);
+                var exist = _userService.UserExistsAsync(x => x.Id == User.Id);
                 if (!await exist)
                 {
                     return NotFound();

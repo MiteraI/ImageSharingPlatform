@@ -7,16 +7,18 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ImageSharingPlatform.Domain.Entities;
 using ImageSharingPlatform.Repository.Repositories.Interfaces;
+using ImageSharingPlatform.Service.Services.Interfaces;
+using ImageSharingPlatform.Service.Services;
 
 namespace ImageSharingPlatform.Pages.ImageCategoryMng
 {
     public class DeleteModel : PageModel
     {
-        private readonly IImageCategoryRepository _imageCategoryRepository;
+        private readonly IImageCategoryService _imageCategoryService;
 
-        public DeleteModel(IImageCategoryRepository imageCategoryRepository)
+        public DeleteModel(IImageCategoryService imageCategoryService)
         {
-            _imageCategoryRepository = imageCategoryRepository;
+            _imageCategoryService = imageCategoryService;
         }
 
         [BindProperty]
@@ -29,7 +31,7 @@ namespace ImageSharingPlatform.Pages.ImageCategoryMng
                 return NotFound();
             }
 
-            ImageCategory = await _imageCategoryRepository.GetOneAsync(id);
+            ImageCategory = await _imageCategoryService.GetImageCategoryByIdAsync(id);
 
             if (ImageCategory == null)
             {
@@ -45,13 +47,7 @@ namespace ImageSharingPlatform.Pages.ImageCategoryMng
                 return NotFound();
             }
 
-            ImageCategory = await _imageCategoryRepository.GetOneAsync(id);
-
-            if (ImageCategory != null)
-            {
-                await _imageCategoryRepository.DeleteAsync(ImageCategory);
-                await _imageCategoryRepository.SaveChangesAsync();
-            }
+            ImageCategory = await _imageCategoryService.DeleteImageCategory(ImageCategory.Id);
 
             return RedirectToPage("./Index");
         }

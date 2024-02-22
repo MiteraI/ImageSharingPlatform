@@ -7,16 +7,17 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ImageSharingPlatform.Domain.Entities;
 using ImageSharingPlatform.Repository.Repositories.Interfaces;
+using ImageSharingPlatform.Service.Services.Interfaces;
 
 namespace ImageSharingPlatform.Pages.UserMng
 {
     public class DeleteModel : PageModel
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUserService _userService;
 
-        public DeleteModel(IUserRepository userRepository)
+        public DeleteModel(IUserService userService)
         {
-            _userRepository = userRepository;
+            _userService = userService;
         }
 
         [BindProperty]
@@ -29,7 +30,7 @@ namespace ImageSharingPlatform.Pages.UserMng
                 return NotFound();
             }
 
-            User = await _userRepository.GetOneAsync(id);
+            User = await _userService.GetUserByIdAsync(id);
 
             if (User == null)
             {
@@ -45,13 +46,8 @@ namespace ImageSharingPlatform.Pages.UserMng
                 return NotFound();
             }
 
-            User = await _userRepository.GetOneAsync(id);
-
-            if (User != null)
-            {
-                _userRepository.DeleteAsync(User);
-                await _userRepository.SaveChangesAsync();
-            }
+            User = await _userService.DeleteUser(User.Id);
+            
 
             return RedirectToPage("./Index");
         }

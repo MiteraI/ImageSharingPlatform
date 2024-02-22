@@ -8,16 +8,17 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ImageSharingPlatform.Domain.Entities;
 using ImageSharingPlatform.Repository.Repositories.Interfaces;
+using ImageSharingPlatform.Service.Services.Interfaces;
 
 namespace ImageSharingPlatform.Pages.ShareImage
 {
     public class EditModel : PageModel
     {
-        private readonly ISharedImageRepository _sharedImageRepository;
+        private readonly ISharedImageService _sharedImageService;
 
-        public EditModel(ISharedImageRepository sharedImageRepository)
+        public EditModel(ISharedImageService sharedImageService)
         {
-            _sharedImageRepository = sharedImageRepository;
+            _sharedImageService = sharedImageService;
         }
 
         [BindProperty]
@@ -30,7 +31,7 @@ namespace ImageSharingPlatform.Pages.ShareImage
                 return NotFound();
             }
 
-            SharedImage = await _sharedImageRepository.GetOneAsync(id);
+            SharedImage = await _sharedImageService.GetSharedImageByIdAsync(id);
 
             if (SharedImage == null)
             {
@@ -49,12 +50,11 @@ namespace ImageSharingPlatform.Pages.ShareImage
 
             try
             {
-                _sharedImageRepository.Update(SharedImage);
-                await _sharedImageRepository.SaveChangesAsync();
+                var sharedimage = _sharedImageService.EditSharedImage(SharedImage);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!await _sharedImageRepository.Exists(x => x.Id == SharedImage.Id))
+                if (!await _sharedImageService.SharedImageExistsAsync(x => x.Id == SharedImage.Id))
                 {
                     return NotFound();
                 }

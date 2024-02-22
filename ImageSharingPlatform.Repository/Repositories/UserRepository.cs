@@ -17,10 +17,10 @@ namespace ImageSharingPlatform.Repository.Repositories
         }
 
 
-        public User FindByUsername(string username)
+        public async Task<User> FindByUsername(string username)
 		{
 			User? user = _dbSet.FirstOrDefault(x => x.Username == username);
-			return user;
+            return user;
 		}
 
         
