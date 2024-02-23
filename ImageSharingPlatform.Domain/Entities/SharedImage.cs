@@ -9,9 +9,8 @@ namespace ImageSharingPlatform.Domain.Entities
 {
     public class SharedImage : BaseEntity<Guid>
     {
-        public string ImageName;
-            
-        public string? ImageUrl;
+        public string ImageName { get; set; }
+        public string? ImageUrl { get; set; }
 
         public Guid? ImageCategoryId { get; set; }
 

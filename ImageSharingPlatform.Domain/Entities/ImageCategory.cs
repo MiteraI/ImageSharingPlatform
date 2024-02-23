@@ -14,5 +14,6 @@ namespace ImageSharingPlatform.Domain.Entities
 
         [Column("description")]
         public string? Description { get; set; }
+
     }
 }
