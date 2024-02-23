@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ImageSharingPlatform.Domain.Enums;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,12 @@ namespace ImageSharingPlatform.Domain.Entities
         public DbSet<SubscriptionPackage> SubscriptionPackages { get; set; }
         public DbSet<OwnedSubscription> OwnedSubscriptions { get; set; }
 
+        public void Initialize(ApplicationDbContext context)
+        {
+            context.Database.Migrate();
+            context.SeedRoles(context);
+            context.SeedUsers(context);
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -98,15 +105,57 @@ namespace ImageSharingPlatform.Domain.Entities
 
             modelBuilder.Entity<SubscriptionPackage>(sp =>
             {
-				sp.ToTable("subscription_package");
+                sp.ToTable("subscription_package");
 
                 sp.HasOne(sp => sp.Artist).WithOne().HasForeignKey<SubscriptionPackage>(sp => sp.ArtistId);
-			});
+            });
 
             modelBuilder.Entity<OwnedSubscription>(os =>
             {
-				os.ToTable("owned_subscription");
-			});
+                os.ToTable("owned_subscription");
+            });
+        }
+
+        private void SeedRoles(ApplicationDbContext context)
+        {
+            // Check if there are roles of Admin, User and Artist in database, if so do not seed
+            if (Roles.Any())
+            {
+                return;
+            }
+
+            Roles.AddRange(
+               new Role { UserRole = UserRole.ROLE_ADMIN },
+               new Role { UserRole = UserRole.ROLE_USER },
+               new Role { UserRole = UserRole.ROLE_ARTIST }
+            );
+            context.SaveChanges();
+        }
+
+        private void SeedUsers(ApplicationDbContext context)
+        {
+            // Check if there are users in database, if so do not seed
+            if (Users.Any())
+            {
+                return;
+            }
+
+            Users.AddRange(
+                new User
+                {
+                    Username = "admin",
+                    Password = "jM1jGc2KwG0KHzKO1usBlQ==.jPH9/bDEkVTLOTSVV6kqhd+SLY1zqM0XpdWBYuI4QhM=",
+                    AvatarUrl = "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50",
+                    Email = "admin@gmail.com",
+                    Balance = 0,
+                    Roles = new List<Role>
+                    {
+                        Roles.Single(r => r.UserRole == UserRole.ROLE_ADMIN),
+                        Roles.Single(r => r.UserRole == UserRole.ROLE_USER),
+                        Roles.Single(r => r.UserRole == UserRole.ROLE_ARTIST)
+                    }
+                });
+            context.SaveChanges();
         }
     }
 }

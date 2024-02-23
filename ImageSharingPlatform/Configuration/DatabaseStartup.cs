@@ -1,5 +1,6 @@
 ﻿using ImageSharingPlatform.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace ImageSharingPlatform.Configuration
 {
@@ -10,7 +11,7 @@ namespace ImageSharingPlatform.Configuration
             services.AddDbContext<ApplicationDbContext>(options =>
                            options.UseSqlServer(configuration.GetConnectionString("DefaultConnectionStringDB")));
 
-            services.AddScoped<DbContext>(options => options.GetService<ApplicationDbContext>());
+            services.AddScoped<DbContext>(options => options.GetRequiredService<ApplicationDbContext>());
 
             return services;
         }
