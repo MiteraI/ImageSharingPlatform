@@ -56,5 +56,10 @@ namespace ImageSharingPlatform.Service.Services
         {
             return await _sharedImageRepository.Exists(predicate);
         }
+
+        public async Task<IEnumerable<SharedImage>> GetAllSharedImagesAsync()
+        {
+            return await _sharedImageRepository.GetAllAsync();
+        }
     }
 }

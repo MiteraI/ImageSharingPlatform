@@ -7,16 +7,17 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ImageSharingPlatform.Domain.Entities;
 using ImageSharingPlatform.Repository.Repositories.Interfaces;
+using ImageSharingPlatform.Service.Services.Interfaces;
 
 namespace ImageSharingPlatform.Pages.ImageCategoryMng
 {
     public class DetailsModel : PageModel
     {
-        private readonly IImageCategoryRepository _imageCategoryRepository;
+        private readonly IImageCategoryService _imageCategoryService;
 
-        public DetailsModel(IImageCategoryRepository imageCategoryRepository)
+        public DetailsModel(IImageCategoryService imageCategoryService)
         {
-            _imageCategoryRepository = imageCategoryRepository;
+            _imageCategoryService = imageCategoryService;
         }
 
         public ImageCategory ImageCategory { get; set; } = default!;
@@ -28,7 +29,7 @@ namespace ImageSharingPlatform.Pages.ImageCategoryMng
                 return NotFound();
             }
 
-            ImageCategory = await _imageCategoryRepository.GetOneAsync(id);
+            ImageCategory = await _imageCategoryService.GetImageCategoryByIdAsync(id);
 
             if (ImageCategory == null)
             {
