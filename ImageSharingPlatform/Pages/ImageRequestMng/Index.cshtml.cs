@@ -23,7 +23,7 @@ namespace ImageSharingPlatform.Pages.ImageRequestMng
 
         public async Task OnGetAsync()
         {
-            ImageRequests = (IList<ImageRequest>)await _imageRequestService.GetAllImageRequestsAsync();
+            ImageRequests = (IList<ImageRequest>)await _imageRequestService.GetAllImageRequestsDetailsAsync();
         }
     }
 }
