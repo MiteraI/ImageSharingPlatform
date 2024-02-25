@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ImageSharingPlatform.Dto\ImageSharingPlatform.Dto.csproj" />
     <ProjectReference Include="..\ImageSharingPlatform.Service\ImageSharingPlatform.Service.csproj" />
   </ItemGroup>
 

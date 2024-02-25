@@ -1,0 +1,42 @@
+﻿@page
+@model ImageSharingPlatform.Pages.Profile.EditModel
+@{
+}
+
+<h3>Edit Profile</h3>
+
+<form method="post" enctype="multipart/form-data">
+	<input type="hidden" asp-for="UserEditDto.Id" />
+	<input type="hidden" asp-for="UserEditDto.Password"/>
+
+	<div class="mb-3">
+		<label asp-for="UserEditDto.Username" class="form-label"></label>
+		<input asp-for="UserEditDto.Username" class="form-control" />
+		<span asp-validation-for="UserEditDto.Username" class="text-danger"></span>
+	</div>
+
+	<div class="mb-3">
+		<label asp-for="UserEditDto.Email" class="form-label"></label>
+		<input asp-for="UserEditDto.Email" class="form-control" />
+		<span asp-validation-for="UserEditDto.Email" class="text-danger"></span>
+	</div>
+
+	<div class="mb-3">
+		<label asp-for="UserEditDto.FirstName" class="form-label"></label>
+		<input asp-for="UserEditDto.FirstName" class="form-control" />
+		<span asp-validation-for="UserEditDto.FirstName" class="text-danger"></span>
+	</div>
+
+	<div class="mb-3">
+		<label asp-for="UserEditDto.LastName" class="form-label"></label>
+		<input asp-for="UserEditDto.LastName" class="form-control" />
+		<span asp-validation-for="UserEditDto.LastName" class="text-danger"></span>
+	</div>
+
+	<div class="mb-3">
+		<label asp-for="UserEditDto.Avatar" class="form-label">Avatar</label>
+		<input type="file" name="avatar" class="form-control"/>
+	</div>
+
+	<button type="submit" class="btn btn-primary">Save Changes</button>
+</form>

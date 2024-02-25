@@ -68,7 +68,7 @@ namespace ImageSharingPlatform.Service.Services
             var user = await _userRepository.GetOneAsync(userId);
             if (user != null)
             {
-                _userRepository.DeleteAsync(user);
+                await _userRepository.DeleteAsync(user);
                 await _userRepository.SaveChangesAsync();
                 return user;
             }
