@@ -7,23 +7,24 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ImageSharingPlatform.Domain.Entities;
 using ImageSharingPlatform.Repository.Repositories.Interfaces;
+using ImageSharingPlatform.Service.Services.Interfaces;
 
 namespace ImageSharingPlatform.Pages.UserMng
 {
     public class IndexModel : PageModel
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUserService _userService;
 
-        public IndexModel(IUserRepository userRepository)
+        public IndexModel(IUserService userService)
         {
-            _userRepository = userRepository;
+            _userService = userService;
         }
 
         public IList<User> User { get; set; } = default!;
 
         public async Task OnGetAsync()
         {
-            User = _userRepository.GetAllAsync().Result.ToList();
+            User = _userService.GetAllUsersAsync().Result.ToList();
         }
     }
 }
