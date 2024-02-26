@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNetCore.Http
+﻿@using ImageSharingPlatform.Domain.Enums
+@using Microsoft.AspNetCore.Http
 @using Newtonsoft.Json
 @using ImageSharingPlatform.Domain.Entities
 @inject IHttpContextAccessor HttpContextAccessor
@@ -17,12 +18,14 @@
 	<header>
 		<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
 			<div class="container">
-				<a class="navbar-brand" asp-area="" asp-page="/Index">ImageSharingPlatform</a>
-				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-						aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
-				</button>
-				<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+				<div class="col-3"><a class="navbar-brand" asp-area="" asp-page="/Index">ImageSharingPlatform</a></div>
+				<div class="col-6 d-flex align-items-center justify-content-center">
+					<form id="searchForm">
+						<input class="text-black p-1 m-0" style="min-width: 350px; border-radius: 12px 0px 0px 12px" type="search" placeholder="Search" aria-label="Search" name="query" />
+						<button class="text-black p-1 m-0" style="border-radius: 0px 12px 12px 0px" type="button" onclick="search()">Search</button>
+					</form>
+				</div>
+				<div class="navbar-collapse collapse d-flex justify-content-end">
 					@{
 						var session = HttpContextAccessor.HttpContext.Session;
 						var loggedInUser = session.GetString("LoggedInUser");
@@ -30,22 +33,53 @@
 						if (!string.IsNullOrEmpty(loggedInUser))
 						{
 							var user = JsonConvert.DeserializeObject<User>(loggedInUser);
-							// Limit the size of the avatar to 50x50 pixels
-							<a class="navbar-brand" asp-page="/Profile/Index"><img src="@user.AvatarUrl" alt="User Avatar" width="50" height="50" /></a>
+							<div class="dropdown ml-auto">
+								<div class="dropdown-toggle d-flex align-items-center" type="button" id="dropdownMenuLink" data-bs-toggle="dropdown">
+									<p class="text-black text-lg-center m-0 mx-2"><span>@user.FirstName @user.LastName</span></p>
+									<img style="border-radius: 1000px" src="@user.AvatarUrl" alt="User Avatar" width="40" height="40" />
+								</div>
+								<ul class="dropdown-menu bg-white mt-2 border-black" aria-labelledby="dropdownMenuLink">
+									<li><a class="dropdown-item text-black" asp-page="/Profile/Index">Profile</a></li>
+									@{
+										foreach (var role in user.Roles)
+										{
+											if (role.UserRole == UserRole.ROLE_ADMIN)
+											{
+												// Management Urls in asp razor pages route
+												<li><a class="dropdown-item text-black" asp-area="Management" asp-page="/UserMng/Index">User Management</a></li>
+
+											} else if (role.UserRole == UserRole.ROLE_ARTIST)
+											{
+												// Artist Urls in asp razor pages route
+												<li><a class="dropdown-item text-black" asp-page="/ArtistPages/MySharedImages">My images</a></li>
+											}
+										}
+									}
+									@*TODO: ADD MORE LINKS*@
+									<li><a class="dropdown-item text-black" asp-page="/Authentication/Logout">Logout</a></li>
+								</ul>
+							</div>
 						}
 						else
 						{
-							<a class="navbar-brand" asp-page="/Authentication/Register">Register</a>
-							<a class="navbar-brand" asp-page="/Authentication/Login">Login</a>
+							<div>
+								<a class="navbar-brand" asp-page="/Authentication/Register">Register</a>
+								<a class="navbar-brand" asp-page="/Authentication/Login">Login</a>
+							</div>
 						}
 					}
-					<a class="navbar-brand" asp-page="/ShareImage/Index">Share Image</a>
-					<a class="navbar-brand" asp-page="/ImageCategoryMng/Index">Image Category</a>
-					<a class="navbar-brand" asp-page="/UserMng/Index">User Manager</a>
 				</div>
 			</div>
 		</nav>
 	</header>
+	<script>
+		function search() {
+			var query = document.getElementById('searchForm').elements['query'].value;
+
+			// Update the window location to navigate to Search page with the query parameter
+			window.location.href = '/Search?query=' + encodeURIComponent(query);
+		}
+	</script>
 	<div class="container">
 		<main role="main" class="pb-3">
 			@RenderBody()

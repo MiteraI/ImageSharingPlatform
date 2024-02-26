@@ -61,6 +61,13 @@ namespace ImageSharingPlatform.Pages.Profile
             return Page();
         }
 
+        public async Task<IActionResult> OnPostBecomeArtistAsync()
+        {
+            Guid currentUserId = GetCurrentUserId();
+            await _userService.UpdateRoleToArtist(currentUserId);
+            return RedirectToPage("/Authentication/Logout");
+        }
+
         private Guid GetCurrentUserId()
         {
             var userJson = HttpContext.Session.GetString("LoggedInUser");

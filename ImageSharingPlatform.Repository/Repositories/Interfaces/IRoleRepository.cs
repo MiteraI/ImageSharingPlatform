@@ -1,4 +1,5 @@
 ﻿using ImageSharingPlatform.Domain.Entities;
+using ImageSharingPlatform.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,6 @@ namespace ImageSharingPlatform.Repository.Repositories.Interfaces
 {
     public interface IRoleRepository : IGenericRepository<Role, Guid>
     {
+        Task<Role> GetRoleByNameAsync(UserRole userRole);
     }
 }

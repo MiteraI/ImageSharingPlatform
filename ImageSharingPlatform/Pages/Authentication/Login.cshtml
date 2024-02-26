@@ -1,18 +1,24 @@
 ﻿@page
-@model ImageSharingPlatform.Pages.Authentication.LoginModel
+@model ImageSharingPlatform.Pages.Authentication.LoginModel;
 @{
+    ViewData["Title"] = "Login";
 }
 
-<h2>Login</h2>
+<div class="container mt-5">
+    <h2>Login</h2>
 
-<form method="post">
-    <div>
-        <label for="Username">Username:</label>
-        <input id="Username" name="Username" type="text" />
-    </div>
-    <div>
-        <label for="Password">Password:</label>
-        <input id="Password" name="Password" type="password" />
-    </div>
-    <input type="submit" value="Login" />
-</form>
+    <form method="post" class="bg-white p-4">
+        <div class="mb-3">
+            <label for="Username" class="form-label text-black">Username:</label>
+            <input id="Username" name="Username" type="text" class="form-control text-black" style="background-color: #f8f9fa; border: 1px solid #ced4da; border-radius: 4px;" />
+        </div>
+        <div class="mb-3">
+            <label for="Password" class="form-label text-black">Password:</label>
+            <input id="Password" name="Password" type="password" class="form-control text-black" style="background-color: #f8f9fa; border: 1px solid #ced4da; border-radius: 4px;" />
+        </div>
+        <div class="d-flex justify-content-around align-items-center mt-2">
+            <button type="button" class="btn btn-primary"><a asp-page="/Authentication/Register" style="text-decoration:none">Register</a></button>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </div>
+    </form>
+</div>

@@ -14,6 +14,8 @@ namespace ImageSharingPlatform.Service.Services.Interfaces
 
         Task<User> LoginUser(string username, string password);
 
+        Task UpdateRoleToArtist(Guid userId);
+
         Task<User> CreateUser(User user);
         Task<User> EditUser(User user);
         Task<User> DeleteUser(Guid userId);

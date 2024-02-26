@@ -1,4 +1,6 @@
+using AutoMapper;
 using ImageSharingPlatform.Domain.Entities;
+using ImageSharingPlatform.Dto;
 using ImageSharingPlatform.Service.Services;
 using ImageSharingPlatform.Service.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -9,13 +11,15 @@ namespace ImageSharingPlatform.Pages.Authentication
 {
     public class RegisterModel : PageModel
     {
+        private readonly IMapper _mapper;
         private readonly IUserService _userService;
 
         [BindProperty]
-        public User InputUser { get; set; }
+        public UserEditDto InputUser { get; set; }
 
-        public RegisterModel(IUserService userService)
+        public RegisterModel(IMapper mapper, IUserService userService)
         {
+            _mapper = mapper;
             _userService = userService;
         }
 
@@ -30,7 +34,8 @@ namespace ImageSharingPlatform.Pages.Authentication
                 return Page();
             }
 
-            var user = await _userService.RegisterUser(InputUser);
+
+            var user = await _userService.RegisterUser(_mapper.Map<User>(InputUser));
 
             if (user == null)
             {

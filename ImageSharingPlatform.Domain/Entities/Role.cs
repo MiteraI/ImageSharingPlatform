@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace ImageSharingPlatform.Domain.Entities
@@ -12,8 +13,5 @@ namespace ImageSharingPlatform.Domain.Entities
     {
         [Column("role")]
         public UserRole UserRole { get; set; }
-
-        [NotMapped]
-        public ICollection<User>? Users { get; set; }
     }
 }
