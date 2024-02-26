@@ -8,6 +8,8 @@ namespace ImageSharingPlatform.Configuration
         public static IServiceCollection AddServiceModule(this IServiceCollection services)
         {
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IImageCategoryService, ImageCategoryService>();
+            services.AddScoped<ISharedImageService, SharedImageService>();
 
             return services;
         }

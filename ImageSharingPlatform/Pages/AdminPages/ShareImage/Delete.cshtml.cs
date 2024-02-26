@@ -8,35 +8,43 @@ using Microsoft.EntityFrameworkCore;
 using ImageSharingPlatform.Domain.Entities;
 using ImageSharingPlatform.Repository.Repositories.Interfaces;
 using ImageSharingPlatform.Service.Services.Interfaces;
+using ImageSharingPlatform.Service.Services;
 
-namespace ImageSharingPlatform.Pages.ShareImage
+namespace ImageSharingPlatform.Pages.AdminPages.ShareImage
 {
-    public class DetailsModel : PageModel
+    public class DeleteModel : PageModel
     {
         private readonly ISharedImageService _sharedImageService;
 
-        public DetailsModel(ISharedImageService sharedImageService)
+        public DeleteModel(ISharedImageService sharedImageService)
         {
             _sharedImageService = sharedImageService;
         }
 
+        [BindProperty]
         public SharedImage SharedImage { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             SharedImage = await _sharedImageService.GetSharedImageByIdAsync(id);
 
             if (SharedImage == null)
             {
                 return NotFound();
             }
-
             return Page();
+        }
+
+        public async Task<IActionResult> OnPostAsync(Guid id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            SharedImage = await _sharedImageService.DeleteSharedImage(SharedImage.Id);
+
+            return RedirectToPage("./Index");
         }
     }
 }

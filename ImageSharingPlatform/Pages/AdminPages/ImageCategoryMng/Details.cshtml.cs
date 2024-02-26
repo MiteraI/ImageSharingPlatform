@@ -9,18 +9,18 @@ using ImageSharingPlatform.Domain.Entities;
 using ImageSharingPlatform.Repository.Repositories.Interfaces;
 using ImageSharingPlatform.Service.Services.Interfaces;
 
-namespace ImageSharingPlatform.Pages.UserMng
+namespace ImageSharingPlatform.Pages.AdminPages.ImageCategoryMng
 {
     public class DetailsModel : PageModel
     {
-        private readonly IUserService _userService;
+        private readonly IImageCategoryService _imageCategoryService;
 
-        public DetailsModel(IUserService userService)
+        public DetailsModel(IImageCategoryService imageCategoryService)
         {
-            _userService = userService;
+            _imageCategoryService = imageCategoryService;
         }
 
-        public User User { get; set; } = default!;
+        public ImageCategory ImageCategory { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
@@ -29,13 +29,12 @@ namespace ImageSharingPlatform.Pages.UserMng
                 return NotFound();
             }
 
-            User = await _userService.GetUserByIdAsync(id);
+            ImageCategory = await _imageCategoryService.GetImageCategoryByIdAsync(id);
 
-            if (User == null)
+            if (ImageCategory == null)
             {
                 return NotFound();
             }
-
             return Page();
         }
     }

@@ -4,20 +4,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ImageSharingPlatform.Domain.Entities;
 using ImageSharingPlatform.Repository.Repositories.Interfaces;
 using ImageSharingPlatform.Service.Services.Interfaces;
 using ImageSharingPlatform.Service.Services;
 
-namespace ImageSharingPlatform.Pages.ImageCategoryMng
+namespace ImageSharingPlatform.Pages.AdminPages.ImageCategoryMng
 {
-    public class EditModel : PageModel
+    public class DeleteModel : PageModel
     {
         private readonly IImageCategoryService _imageCategoryService;
 
-        public EditModel(IImageCategoryService imageCategoryService)
+        public DeleteModel(IImageCategoryService imageCategoryService)
         {
             _imageCategoryService = imageCategoryService;
         }
@@ -41,28 +40,14 @@ namespace ImageSharingPlatform.Pages.ImageCategoryMng
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(Guid id)
         {
-            if (!ModelState.IsValid)
+            if (id == null)
             {
-                return Page();
+                return NotFound();
             }
 
-            try
-            {
-                var sharedimage = _imageCategoryService.EditImageCategory(ImageCategory);
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!await _imageCategoryService.ImageCategoryExistsAsync(x => x.Id == ImageCategory.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            ImageCategory = await _imageCategoryService.DeleteImageCategory(ImageCategory.Id);
 
             return RedirectToPage("./Index");
         }

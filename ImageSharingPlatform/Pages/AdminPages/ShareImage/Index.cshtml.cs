@@ -9,22 +9,22 @@ using ImageSharingPlatform.Domain.Entities;
 using ImageSharingPlatform.Repository.Repositories.Interfaces;
 using ImageSharingPlatform.Service.Services.Interfaces;
 
-namespace ImageSharingPlatform.Pages.ImageCategoryMng
+namespace ImageSharingPlatform.Pages.AdminPages.ShareImage
 {
     public class IndexModel : PageModel
     {
-        private readonly IImageCategoryService _imageCategoryService;
+        private readonly ISharedImageService _sharedImageService;
 
-        public IndexModel(IImageCategoryService imageCategoryService)
+        public IndexModel(ISharedImageService sharedImageService)
         {
-            _imageCategoryService = imageCategoryService;
+            _sharedImageService = sharedImageService;
         }
 
-        public IList<ImageCategory> ImageCategory { get; set; } = default!;
+        public IList<SharedImage> SharedImage { get; set; }/* = default!;*/
 
         public async Task OnGetAsync()
         {
-            ImageCategory = _imageCategoryService.GetAllImageCategoriesAsync().Result.ToList();
+            SharedImage = _sharedImageService.GetAllSharedImagesAsync().Result.ToList();
         }
     }
 }

@@ -9,18 +9,17 @@ using ImageSharingPlatform.Domain.Entities;
 using ImageSharingPlatform.Repository.Repositories.Interfaces;
 using ImageSharingPlatform.Service.Services.Interfaces;
 
-namespace ImageSharingPlatform.Pages.UserMng
+namespace ImageSharingPlatform.Pages.AdminPages.UserMng
 {
-    public class DeleteModel : PageModel
+    public class DetailsModel : PageModel
     {
         private readonly IUserService _userService;
 
-        public DeleteModel(IUserService userService)
+        public DetailsModel(IUserService userService)
         {
             _userService = userService;
         }
 
-        [BindProperty]
         public User User { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid id)
@@ -36,20 +35,8 @@ namespace ImageSharingPlatform.Pages.UserMng
             {
                 return NotFound();
             }
+
             return Page();
-        }
-
-        public async Task<IActionResult> OnPostAsync(Guid id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            User = await _userService.DeleteUser(User.Id);
-            
-
-            return RedirectToPage("./Index");
         }
     }
 }

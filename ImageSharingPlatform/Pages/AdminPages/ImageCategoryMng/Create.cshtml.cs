@@ -10,7 +10,7 @@ using ImageSharingPlatform.Repository.Repositories.Interfaces;
 using ImageSharingPlatform.Service.Services.Interfaces;
 using ImageSharingPlatform.Service.Services;
 
-namespace ImageSharingPlatform.Pages.ImageCategoryMng
+namespace ImageSharingPlatform.Pages.AdminPages.ImageCategoryMng
 {
     public class CreateModel : PageModel
     {

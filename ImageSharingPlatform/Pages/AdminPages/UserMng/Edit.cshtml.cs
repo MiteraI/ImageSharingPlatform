@@ -10,7 +10,7 @@ using ImageSharingPlatform.Domain.Entities;
 using ImageSharingPlatform.Repository.Repositories.Interfaces;
 using ImageSharingPlatform.Service.Services.Interfaces;
 
-namespace ImageSharingPlatform.Pages.UserMng
+namespace ImageSharingPlatform.Pages.AdminPages.UserMng
 {
     public class EditModel : PageModel
     {
