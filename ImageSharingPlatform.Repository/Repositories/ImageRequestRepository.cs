@@ -1,5 +1,6 @@
 ﻿using ImageSharingPlatform.Domain.Entities;
 using ImageSharingPlatform.Repository.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,13 @@ namespace ImageSharingPlatform.Repository.Repositories
     {
         public ImageRequestRepository(IUnitOfWork context) : base(context)
         {
+            
+        }
+
+        public async Task<IEnumerable<ImageRequest>> GetAllWithDetailsAsync()
+        {
+            return await _dbSet.Include(ir => ir.RequesterUser)
+           .Include(ir => ir.Artist).ToListAsync();
         }
     }
 }
