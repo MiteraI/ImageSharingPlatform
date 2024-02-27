@@ -1,33 +1,37 @@
-﻿@page "/register"
+﻿@page
 @model ImageSharingPlatform.Pages.Authentication.RegisterModel
 @{
 }
 
-<form method="post">
-    <div asp-validation-summary="ModelOnly"></div>
-    <div>
-        <label asp-for="InputUser.Username"></label>
-        <input asp-for="InputUser.Username"/>
-    </div>
-    <div>
-        <label asp-for="InputUser.Password" type="password"></label>
-        <input asp-for="InputUser.Password"/>
-    </div>
-    <div>
-        <label asp-for="InputUser.FirstName" type="text"></label>
-        <input asp-for="InputUser.FirstName"/>
-    </div>
-    <div>
-        <label asp-for="InputUser.LastName" type="text"></label>
-        <input asp-for="InputUser.LastName"/>
-    </div>
-    <div>
-        <label asp-for="InputUser.AvatarUrl" type="text"></label>
-        <input asp-for="InputUser.AvatarUrl"/>
-    </div>
-    <div>
-        <label asp-for="InputUser.Email" type="email"></label>
-        <input asp-for="InputUser.Email"/>
-    </div>
-    <button type="submit">Register</button>
-</form>
+<div class="container">
+	<h2>Register</h2>
+
+	<form method="post" class="bg-white p-4">
+		<div asp-validation-summary="ModelOnly"></div>
+		<div>
+			<label asp-for="InputUser.Username" class="form-label text-black"></label>
+			<input asp-for="InputUser.Username" class="form-control text-black" style="background-color: #f8f9fa; border: 1px solid #ced4da; border-radius: 4px;" />
+		</div>
+		<div>
+			<label asp-for="InputUser.Password" type="password" class="form-label text-black"></label>
+			<input asp-for="InputUser.Password" class="form-control text-black" style="background-color: #f8f9fa; border: 1px solid #ced4da; border-radius: 4px;" />
+		</div>
+		<div>
+			<label asp-for="InputUser.FirstName" type="text" class="form-label text-black"></label>
+			<input asp-for="InputUser.FirstName" class="form-control text-black" style="background-color: #f8f9fa; border: 1px solid #ced4da; border-radius: 4px;" />
+		</div>
+		<div>
+			<label asp-for="InputUser.LastName" type="text" class="form-label text-black"></label>
+			<input asp-for="InputUser.LastName" class="form-control text-black" style="background-color: #f8f9fa; border: 1px solid #ced4da; border-radius: 4px;" />
+		</div>
+		<div>
+			<label asp-for="InputUser.Email" type="email" class="form-label text-black"></label>
+			<input asp-for="InputUser.Email" class="form-control text-black" style="background-color: #f8f9fa; border: 1px solid #ced4da; border-radius: 4px;" />
+		</div>
+		<div class="d-flex justify-content-around align-items-center mt-2">
+			<button type="submit" class="btn btn-primary">Register</button>
+			<button type="button" class="btn btn-primary"><a asp-page="/Authentication/Login" style="text-decoration:none">Login</a></button>
+		</div>
+		
+	</form>
+</div>

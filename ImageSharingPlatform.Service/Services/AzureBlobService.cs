@@ -14,7 +14,8 @@ namespace ImageSharingPlatform.Service.Services
     public class AzureBlobService : IAzureBlobService
     {
         private readonly IConfiguration _configuration;
-        private readonly BlobContainerClient _roomImageContainerClient;
+        private readonly BlobContainerClient _avatarContainerClient;
+        private readonly BlobContainerClient _sharedImageContainerClient;
         private readonly string _azureBlobStorageAccountName;
         private readonly string _azureBlobStorageKey;
         public AzureBlobService(IConfiguration configuration)
@@ -30,14 +31,33 @@ namespace ImageSharingPlatform.Service.Services
             var blobServiceClient = new BlobServiceClient(blobUri, azureCredentials);
 
             //Azure Container Clients
-            _roomImageContainerClient = blobServiceClient.GetBlobContainerClient("room-images");
+            _avatarContainerClient = blobServiceClient.GetBlobContainerClient("avatar");
+            _sharedImageContainerClient = blobServiceClient.GetBlobContainerClient("shared-image");
+        }
+
+        public async Task<string> UploadAvatar(IFormFile image)
+        {
+            // Create blob client from file name from IFormFile image with guid
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
+            var blobClient = _avatarContainerClient.GetBlobClient(fileName);
+
+            using (var stream = image.OpenReadStream())
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await stream.CopyToAsync(memoryStream);
+                    var imageBytes = memoryStream.ToArray();
+                    await blobClient.UploadAsync(new MemoryStream(imageBytes));
+                }
+            }
+            return blobClient.Uri.AbsoluteUri;
         }
 
         public async Task<string> UploadImage(IFormFile image)
         {
             // Create blob client from file name from IFormFile image with guid
             var fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
-            var blobClient = _roomImageContainerClient.GetBlobClient(fileName);
+            var blobClient = _sharedImageContainerClient.GetBlobClient(fileName);
 
             using (var stream = image.OpenReadStream())
             {

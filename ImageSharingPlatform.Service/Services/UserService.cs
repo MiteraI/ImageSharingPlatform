@@ -9,21 +9,28 @@ using System.Threading.Tasks;
 using ImageSharingPlatform.Service.Utils;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using static System.Net.WebRequestMethods;
+using ImageSharingPlatform.Domain.Enums;
 
 namespace ImageSharingPlatform.Service.Services
 {
-    public class UserService : IUserService
+	public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IRoleRepository _roleRepository;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, IRoleRepository roleRepository)
         {
             _userRepository = userRepository;
+            _roleRepository = roleRepository;
         }
 
         public virtual async Task<User> RegisterUser(User user)
         {
             user.Password = PasswordHasher.HashPassword(user.Password);
+            user.AvatarUrl = "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50";
+            var userRole = await _roleRepository.GetRoleByNameAsync(UserRole.ROLE_USER);
+            user.Roles.Add(userRole);
             var newUser = _userRepository.Add(user);
             await _userRepository.SaveChangesAsync();
             return newUser;
@@ -40,13 +47,8 @@ namespace ImageSharingPlatform.Service.Services
             {
                 throw new Exception("Invalid password");
             }
-            return new User 
-            { 
-                Id = loginUser.Id, 
-                Roles = loginUser.Roles,
-                Username = loginUser.Username, 
-                AvatarUrl = loginUser.AvatarUrl
-            };
+            loginUser.Password = null;
+            return loginUser;
         }
 
         public async Task<User> CreateUser(User user)
@@ -68,7 +70,7 @@ namespace ImageSharingPlatform.Service.Services
             var user = await _userRepository.GetOneAsync(userId);
             if (user != null)
             {
-                _userRepository.DeleteAsync(user);
+                await _userRepository.DeleteAsync(user);
                 await _userRepository.SaveChangesAsync();
                 return user;
             }
@@ -89,5 +91,21 @@ namespace ImageSharingPlatform.Service.Services
         {
             return await _userRepository.GetAllAsync();
         }
-    }
+
+		public async Task UpdateRoleToArtist(Guid userId)
+		{
+            User user = await _userRepository.GetOneIncludeRolesAsync(userId);
+			Role artistRole = await _roleRepository.GetRoleByNameAsync(UserRole.ROLE_ARTIST);
+
+            // Check if user already has the artist role
+            if (user.Roles.Any(r => r.UserRole == artistRole.UserRole))
+            {
+				return;
+			}
+
+            user.Roles.Add(artistRole);
+			_userRepository.Update(user);
+            await _userRepository.SaveChangesAsync();
+		}
+	}
 }

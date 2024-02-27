@@ -1,0 +1,31 @@
+﻿@page
+@model ImageSharingPlatform.Pages.Profile.IndexModel
+
+@*Profile page to display user*@
+@{
+	ViewData["Title"] = "Profile";
+}
+
+<div class="container mt-5">
+    <h2>Welcome, @Model.User.FirstName @Model.User.LastName!</h2>
+
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <img src="@Model.User.AvatarUrl" alt="Avatar" class="img-fluid rounded">
+        </div>
+        <div class="col-md-8">
+            <h4>Email: @Model.User.Email</h4>
+            <p>Username: @Model.User.Username</p>
+            <p>Balance: @Model.User.Balance</p>
+            <!-- Add more details as needed -->
+
+            <div class="container">
+                <div class="row">
+                    <a asp-page="./Edit" class="btn btn-primary">Edit Profile</a>
+                    <a asp-page="./Index" class="btn btn-outline-secondary">Money</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

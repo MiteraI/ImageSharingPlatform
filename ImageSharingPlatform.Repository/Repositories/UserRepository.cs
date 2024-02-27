@@ -19,10 +19,12 @@ namespace ImageSharingPlatform.Repository.Repositories
 
         public async Task<User> FindByUsername(string username)
 		{
-			User? user = _dbSet.FirstOrDefault(x => x.Username == username);
-            return user;
+            return await _dbSet.Include(u => u.Roles).Where(u => u.Username == username).FirstOrDefaultAsync();   
 		}
 
-        
-    }
+		public async Task<User> GetOneIncludeRolesAsync(Guid guid)
+		{
+			return await _dbSet.Include(u => u.Roles).Where(u => u.Id == guid).FirstOrDefaultAsync();
+		}
+	}
 }

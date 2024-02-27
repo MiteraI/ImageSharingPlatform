@@ -145,7 +145,7 @@ namespace ImageSharingPlatform.Domain.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("RequestDetails");
+                    b.ToTable("RequestDetails", (string)null);
                 });
 
             modelBuilder.Entity("ImageSharingPlatform.Domain.Entities.Review", b =>
@@ -320,7 +320,7 @@ namespace ImageSharingPlatform.Domain.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("UserRole");
+                    b.ToTable("UserRole", (string)null);
                 });
 
             modelBuilder.Entity("ImageSharingPlatform.Domain.Entities.ImageRequest", b =>

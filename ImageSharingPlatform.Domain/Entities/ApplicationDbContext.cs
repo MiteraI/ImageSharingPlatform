@@ -56,7 +56,7 @@ namespace ImageSharingPlatform.Domain.Entities
             modelBuilder.Entity<User>(user =>
             {
                 user.HasMany(u => u.Roles)
-                .WithMany(r => r.Users)
+                .WithMany()
                 .UsingEntity(
                     "UserRole",
                     l => l.HasOne(typeof(Role)).WithMany().HasForeignKey("RoleId").HasPrincipalKey(nameof(Role.Id)),

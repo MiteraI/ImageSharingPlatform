@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -40,6 +41,6 @@ namespace ImageSharingPlatform.Domain.Entities
 		[Column("balance")]
 		public long Balance { get; set; }
 
-        public ICollection<Role>? Roles { get; set; }
+        public ICollection<Role> Roles { get; set; } = new Collection<Role>();
     }
 }

@@ -11,7 +11,8 @@ namespace ImageSharingPlatform
                 .AddReposiotoryModule()
                 .AddServiceModule()
                 .AddAzureBlobModule()
-                .AddVnpayModule();
+                .AddVnpayModule()
+                .AddAutoMapper(typeof(Startup));
         }
     }
 }

@@ -9,6 +9,7 @@ namespace ImageSharingPlatform.Service.Services.Interfaces
 {
     public interface IAzureBlobService
     {
+        Task<string> UploadAvatar(IFormFile image);
         Task<string> UploadImage(IFormFile image);
         Task<IList<string>> UploadImages(IList<IFormFile> image);
     }

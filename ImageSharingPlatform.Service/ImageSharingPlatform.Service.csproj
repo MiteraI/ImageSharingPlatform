@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ImageSharingPlatform.Dto\ImageSharingPlatform.Dto.csproj" />
     <ProjectReference Include="..\ImageSharingPlatform.Repository\ImageSharingPlatform.Repository.csproj" />
   </ItemGroup>
 
