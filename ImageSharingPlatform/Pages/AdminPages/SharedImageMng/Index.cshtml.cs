@@ -9,11 +9,7 @@ using ImageSharingPlatform.Domain.Entities;
 using ImageSharingPlatform.Repository.Repositories.Interfaces;
 using ImageSharingPlatform.Service.Services.Interfaces;
 
-<<<<<<<< HEAD:ImageSharingPlatform/Pages/AdminPages/ShareImage/Index.cshtml.cs
-namespace ImageSharingPlatform.Pages.AdminPages.ShareImage
-========
 namespace ImageSharingPlatform.Pages.AdminPages.SharedImageMng
->>>>>>>> 389bcac198f0998964858186489bdd87c822de48:ImageSharingPlatform/Pages/AdminPages/SharedImageMng/Index.cshtml.cs
 {
     public class IndexModel : PageModel
     {
@@ -24,7 +20,7 @@ namespace ImageSharingPlatform.Pages.AdminPages.SharedImageMng
             _sharedImageService = sharedImageService;
         }
 
-        public IList<SharedImage> SharedImage { get; set; }/* = default!;*/
+        public IList<SharedImage> SharedImage { get; set; } = default!;
 
         public async Task OnGetAsync()
         {

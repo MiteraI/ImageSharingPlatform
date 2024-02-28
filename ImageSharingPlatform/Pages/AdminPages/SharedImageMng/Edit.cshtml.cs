@@ -10,11 +10,7 @@ using ImageSharingPlatform.Domain.Entities;
 using ImageSharingPlatform.Repository.Repositories.Interfaces;
 using ImageSharingPlatform.Service.Services.Interfaces;
 
-<<<<<<<< HEAD:ImageSharingPlatform/Pages/AdminPages/ShareImage/Edit.cshtml.cs
-namespace ImageSharingPlatform.Pages.AdminPages.ShareImage
-========
 namespace ImageSharingPlatform.Pages.AdminPages.SharedImageMng
->>>>>>>> 389bcac198f0998964858186489bdd87c822de48:ImageSharingPlatform/Pages/AdminPages/SharedImageMng/Edit.cshtml.cs
 {
     public class EditModel : PageModel
     {

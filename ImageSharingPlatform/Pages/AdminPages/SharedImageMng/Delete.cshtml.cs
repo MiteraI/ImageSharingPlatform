@@ -10,11 +10,7 @@ using ImageSharingPlatform.Repository.Repositories.Interfaces;
 using ImageSharingPlatform.Service.Services.Interfaces;
 using ImageSharingPlatform.Service.Services;
 
-<<<<<<<< HEAD:ImageSharingPlatform/Pages/AdminPages/ShareImage/Delete.cshtml.cs
-namespace ImageSharingPlatform.Pages.AdminPages.ShareImage
-========
 namespace ImageSharingPlatform.Pages.AdminPages.SharedImageMng
->>>>>>>> 389bcac198f0998964858186489bdd87c822de48:ImageSharingPlatform/Pages/AdminPages/SharedImageMng/Delete.cshtml.cs
 {
     public class DeleteModel : PageModel
     {
