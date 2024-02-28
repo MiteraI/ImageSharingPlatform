@@ -1,0 +1,70 @@
+﻿@page
+<<<<<<<< HEAD:ImageSharingPlatform/Pages/AdminPages/ShareImage/Index.cshtml
+@model ImageSharingPlatform.Pages.AdminPages.ShareImage.IndexModel
+========
+@model IndexModel
+>>>>>>>> 389bcac198f0998964858186489bdd87c822de48:ImageSharingPlatform/Pages/AdminPages/SharedImageMng/Index.cshtml
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SharedImage[0].ImageName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SharedImage[0].ImageUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SharedImage[0].ImageCategory)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SharedImage[0].Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SharedImage[0].CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SharedImage[0].IsPremium)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SharedImage[0].Artist)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.SharedImage) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImageName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImageUrl)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImageCategory.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsPremium)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Artist.Id)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

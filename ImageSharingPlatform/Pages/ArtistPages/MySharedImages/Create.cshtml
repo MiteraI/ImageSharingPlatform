@@ -1,0 +1,48 @@
+﻿@page
+@model ImageSharingPlatform.Pages.ArtistPages.MySharedImages.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>SharedImage</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="SharedImage.ImageName" class="control-label"></label>
+                <input asp-for="SharedImage.ImageName" class="form-control" />
+                <span asp-validation-for="SharedImage.ImageName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SharedImage.ImageCategoryId" class="control-label"></label>
+                <select asp-for="SharedImage.ImageCategoryId" class ="form-control" asp-items="ViewBag.ImageCategoryId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="SharedImage.Description" class="control-label"></label>
+                <input asp-for="SharedImage.Description" class="form-control" />
+                <span asp-validation-for="SharedImage.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="SharedImage.IsPremium" /> @Html.DisplayNameFor(model => model.SharedImage.IsPremium)
+                </label>
+            </div>
+            <div class="mb-3">
+                <label class="form-label text-black">Upload image</label>
+                <input type="file" name="uploadImage" class="form-control text-black" style="background-color: #f8f9fa; border: 1px solid #ced4da; border-radius: 4px;" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>

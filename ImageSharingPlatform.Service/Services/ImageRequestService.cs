@@ -1,7 +1,9 @@
 ﻿using ImageSharingPlatform.Domain.Entities;
+using ImageSharingPlatform.Domain.Enums;
 using ImageSharingPlatform.Repository.Repositories;
 using ImageSharingPlatform.Repository.Repositories.Interfaces;
 using ImageSharingPlatform.Service.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +39,17 @@ namespace ImageSharingPlatform.Service.Services
             return await _imageRequestRepository.GetAllAsync();
         }
 
-        public async Task<IEnumerable<ImageRequest>> GetAllImageRequestsDetailsAsync()
+        public async Task<IEnumerable<ImageRequest>> GetAllImageRequestsByArtistAsync(Guid artistId)
+        {
+            return await _imageRequestRepository.GetAllByArtistIdAsync(artistId);
+        }
+
+        public async Task<IEnumerable<ImageRequest>> GetAllImageRequestsByUserAsync(Guid userId)
+		{
+            return await _imageRequestRepository.GetAllByUserIdAsync(userId);
+		}
+
+		public async Task<IEnumerable<ImageRequest>> GetAllImageRequestsDetailsAsync()
         {
             return await _imageRequestRepository.GetAllWithDetailsAsync();
         }

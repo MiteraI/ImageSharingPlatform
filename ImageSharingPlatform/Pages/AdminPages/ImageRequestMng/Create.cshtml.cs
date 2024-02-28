@@ -10,7 +10,7 @@ using ImageSharingPlatform.Service.Services.Interfaces;
 using ImageSharingPlatform.Domain.Enums;
 using Newtonsoft.Json;
 
-namespace ImageSharingPlatform.Pages.ImageRequestMng
+namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
 {
     public class CreateModel : PageModel
     {
@@ -46,13 +46,13 @@ namespace ImageSharingPlatform.Pages.ImageRequestMng
 
             if (userId == Guid.Empty)
             {
-                return NotFound("Customer not found.");
+                return NotFound("User not found.");
             }
 
             var user = await _userService.GetUserByIdAsync(userId);
             if (user == null)
             {
-                return NotFound("Customer not found.");
+                return NotFound("User not found.");
             }
             ImageRequests.RequesterUserId = userId;
 

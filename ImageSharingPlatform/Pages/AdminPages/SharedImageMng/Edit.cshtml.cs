@@ -7,22 +7,26 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ImageSharingPlatform.Domain.Entities;
+using ImageSharingPlatform.Repository.Repositories.Interfaces;
 using ImageSharingPlatform.Service.Services.Interfaces;
 
-namespace ImageSharingPlatform.Pages.ImageRequestMng
+<<<<<<<< HEAD:ImageSharingPlatform/Pages/AdminPages/ShareImage/Edit.cshtml.cs
+namespace ImageSharingPlatform.Pages.AdminPages.ShareImage
+========
+namespace ImageSharingPlatform.Pages.AdminPages.SharedImageMng
+>>>>>>>> 389bcac198f0998964858186489bdd87c822de48:ImageSharingPlatform/Pages/AdminPages/SharedImageMng/Edit.cshtml.cs
 {
     public class EditModel : PageModel
     {
-        private readonly IImageRequestService _imageRequestService;
-        private readonly IUserService _userService;
-        public EditModel(IImageRequestService imageRequestService, IUserService userService)
+        private readonly ISharedImageService _sharedImageService;
+
+        public EditModel(ISharedImageService sharedImageService)
         {
-            _imageRequestService = imageRequestService; 
-            _userService = userService;
+            _sharedImageService = sharedImageService;
         }
 
         [BindProperty]
-        public ImageRequest ImageRequests { get; set; } = default!;
+        public SharedImage SharedImage { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
@@ -31,14 +35,13 @@ namespace ImageSharingPlatform.Pages.ImageRequestMng
                 return NotFound();
             }
 
-            ImageRequests = await _imageRequestService.GetImageRequestById(id);
-            if (ImageRequests == null)
+            SharedImage = await _sharedImageService.GetSharedImageByIdAsync(id);
+
+            if (SharedImage == null)
             {
                 return NotFound();
             }
-            var users = await _userService.GetAllUsersAsync();
-            ViewData["ArtistId"] = new SelectList(users, "Id", "Email");
-            ViewData["RequesterUserId"] = new SelectList(users, "Id", "Email");
+
             return Page();
         }
 
@@ -51,11 +54,11 @@ namespace ImageSharingPlatform.Pages.ImageRequestMng
 
             try
             {
-                var imageRequest = _imageRequestService.EditImageRequest(ImageRequests);
+                var sharedimage = _sharedImageService.EditSharedImage(SharedImage);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!await _imageRequestService.ImageRequestExistsAsync(x => x.Id == ImageRequests.Id))
+                if (!await _sharedImageService.SharedImageExistsAsync(x => x.Id == SharedImage.Id))
                 {
                     return NotFound();
                 }

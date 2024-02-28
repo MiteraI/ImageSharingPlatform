@@ -15,6 +15,8 @@ namespace ImageSharingPlatform.Service.Services.Interfaces
         Task<ImageRequest> EditImageRequest(ImageRequest imageRequest);
         Task<bool> ImageRequestExistsAsync(Expression<Func<ImageRequest, bool>> predicate);
         Task<IEnumerable<ImageRequest>> GetAllImageRequestsAsync();
+		Task<IEnumerable<ImageRequest>> GetAllImageRequestsByUserAsync(Guid userId);
+        Task<IEnumerable<ImageRequest>> GetAllImageRequestsByArtistAsync(Guid artistId);
         Task<IEnumerable<ImageRequest>> GetAllImageRequestsDetailsAsync();
 
     }
