@@ -48,16 +48,20 @@
 												// Management Urls in asp razor pages route
 												<li><a class="dropdown-item text-black" asp-area="Management" asp-page="/UserMng/Index">User Management</a></li>
 
-											} else if (role.UserRole == UserRole.ROLE_ARTIST)
+											}
+											else if (role.UserRole == UserRole.ROLE_ARTIST)
 											{
 												// Artist Urls in asp razor pages route
 												<li><a class="dropdown-item text-black" asp-page="/ArtistPages/MySharedImages">My images</a></li>
 												<li><a class="dropdown-item text-black" asp-page="/ImageRequestMng/Index">My Image Request</a></li>
 											}
+											else 
+											{
+												<li><a class="dropdown-item text-black" asp-page="/ImageRequestMng/Index">Image Request</a></li>
+											}
 										}
 									}
 									@*TODO: ADD MORE LINKS*@
-									<li><a class="dropdown-item text-black" asp-page="/ImageRequestMng/Index">Image Request</a></li>
 									<li><a class="dropdown-item text-black" asp-page="/Authentication/Logout">Logout</a></li>
 								</ul>
 							</div>

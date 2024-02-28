@@ -12,5 +12,6 @@ namespace ImageSharingPlatform.Repository.Repositories.Interfaces
     {
         Task<IEnumerable<ImageRequest>> GetAllWithDetailsAsync();
 		Task<IEnumerable<ImageRequest>> GetAllByUserIdAsync(Guid userId);
-	}
+        Task<IEnumerable<ImageRequest>> GetAllByArtistIdAsync(Guid artistId);
+    }
 }
