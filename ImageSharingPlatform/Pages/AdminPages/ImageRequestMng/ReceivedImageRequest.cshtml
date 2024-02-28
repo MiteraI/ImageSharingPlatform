@@ -1,21 +1,8 @@
 ﻿@page
-@model IndexModel
+@model ImageSharingPlatform.Pages.ImageRequestMng.ReceivedImageRequestModel
 
-<h2>MY IMAGE REQUEST</h2>
 
-@{
-    var userJson = HttpContext.Session.GetString("LoggedInUser");
-    var useraccount = JsonConvert.DeserializeObject<User>(userJson);
-    var isArtist = useraccount.Roles.Any(r => r.UserRole == UserRole.ROLE_ARTIST);
-    if (isArtist)
-    {
-        <a asp-page="./ReceivedImageRequest" class="btn btn-primary">Received Image Request</a>
-    }
-}
-<br/>
-<p>
-    <a asp-page="Create" class="btn btn-dark">Create New Image Request</a>
-</p>
+<h2>MY RECEIVED IMAGE REQUEST</h2>
 <table class="table">
     <thead>
         <tr>
@@ -78,6 +65,9 @@
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a>
             </td>
         </tr>
-}
+        }
     </tbody>
+    <div>
+        <a asp-page="./Index" class="btn btn-dark">Back to List</a>
+    </div>
 </table>

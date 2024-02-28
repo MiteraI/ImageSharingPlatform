@@ -8,6 +8,10 @@
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
+                <label asp-for="ImageRequests.RequestStatus" class="control-label">Status Of Request</label>
+                <select asp-for="ImageRequests.RequestStatus" asp-items="ViewBag.RequestStatus" class="form-control"></select>
+            </div>
+            <div class="form-group">
                 <label asp-for="ImageRequests.Title" class="control-label"></label>
                 <input asp-for="ImageRequests.Title" class="form-control" />
                 <span asp-validation-for="ImageRequests.Title" class="text-danger"></span>

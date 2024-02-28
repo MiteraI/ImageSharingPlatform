@@ -1,4 +1,5 @@
 ﻿using ImageSharingPlatform.Domain.Entities;
+using ImageSharingPlatform.Domain.Enums;
 using ImageSharingPlatform.Repository.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -20,6 +21,19 @@ namespace ImageSharingPlatform.Repository.Repositories
         {
             return await _dbSet.Include(ir => ir.RequesterUser)
            .Include(ir => ir.Artist).ToListAsync();
+        }
+
+		public async Task<IEnumerable<ImageRequest>> GetAllByUserIdAsync(Guid userId)
+        {
+            return await _dbSet.Include(ir => ir.RequesterUser)
+           .Include(ir => ir.Artist).Where(ir => ir.RequesterUserId == userId).ToListAsync();
+
+        }
+
+        public async Task<IEnumerable<ImageRequest>> GetAllByArtistIdAsync(Guid artistId)
+        {
+            return await _dbSet.Include(ir => ir.RequesterUser)
+           .Include(ir => ir.Artist).Where(ir => ir.ArtistId == artistId).ToListAsync();
         }
     }
 }

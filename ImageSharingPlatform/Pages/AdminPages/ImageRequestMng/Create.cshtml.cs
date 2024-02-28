@@ -46,13 +46,13 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
 
             if (userId == Guid.Empty)
             {
-                return NotFound("Customer not found.");
+                return NotFound("User not found.");
             }
 
             var user = await _userService.GetUserByIdAsync(userId);
             if (user == null)
             {
-                return NotFound("Customer not found.");
+                return NotFound("User not found.");
             }
             ImageRequests.RequesterUserId = userId;
 

@@ -11,14 +11,14 @@ using ImageSharingPlatform.Service.Services;
 using Newtonsoft.Json;
 using ImageSharingPlatform.Domain.Enums;
 
-namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
+namespace ImageSharingPlatform.Pages.ImageRequestMng
 {
-    public class IndexModel : PageModel
+    public class ReceivedImageRequestModel : PageModel
     {
         private readonly IImageRequestService _imageRequestService;
 		private readonly IUserService _userService;
 
-		public IndexModel(IImageRequestService imageRequestService, IUserService userService)
+		public ReceivedImageRequestModel(IImageRequestService imageRequestService, IUserService userService)
         {
             _imageRequestService = imageRequestService;
 			_userService = userService;
@@ -52,7 +52,7 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
 			}
 			else
 			{
-				ImageRequests = (IList<ImageRequest>)await _imageRequestService.GetAllImageRequestsByUserAsync(userId);
+				ImageRequests = (IList<ImageRequest>)await _imageRequestService.GetAllImageRequestsByArtistAsync(userId);
 			}
 			return Page();
         }
