@@ -46,12 +46,15 @@
 											if (role.UserRole == UserRole.ROLE_ADMIN)
 											{
 												// Management Urls in asp razor pages route
-												<li><a class="dropdown-item text-black" asp-area="Management" asp-page="/UserMng/Index">User Management</a></li>
+												<li><a class="dropdown-item text-black" asp-area="Management" asp-page="/AdminPages/UserMng/Index">User Management</a></li>
+												<li><a class="dropdown-item text-black" asp-area="Management" asp-page="/AdminPages/ImageCategoryMng/Index">Category Management</a></li>
+												<li><a class="dropdown-item text-black" asp-area="Management" asp-page="/AdminPages/SharedImageMng/Index">Image Management</a></li>
+												<li><a class="dropdown-item text-black" asp-area="Management" asp-page="/AdminPages/ImageRequestMng/Index">Request Management</a></li>
 
 											} else if (role.UserRole == UserRole.ROLE_ARTIST)
 											{
 												// Artist Urls in asp razor pages route
-												<li><a class="dropdown-item text-black" asp-page="/ArtistPages/MySharedImages">My images</a></li>
+												<li><a class="dropdown-item text-black" asp-page="/ArtistPages/MySharedImages/Index">My images</a></li>
 											}
 										}
 									}

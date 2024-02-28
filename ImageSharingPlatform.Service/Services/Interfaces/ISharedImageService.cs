@@ -16,5 +16,7 @@ namespace ImageSharingPlatform.Service.Services.Interfaces
         Task<SharedImage> GetSharedImageByIdAsync(Guid sharedImageId);
         Task<bool> SharedImageExistsAsync(Expression<Func<SharedImage, bool>> predicate);
         Task<IEnumerable<SharedImage>> GetAllSharedImagesAsync();
+        Task<IEnumerable<SharedImage>> FindSharedImagesByUserIdWithFullDetails(Guid userId);
+        Task<SharedImage> FindSharedImageByUserIdWithFullDetails(Guid userId);
     }
 }

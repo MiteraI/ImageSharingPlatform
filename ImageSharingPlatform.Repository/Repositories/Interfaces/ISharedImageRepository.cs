@@ -9,5 +9,7 @@ namespace ImageSharingPlatform.Repository.Repositories.Interfaces
 {
     public interface ISharedImageRepository : IGenericRepository<SharedImage, Guid>
     {
+        Task<IEnumerable<SharedImage>> GetSharedImagesByUserIdWithFullDetails(Guid userId);
+        Task<SharedImage> GetSharedImageByUserIdWithFullDetails(Guid userId);
     }
 }
