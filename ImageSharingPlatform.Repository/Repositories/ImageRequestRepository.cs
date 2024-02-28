@@ -29,5 +29,5 @@ namespace ImageSharingPlatform.Repository.Repositories
            .Include(ir => ir.Artist).Where(ir => ir.RequesterUserId == userId).ToListAsync();
 
         }
-    }
+	}
 }

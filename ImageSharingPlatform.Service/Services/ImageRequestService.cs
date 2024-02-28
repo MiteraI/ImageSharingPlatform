@@ -41,7 +41,7 @@ namespace ImageSharingPlatform.Service.Services
 
 		public async Task<IEnumerable<ImageRequest>> GetAllImageRequestsByUserAsync(Guid userId)
 		{
-            return await _imageRequestRepository.GetByUserIdAsync(userId);
+            return await _imageRequestRepository.GetAllByUserIdAsync(userId);
 		}
 
 		public async Task<IEnumerable<ImageRequest>> GetAllImageRequestsDetailsAsync()

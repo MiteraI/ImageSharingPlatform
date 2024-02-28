@@ -11,6 +11,6 @@ namespace ImageSharingPlatform.Repository.Repositories.Interfaces
     public interface IImageRequestRepository : IGenericRepository<ImageRequest, Guid>
     {
         Task<IEnumerable<ImageRequest>> GetAllWithDetailsAsync();
-		Task<IList<ImageRequest>> GetByUserIdAsync(Guid userId);
+		Task<IEnumerable<ImageRequest>> GetAllByUserIdAsync(Guid userId);
 	}
 }
