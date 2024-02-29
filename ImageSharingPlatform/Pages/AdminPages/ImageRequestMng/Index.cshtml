@@ -2,22 +2,28 @@
 @model IndexModel
 
 <h2>MY IMAGE REQUEST</h2>
-
-@{
-    var userJson = HttpContext.Session.GetString("LoggedInUser");
-    var useraccount = JsonConvert.DeserializeObject<User>(userJson);
-    var isArtist = useraccount.Roles.Any(r => r.UserRole == UserRole.ROLE_ARTIST);
-    if (isArtist)
-    {
-        <a asp-page="./ReceivedImageRequest" class="btn btn-primary">Received Image Request</a>
-    }
-}
+<br />
+<div class="row pt-2">
+    <div class="col-6 col-md-3">
+        <a asp-page="Create" class="btn btn-dark">Create New Image Request</a>
+    </div>
+    <div class="col-6 col-md-3">
+        @{
+            var userJson = HttpContext.Session.GetString("LoggedInUser");
+            var useraccount = JsonConvert.DeserializeObject<User>(userJson);
+            var isArtist = useraccount.Roles.Any(r => r.UserRole == UserRole.ROLE_ARTIST);
+            if (isArtist)
+            {
+                <a asp-page="./ReceivedImageRequest" class="btn btn-primary">Received Image Request</a>
+            }
+        }
+    </div>
+</div>
 <br/>
-<p>
-    <a asp-page="Create" class="btn btn-dark">Create New Image Request</a>
-</p>
-<table class="table">
-    <thead>
+<div class="card shadow border-0 my-4">
+    <div class="card-body p-5">
+        <table class="table">
+            <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.ImageRequests[0].Title)
@@ -81,3 +87,5 @@
 }
     </tbody>
 </table>
+</div>
+</div>

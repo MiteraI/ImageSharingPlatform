@@ -1,61 +1,62 @@
 ﻿@page
 @model EditModel
 
-<h4>ImageRequest</h4>
+<h4>Edit Image Request</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="ImageRequests.RequestStatus" class="control-label">Status Of Request</label>
-                <select asp-for="ImageRequests.RequestStatus" asp-items="ViewBag.RequestStatus" class="form-control"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImageRequests.Title" class="control-label"></label>
-                <input asp-for="ImageRequests.Title" class="form-control" />
-                <span asp-validation-for="ImageRequests.Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImageRequests.Description" class="control-label"></label>
-                <input asp-for="ImageRequests.Description" class="form-control" />
-                <span asp-validation-for="ImageRequests.Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImageRequests.Price" class="control-label"></label>
-                <input asp-for="ImageRequests.Price" class="form-control" />
-                <span asp-validation-for="ImageRequests.Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImageRequests.CreateTime" class="control-label"></label>
-                <input asp-for="ImageRequests.CreateTime" class="form-control" />
-                <span asp-validation-for="ImageRequests.CreateTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImageRequests.ImageBlob" class="control-label"></label>
-                <input asp-for="ImageRequests.ImageBlob" class="form-control" />
-                <span asp-validation-for="ImageRequests.ImageBlob" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImageRequests.RequesterUserId" class="control-label"></label>
-                <select asp-for="ImageRequests.RequesterUserId" class="form-control" asp-items="ViewBag.RequesterUserId"></select>
-                <span asp-validation-for="ImageRequests.RequesterUserId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImageRequests.ArtistId" class="control-label"></label>
-                <select asp-for="ImageRequests.ArtistId" class="form-control" asp-items="ViewBag.ArtistId"></select>
-                <span asp-validation-for="ImageRequests.ArtistId" class="text-danger"></span>
-            </div>
-            <input type="hidden" asp-for="ImageRequests.Id" />
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+
+<div class="card shadow border-0 my-4">
+    <div class="card-body p-4">
+        <form method="post" enctype="multipart/form-data">
+            <input asp-for="ImageRequests.Id" hidden>
+            <div class="col-12">
+                <div class="border p-3">
+                    <div class="form-floating py-2 col-12">
+                        <label asp-for="ImageRequests.Title" class="control-label"></label>
+                        <input asp-for="ImageRequests.Title" class="form-control" />
+                        <span asp-validation-for="ImageRequests.Title" class="text-danger"></span>
+                    </div>
+                    <div class="py-2 col-12">
+                        <label asp-for="ImageRequests.Description" class="control-label"></label>
+                        <textarea asp-for="ImageRequests.Description" class="form-control border-0 shadow"></textarea>
+                    </div>
+                    <div class="form-floating py-2 col-12">
+                        <label asp-for="ImageRequests.Price" class="control-label"></label>
+                        <input asp-for="ImageRequests.Price" class="form-control" />
+                        <span asp-validation-for="ImageRequests.Price" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating py-2 col-12">
+                        <label asp-for="ImageRequests.CreateTime" class="control-label"></label>
+                        <input asp-for="ImageRequests.CreateTime" class="form-control" />
+                        <span asp-validation-for="ImageRequests.CreateTime" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating py-2 col-12">
+                        <label asp-for="ImageRequests.ImageBlob" class="control-label"></label>
+                        <input asp-for="ImageRequests.ImageBlob" class="form-control" />
+                        <span asp-validation-for="ImageRequests.ImageBlob" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-floating py-2 col-12">
+                        <label asp-for="ImageRequests.RequesterUserId" class="control-label"></label>
+                        <select asp-for="ImageRequests.RequesterUserId" class="form-control" asp-items="ViewBag.RequesterUserId"></select>
+                    </div>
+                    <div class="form-floating py-2 col-12">
+                        <label asp-for="ImageRequests.ArtistId" class="control-label"></label>
+                        <select asp-for="ImageRequests.ArtistId" class="form-control" asp-items="ViewBag.ArtistId"></select>
+                    </div>
+                    <div class="row pt-2">
+                        <div class="col-6 col-md-3">
+                            <button type="submit" class="btn btn-primary form-control">Edit</button>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <a asp-page="./Index" class="btn btn-outline-primary border form-control">
+                                Back to List
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-page="./Index">Back to List</a>
 </div>
 
 @section Scripts {
