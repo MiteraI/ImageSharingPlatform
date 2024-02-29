@@ -20,9 +20,12 @@
 			<div class="container">
 				<div class="col-3"><a class="navbar-brand" asp-area="" asp-page="/Index">ImageSharingPlatform</a></div>
 				<div class="col-6 d-flex align-items-center justify-content-center">
-					<form id="searchForm">
-						<input class="text-black p-1 m-0" style="min-width: 350px; border-radius: 12px 0px 0px 12px" type="search" placeholder="Search" aria-label="Search" name="query" />
-						<button class="text-black p-1 m-0" style="border-radius: 0px 12px 12px 0px" type="button" onclick="search()">Search</button>
+					<form onsubmit="return false;">
+						@{
+							var query = HttpContextAccessor.HttpContext.Request.Query["query"];
+							<input class="text-black p-1 m-0" style="min-width: 350px; border-radius: 12px 0px 0px 12px" value="@query" type="search" placeholder="Search" aria-label="Search" name="query" />
+						}
+						<button id="searchButton" class="text-black p-1 m-0" style="border-radius: 0px 12px 12px 0px">Search</button>
 					</form>
 				</div>
 				<div class="navbar-collapse collapse d-flex justify-content-end">
@@ -58,7 +61,7 @@
 												<li><a class="dropdown-item text-black" asp-page="/ArtistPages/MySharedImages/Index">My images</a></li>
 												<li><a class="dropdown-item text-black" asp-page="/AdminPages/ImageRequestMng/ReceivedImageRequest">Received requests</a></li>
 											}
-											else 
+											else
 											{
 												<li><a class="dropdown-item text-black" asp-page="/AdminPages/ImageRequestMng/Index">My requests</a></li>
 											}
@@ -82,18 +85,15 @@
 		</nav>
 	</header>
 	<script>
-		function search() {
-			var query = document.getElementById('searchForm').elements['query'].value;
-
-			// Update the window location to navigate to Search page with the query parameter
-			window.location.href = '/Search?query=' + encodeURIComponent(query);
-		}
+		document.getElementById("searchButton").addEventListener("click", function (e) {
+			e.preventDefault();
+			var query = document.querySelector("input[name='query']").value;
+			window.location.href = "/Search?query=" + query;
+		});
 	</script>
-	<div class="container">
-		<main role="main" class="pb-3">
-			<partial name="_Notification" />
-			@RenderBody()
-		</main>
+	<div>
+		<partial name="_Notification" />
+		@RenderBody()
 	</div>
 
 	<footer class="border-top footer text-muted">
