@@ -33,5 +33,25 @@ namespace ImageSharingPlatform.Repository.Repositories
 				.Where(si => si.ArtistId == userId)
 				.ToListAsync();
 		}
+
+		public async Task<IEnumerable<SharedImage>> GetSharedImageWithSearchNameAndCateAsync(string searchName, ImageCategory? imageCategory)
+		{
+			if (imageCategory == null)
+			{
+				return await _dbSet
+					.Include(si => si.Artist)
+					.Include(si => si.ImageCategory)
+					.Where(si => si.ImageName.Contains(searchName))
+					.ToListAsync();
+			}
+			else
+			{
+				return await _dbSet
+					.Include(si => si.Artist)
+					.Include(si => si.ImageCategory)
+					.Where(si => si.ImageName.Contains(searchName) && si.ImageCategory == imageCategory)
+					.ToListAsync();
+			}	
+		}
 	}
 }

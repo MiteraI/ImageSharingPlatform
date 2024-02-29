@@ -15,10 +15,12 @@ namespace ImageSharingPlatform.Service.Services
 	{
 
 		private readonly ISharedImageRepository _sharedImageRepository;
+		private readonly IImageCategoryRepository _imageCategoryRepository;
 
-		public SharedImageService(ISharedImageRepository sharedImageRepository)
+		public SharedImageService(ISharedImageRepository sharedImageRepository, IImageCategoryRepository imageCategoryRepository)
 		{
 			_sharedImageRepository = sharedImageRepository;
+			_imageCategoryRepository = imageCategoryRepository;
 		}
 
 		public async Task<SharedImage> CreateSharedImage(SharedImage sharedImage)
@@ -72,5 +74,15 @@ namespace ImageSharingPlatform.Service.Services
 			return await _sharedImageRepository.GetSharedImagesByUserIdWithFullDetails(userId);
 		}
 
+		public async Task<IEnumerable<SharedImage>> FindSharedImageWithSearchNameAndCate(string searchName, Guid? imageCategoryId)
+		{
+			if (imageCategoryId == null)
+			{
+				return await _sharedImageRepository.GetSharedImageWithSearchNameAndCateAsync(searchName, null);
+			} 
+
+			var category = await _imageCategoryRepository.GetOneAsync(imageCategoryId.Value);
+			return await _sharedImageRepository.GetSharedImageWithSearchNameAndCateAsync(searchName, category);
+		}
 	}
 }

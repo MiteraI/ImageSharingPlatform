@@ -18,5 +18,6 @@ namespace ImageSharingPlatform.Service.Services.Interfaces
         Task<IEnumerable<SharedImage>> GetAllSharedImagesAsync();
         Task<IEnumerable<SharedImage>> FindSharedImagesByUserIdWithFullDetails(Guid userId);
         Task<SharedImage> FindSharedImageByUserIdWithFullDetails(Guid userId);
+        Task<IEnumerable<SharedImage>> FindSharedImageWithSearchNameAndCate(string searchName, Guid? imageCategoryId);
     }
 }
