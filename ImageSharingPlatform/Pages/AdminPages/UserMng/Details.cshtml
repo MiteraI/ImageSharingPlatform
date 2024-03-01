@@ -1,55 +1,68 @@
 ﻿@page
 @model DetailsModel
 
-<div>
-    <h4>User</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.User.Username)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.Username)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.User.Password)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.Password)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.User.FirstName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.FirstName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.User.LastName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.LastName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.User.AvatarUrl)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.AvatarUrl)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.User.Email)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.Email)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.User.Balance)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.Balance)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-page="./Edit" asp-route-id="@Model.User.Id">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+<div class="container">
+    <main role="main" class="pb-3">
+        <partial name="_Notification" />
+        <h2>User</h2>
+        <hr />
+        <div class="card shadow border-0 my-2 col-12">
+            <div class="card-body p-4">
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.User.Username)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.User.Username)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.User.Password)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.User.Password)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.User.FirstName)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.User.FirstName)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.User.LastName)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.User.LastName)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.User.AvatarUrl)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.User.AvatarUrl)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.User.Email)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.User.Email)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.User.Balance)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.User.Balance)
+                    </dd>
+                </dl>
+                <div class="row pt-2">
+                    <div class="col-6 col-md-1">
+                        <a asp-page="./Edit" asp-route-id="@Model.User.Id" class="btn btn-outline-primary">Edit</a>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a asp-page="./Index" class="btn btn-outline-primary border form-control">
+                            Back to List
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 </div>
