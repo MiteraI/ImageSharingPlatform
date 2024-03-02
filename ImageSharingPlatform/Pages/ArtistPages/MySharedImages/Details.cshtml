@@ -1,61 +1,68 @@
 ﻿@page
 @model ImageSharingPlatform.Pages.ArtistPages.MySharedImages.DetailsModel
 
-@{
-    ViewData["Title"] = "Details";
-}
-
-<h1>Details</h1>
-
-<div>
-    <h4>SharedImage</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.SharedImage.ImageName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.SharedImage.ImageName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.SharedImage.ImageUrl)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.SharedImage.ImageUrl)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.SharedImage.ImageCategory)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.SharedImage.ImageCategory.CategoryName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.SharedImage.Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.SharedImage.Description)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.SharedImage.CreatedAt)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.SharedImage.CreatedAt)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.SharedImage.IsPremium)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.SharedImage.IsPremium)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.SharedImage.Artist)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.SharedImage.Artist.Email)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-page="./Edit" asp-route-id="@Model.SharedImage.Id">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+<div class="container">
+    <main role="main" class="pb-3">
+        <partial name="_Notification" />
+        <h2>Shared Image</h2>
+        <hr />
+        <div class="card shadow border-0 my-2 col-12">
+            <div class="card-body p-4">
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.SharedImage.ImageName)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.SharedImage.ImageName)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.SharedImage.ImageUrl)
+                    </dt>
+                    <dd class="col-sm-10">
+                        <img src=" @Html.DisplayFor(model => model.SharedImage.ImageUrl)" class="w-25" />
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.SharedImage.ImageCategory)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.SharedImage.ImageCategory.CategoryName)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.SharedImage.Description)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.SharedImage.Description)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.SharedImage.CreatedAt)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.SharedImage.CreatedAt)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.SharedImage.IsPremium)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.SharedImage.IsPremium)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.SharedImage.Artist)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.SharedImage.Artist.Email)
+                    </dd>
+                </dl>
+                <div class="row pt-2">
+                    <div class="col-6 col-md-1">
+                        <a asp-page="./Edit" asp-route-id="@Model.SharedImage.Id" class="btn btn-outline-primary">Edit</a>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a asp-page="./Index" class="btn btn-outline-primary border form-control">
+                            Back to List
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 </div>

@@ -1,72 +1,118 @@
 ﻿@page
 @model ImageSharingPlatform.Pages.ArtistPages.MySharedImages.IndexModel
 
-@{
-    ViewData["Title"] = "Index";
-}
+<div class="container">
+    <main role="main" class="pb-3">
+        <partial name="_Notification" />
+        <h2>My Image</h2>
+        <hr />
+        <a asp-page="Create" class="btn btn-dark">Create New Image</a>
+        <div class="row" style="padding-top:20px; padding:50px; background-color: ghostwhite">
+            @foreach (var item in Model.SharedImage)
+            {
+                <div class="col-md-3">
 
-<h1>Index</h1>
+                    <div class="card mb-2" style="background-color: #f8f9fa">
+                        <img class="bd-placeholder-img card-img-top" src="@Html.DisplayFor(modelItem => item.ImageUrl)" />
+                        <div class="card-body text-black">
+                            <p class="card-text" style="text-align:center"><b>@Html.DisplayFor(modelItem => item.ImageName)</b></p>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <div class="btn-group">
+                                    <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary text-black">Edit</a>
+                                    <a asp-page="./Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info text-black">Details</a>
+                                    <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger text-black">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.SharedImage[0].ImageName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SharedImage[0].ImageUrl)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SharedImage[0].ImageCategory)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SharedImage[0].Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SharedImage[0].CreatedAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SharedImage[0].IsPremium)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SharedImage[0].Artist)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.SharedImage) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImageName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImageUrl)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImageCategory.CategoryName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsPremium)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Artist.Email)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-        }
-    </tbody>
-</table>
+                </div>
+            }
+        </div>
+    </main>
+</div>
+
+<style>
+    .card {
+        min-height: 50%;
+    }
+
+    .card-img-top {
+        height: 350px;
+        object-fit: cover;
+    }
+</style>
+
+@* <div class="container">
+    <main role="main" class="pb-3">
+        <partial name="_Notification" />
+        <h2>Shared Image</h2>
+        <hr />
+        <a asp-page="Create" class="btn btn-dark">Create New Image</a>
+        <div class="card shadow border-0 my-2 col-12">
+            <div class="card-body p-4">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.SharedImage[0].ImageName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.SharedImage[0].ImageUrl)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.SharedImage[0].ImageCategory)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.SharedImage[0].Description)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.SharedImage[0].CreatedAt)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.SharedImage[0].IsPremium)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.SharedImage[0].Artist)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.SharedImage)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ImageName)
+                                </td>
+                                <td>
+                                    <img class="w-25" src="@Html.DisplayFor(modelItem => item.ImageUrl)" />
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ImageCategory.CategoryName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Description)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CreatedAt)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.IsPremium)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Artist.Email)
+                                </td>
+                                <td style="white-space: nowrap;">
+                                    <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-outline-primary">Edit</a> |
+                                    <a asp-page="./Details" asp-route-id="@item.Id" class="btn btn-outline-info">Details</a> |
+                                    <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div> *@
