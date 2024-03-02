@@ -25,8 +25,11 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
         [BindProperty]
         public ImageRequest ImageRequests { get; set; } = default!;
 
-        /*[BindProperty]
-        public RequestStatus SelectedStatus { get; set; }*/
+        [BindProperty]
+        public ImageRequest ImageRequestCopy { get; set; } = new ImageRequest();
+
+        [BindProperty]
+        public IFormFile? ImageUpload { get; set; }
 
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
@@ -40,6 +43,10 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
             {
                 return NotFound();
             }
+
+            ImageRequestCopy.RequestStatus = ImageRequests.RequestStatus;
+            ImageRequestCopy.ImageBlob = ImageRequests.ImageBlob;
+
             var users = await _userService.GetAllUsersAsync();
             ViewData["RequestStatus"] = new SelectList(Enum.GetValues(typeof(RequestStatus)), ImageRequests.RequestStatus);
             ViewData["ArtistId"] = new SelectList(users, "Id", "Email");
@@ -49,16 +56,30 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
+            if (ImageUpload != null)
             {
-                return Page();
+                using (var memoryStream = new MemoryStream())
+                {
+                    await ImageUpload.CopyToAsync(memoryStream);
+
+                    if (memoryStream.Length < 2097152)
+                    {
+                        ImageRequests.ImageBlob = memoryStream.ToArray();
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("ImageUpload", "The file is too large.");
+                    }
+                }
+            }
+            
+            if (ImageRequestCopy.RequestStatus == RequestStatus.CANCELLED
+                || ImageRequestCopy.RequestStatus == RequestStatus.SUCCESS
+                || ImageRequestCopy.RequestStatus == RequestStatus.REJECTED) 
+            {
+                ModelState.AddModelError("", "Can't update in this status");
             }
 
-            if (ImageRequests.RequestStatus != RequestStatus.PROCESSING)
-            {
-                ModelState.AddModelError(string.Empty, "You can only edit request PROCESSING status !");
-                return Page();
-            }
             try
             {
                 await _imageRequestService.EditImageRequest(ImageRequests);
@@ -74,6 +95,7 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
                     throw;
                 }
             }
+
             TempData["SuccessMessage"] = "The request is updated successfully !";
             return RedirectToPage("./Index");
         }

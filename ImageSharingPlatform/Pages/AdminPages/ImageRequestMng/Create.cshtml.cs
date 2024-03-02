@@ -33,12 +33,32 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
 
         [BindProperty]
         public ImageRequest ImageRequests { get; set; } = default!;
+        [BindProperty]
+        public IFormFile? ImageUpload { get; set; }
+
         public async Task<IActionResult> OnPostAsync()
         {
+            if (ImageUpload != null)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await ImageUpload.CopyToAsync(memoryStream);
+
+                    if (memoryStream.Length < 2097152)
+                    {
+                        ImageRequests.ImageBlob = memoryStream.ToArray();
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("ImageUpload", "The file is too large.");
+                    }
+                }
+            }
             if (!ModelState.IsValid)
             {
                 return Page();
             }
+
             var userJson = HttpContext.Session.GetString("LoggedInUser");
             var useraccount = JsonConvert.DeserializeObject<User>(userJson);
 
@@ -57,6 +77,8 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
             ImageRequests.RequesterUserId = userId;
 
             ImageRequests.RequestStatus = RequestStatus.PROCESSING;
+
+            
 
             var newImageRequest = _imageRequestService.CreateImageRequest(ImageRequests);
 

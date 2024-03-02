@@ -8,12 +8,13 @@
     <h2>Login</h2>
 
     <form method="post" class="bg-white p-4">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="mb-3">
-            <label for="Username" class="form-label text-black">Username:</label>
+            <label for="Username" class="form-label text-black">Username</label>
             <input id="Username" name="Username" type="text" class="form-control text-black" style="background-color: #f8f9fa; border: 1px solid #ced4da; border-radius: 4px;" />
         </div>
         <div class="mb-3">
-            <label for="Password" class="form-label text-black">Password:</label>
+            <label for="Password" class="form-label text-black">Password</label>
             <input id="Password" name="Password" type="password" class="form-control text-black" style="background-color: #f8f9fa; border: 1px solid #ced4da; border-radius: 4px;" />
         </div>
         <div class="d-flex justify-content-around align-items-center mt-2">

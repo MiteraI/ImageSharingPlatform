@@ -27,18 +27,31 @@ namespace ImageSharingPlatform.Pages.Authentication
         {
             if (!string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password))
             {
-                var result = await _userService.LoginUser(Username, Password);
-
-                if (result != null)
+                try
                 {
-                    var userJson = JsonConvert.SerializeObject(result);
-                    HttpContext.Session.SetString("LoggedInUser", userJson);
-                    return RedirectToPage("/Index");
+                    var result = await _userService.LoginUser(Username, Password);
+
+                    if (result != null)
+                    {
+                        var userJson = JsonConvert.SerializeObject(result);
+                        HttpContext.Session.SetString("LoggedInUser", userJson);
+                        return RedirectToPage("/Index");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Invalid login attempt.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", "An error occurred while attempting to login.");
                 }
             }
+            else
+            {
+                ModelState.AddModelError("", "Username and Password cannot be empty.");
+            }
 
-            // If validation fails, show an error message
-            ModelState.AddModelError("", "Invalid login attempt.");
             return Page();
         }
     }
