@@ -3,10 +3,70 @@
 @{
 }
 
-<div class="container">
-	<div class="row">
-		<div class="col-3"><span>Hello</span></div>
-		<div class="col-9"><span>Hi</span></div>
+<main class="d-flex" id="search-main">
+	<div class="flex-shrink-0 p-2 bg-white" style="width: 240px;">
+		<div id="sidebar-content">
+			<form method="get" class="d-flex flex-column justify-content-between">
+				<div>
+					<input type="hidden" name="query" value="@HttpContext.Request.Query["query"]" />
+					<fieldset class="text-black border-black">
+						<legend>Category filter:</legend>
+						@foreach (var category in Model.ImageCategories)
+						{
+							<div>
+								<input type="radio" id="@category.Id" name="category" value="@category.Id"
+								@(HttpContext.Request.Query["category"] == category.Id.ToString() ? "checked" : "") />
+								<label for="@category.Id">@category.CategoryName</label>
+							</div>
+						}
+					</fieldset>
+				</div>
+				<div>
+					<button type="submit" class="btn btn-info text-black">Filter</button>
+				</div>
+			</form>
+		</div>
 	</div>
-	
-</div>
+	<div class="container m-3">
+		<div class="row">
+			@foreach (var item in Model.SharedImages)
+			{
+				<div class="col-md-3">
+					<div class="card mb-2" style="background-color: #f8f9fa">
+						<img class="bd-placeholder-img card-img-top" src="@Html.DisplayFor(modelItem => item.ImageUrl)" />
+						<div class="card-body text-black">
+							<p class="card-text" style="text-align:center"><b>@Html.DisplayFor(modelItem => item.ImageName)</b></p>
+							<div class="d-flex justify-content-center align-items-center">
+								<div class="btn-group">
+									<a asp-page="./Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info text-black">Details</a>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			}
+		</div>
+	</div>
+</main>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		// Get header and footer elements
+		const headerHeight = document.querySelector('header').offsetHeight;
+		const footerHeight = document.querySelector('footer').offsetHeight;
+
+		// Calculate the main content height
+		const mainContent = document.getElementById('search-main');
+		const sidebarContent = document.getElementById('sidebar-content');
+
+
+		const windowHeight = window.innerHeight;
+		const mainHeight = windowHeight - headerHeight - footerHeight;
+
+
+		// Set the height of the main content
+		mainContent.style.minHeight = mainHeight + 'px';
+		sidebarContent.style.minHeight = mainHeight + 'px';
+	});
+</script>

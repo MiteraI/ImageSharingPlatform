@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ImageSharingPlatform.Domain.Migrations;
+using JHipsterNet.Core.Pagination;
 
 namespace ImageSharingPlatform.Repository.Repositories
 {
@@ -34,7 +35,7 @@ namespace ImageSharingPlatform.Repository.Repositories
 				.ToListAsync();
 		}
 
-		public async Task<IEnumerable<SharedImage>> GetSharedImageWithSearchNameAndCateAsync(string searchName, ImageCategory? imageCategory)
+		public async Task<IEnumerable<SharedImage>> GetSharedImageWithSearchNameAndCateAsync(string searchName, ImageCategory? imageCategory, IPageable pageable)
 		{
 			if (imageCategory == null)
 			{
