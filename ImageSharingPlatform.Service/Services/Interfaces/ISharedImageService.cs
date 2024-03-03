@@ -1,4 +1,5 @@
 ﻿using ImageSharingPlatform.Domain.Entities;
+using JHipsterNet.Core.Pagination;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,5 +20,6 @@ namespace ImageSharingPlatform.Service.Services.Interfaces
         Task<IEnumerable<SharedImage>> FindSharedImagesByUserIdWithFullDetails(Guid userId);
         Task<SharedImage> FindSharedImageByUserIdWithFullDetails(Guid userId);
         Task<IEnumerable<SharedImage>> FindSharedImageWithSearchNameAndCate(string searchName, Guid? imageCategoryId);
+        Task<IPage<SharedImage>> FindSharedImageWithSearchNameAndCatePageable(string searchName, Guid? imageCategoryId, IPageable pageable);
     }
 }

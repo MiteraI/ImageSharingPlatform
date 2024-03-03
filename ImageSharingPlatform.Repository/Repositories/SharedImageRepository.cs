@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ImageSharingPlatform.Domain.Migrations;
 using JHipsterNet.Core.Pagination;
+using JHipsterNet.Core.Pagination.Extensions;
 
 namespace ImageSharingPlatform.Repository.Repositories
 {
@@ -35,7 +36,7 @@ namespace ImageSharingPlatform.Repository.Repositories
 				.ToListAsync();
 		}
 
-		public async Task<IEnumerable<SharedImage>> GetSharedImageWithSearchNameAndCateAsync(string searchName, ImageCategory? imageCategory, IPageable pageable)
+		public async Task<IEnumerable<SharedImage>> GetSharedImageWithSearchNameAndCateAsync(string searchName, ImageCategory? imageCategory)
 		{
 			if (imageCategory == null)
 			{
@@ -53,6 +54,26 @@ namespace ImageSharingPlatform.Repository.Repositories
 					.Where(si => si.ImageName.Contains(searchName) && si.ImageCategory == imageCategory)
 					.ToListAsync();
 			}	
+		}
+
+		public async Task<IPage<SharedImage>> GetSharedImageWithSearchNameAndCatePageableAsync(string searchName, ImageCategory? imageCategory, IPageable pageable)
+		{
+			if (imageCategory == null)
+			{
+				return await _dbSet
+					.Include(si => si.Artist)
+					.Include(si => si.ImageCategory)
+					.Where(si => si.ImageName.Contains(searchName))
+					.UsePageableAsync(pageable);
+			}
+			else
+			{
+				return await _dbSet
+					.Include(si => si.Artist)
+					.Include(si => si.ImageCategory)
+					.Where(si => si.ImageName.Contains(searchName) && si.ImageCategory == imageCategory)
+					.UsePageableAsync(pageable);
+			}
 		}
 	}
 }

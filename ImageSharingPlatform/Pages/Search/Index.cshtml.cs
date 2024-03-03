@@ -1,5 +1,6 @@
 using ImageSharingPlatform.Domain.Entities;
 using ImageSharingPlatform.Service.Services.Interfaces;
+using JHipsterNet.Core.Pagination;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -16,21 +17,39 @@ namespace ImageSharingPlatform.Pages.Search
             _imageCategoryService = imageCategoryService;
         }
 
-        public IList<SharedImage> SharedImages { get; set; }
+		public int PageNumber { get; set; } = 0;
+		public int PageSize { get; set; } = 4;
+        public string SearchQuery { get; set; }
+        public string CategoryId { get; set; }
+		public IPage<SharedImage> SharedImages { get; set; }
         public IList<ImageCategory> ImageCategories { get; set; }
 
         public async Task OnGetAsync()
         {
-            var searchQuery = HttpContext.Request.Query["query"];
-            ImageCategories = (List<ImageCategory>)await _imageCategoryService.GetAllImageCategoriesAsync();
-            
-            if (!string.IsNullOrWhiteSpace(HttpContext.Request.Query["category"].ToString()) || HttpContext.Request.Query["category"].Count > 0)
+			var page = HttpContext.Request.Query["page"];
+
+			if (!string.IsNullOrWhiteSpace(page) && int.TryParse(page, out var pageNumber))
+			{
+				PageNumber = pageNumber;
+			}
+
+			var searchQuery = HttpContext.Request.Query["query"];
+            if (!string.IsNullOrWhiteSpace(searchQuery))
             {
-                var cateGuid = new Guid(HttpContext.Request.Query["category"].ToString());
-                SharedImages = (List<SharedImage>)await _sharedImageService.FindSharedImageWithSearchNameAndCate(searchQuery, cateGuid);
+				SearchQuery = searchQuery;
+			}
+
+            ImageCategories = (List<ImageCategory>)await _imageCategoryService.GetAllImageCategoriesAsync();
+
+            var cateGuid = HttpContext.Request.Query["category"];
+            
+            if (!string.IsNullOrWhiteSpace(cateGuid))
+            {
+                SharedImages = await _sharedImageService.FindSharedImageWithSearchNameAndCatePageable(searchQuery, new Guid(cateGuid), Pageable.Of(PageNumber, PageSize, null));
+                CategoryId = cateGuid;
             } else
             {
-                SharedImages = (List<SharedImage>)await _sharedImageService.FindSharedImageWithSearchNameAndCate(searchQuery, null);
+                SharedImages = await _sharedImageService.FindSharedImageWithSearchNameAndCatePageable(searchQuery, null, Pageable.Of(PageNumber, PageSize, null));
             }
         }
     }

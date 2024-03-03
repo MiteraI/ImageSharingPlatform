@@ -2,6 +2,7 @@
 using ImageSharingPlatform.Repository.Repositories;
 using ImageSharingPlatform.Repository.Repositories.Interfaces;
 using ImageSharingPlatform.Service.Services.Interfaces;
+using JHipsterNet.Core.Pagination;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -83,6 +84,17 @@ namespace ImageSharingPlatform.Service.Services
 
 			var category = await _imageCategoryRepository.GetOneAsync(imageCategoryId.Value);
 			return await _sharedImageRepository.GetSharedImageWithSearchNameAndCateAsync(searchName, category);
+		}
+
+		public async Task<IPage<SharedImage>> FindSharedImageWithSearchNameAndCatePageable(string searchName, Guid? imageCategoryId, IPageable pageable)
+		{
+			if (imageCategoryId == null)
+			{
+				return await _sharedImageRepository.GetSharedImageWithSearchNameAndCatePageableAsync(searchName, null, pageable);
+			}
+
+			var category = await _imageCategoryRepository.GetOneAsync(imageCategoryId.Value);
+			return await _sharedImageRepository.GetSharedImageWithSearchNameAndCatePageableAsync(searchName, category, pageable);
 		}
 	}
 }

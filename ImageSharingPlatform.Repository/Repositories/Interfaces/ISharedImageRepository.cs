@@ -13,5 +13,7 @@ namespace ImageSharingPlatform.Repository.Repositories.Interfaces
         Task<IEnumerable<SharedImage>> GetSharedImagesByUserIdWithFullDetails(Guid userId);
         Task<SharedImage> GetSharedImageByUserIdWithFullDetails(Guid userId);
 		Task<IEnumerable<SharedImage>> GetSharedImageWithSearchNameAndCateAsync(string searchName, ImageCategory? imageCategory);
+		Task<IPage<SharedImage>> GetSharedImageWithSearchNameAndCatePageableAsync(string searchName, ImageCategory? imageCategory, IPageable pageable);
+
 	}
 }
