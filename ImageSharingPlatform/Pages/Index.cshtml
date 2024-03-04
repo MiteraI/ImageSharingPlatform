@@ -4,7 +4,80 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="starter-template">
+    <h1 style="font-family:courier,arial,helvetica;">Welcome to the Image Sharing Platform</h1>
+    <p class="lead">Explore and share amazing images with the world.</p>
 </div>
+
+<div class="container">
+    <main role="main" class="pb-3">
+        <div class="row">
+            
+            <div class="col-md-3">
+                <div class="card mb-2">
+                    <img src="https://i.pinimg.com/236x/d0/bc/fa/d0bcfa4ba5cfb62ab7eaffaf32ff1e7f.jpg" alt="Description of image 1" class="img-fluid">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card mb-2">
+                <img src="https://i.pinimg.com/236x/d0/fb/de/d0fbde1f87000927d7d70f910965060c.jpg" alt="Description of image 2" class="img-fluid">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card mb-2">
+                    <img src="https://i.pinimg.com/236x/75/90/a7/7590a74c81ed1f443aa8690900628e81.jpg" alt="Description of image 1" class="img-fluid">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card mb-2">
+                    <img src="https://i.pinimg.com/236x/c3/87/a3/c387a3d7dec0d586e9f0b6f30f07c91a.jpg" alt="Description of image 2" class="img-fluid">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card mb-2">
+                    <img src="https://i.pinimg.com/236x/0f/c0/25/0fc025a1c2a2287b4aa54268837b0e03.jpg" alt="Description of image 1" class="img-fluid">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card mb-2">
+                    <img src="https://i.pinimg.com/236x/8a/98/71/8a9871d60ce812a86851891787e04af5.jpg" alt="Description of image 2" class="img-fluid">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card mb-2">
+                    <img src="https://i.pinimg.com/236x/23/5d/9f/235d9ff1b00e45710dfb99ad99557d35.jpg" alt="Description of image 1" class="img-fluid">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card mb-2">
+                    <img src="https://i.pinimg.com/236x/4a/b8/60/4ab86007e2d1304fbd31ec1cd33231e7.jpg" alt="Description of image 2" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<style>
+    .card {
+        min-height: 50%;
+    }
+
+    .card-img-top {
+        height: 350px;
+        object-fit: cover;
+    }
+
+    .starter-template {
+        padding: 3rem 1.5rem;
+        text-align: center;
+    }
+
+    .gallery img {
+        width: 100%;
+        height: auto;
+        padding: 0.25rem;
+        border: 1px solid #ddd;
+        border-radius: 0.25rem;
+        margin-bottom: 1rem;
+    }
+</style>
