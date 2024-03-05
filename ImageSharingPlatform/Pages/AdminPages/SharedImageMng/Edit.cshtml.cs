@@ -15,10 +15,14 @@ namespace ImageSharingPlatform.Pages.AdminPages.SharedImageMng
     public class EditModel : PageModel
     {
         private readonly ISharedImageService _sharedImageService;
+        private readonly IUserService _userService;
+        private readonly IImageCategoryService _imageCategoryService;
 
-        public EditModel(ISharedImageService sharedImageService)
+        public EditModel(ISharedImageService sharedImageService, IUserService userService, IImageCategoryService imageCategoryService)
         {
             _sharedImageService = sharedImageService;
+            _userService = userService;
+            _imageCategoryService = imageCategoryService;
         }
 
         [BindProperty]
@@ -26,6 +30,12 @@ namespace ImageSharingPlatform.Pages.AdminPages.SharedImageMng
 
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
+            var users = await _userService.GetAllUsersAsync();
+            var categories = await _imageCategoryService.GetAllImageCategoriesAsync();
+
+            ViewData["ArtistId"] = new SelectList(users, "Id", "Email");
+            ViewData["ImageCategoryId"] = new SelectList(categories, "Id", "CategoryName");
+
             if (id == null)
             {
                 return NotFound();

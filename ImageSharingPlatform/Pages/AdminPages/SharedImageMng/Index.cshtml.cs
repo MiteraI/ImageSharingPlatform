@@ -8,22 +8,33 @@ using Microsoft.EntityFrameworkCore;
 using ImageSharingPlatform.Domain.Entities;
 using ImageSharingPlatform.Repository.Repositories.Interfaces;
 using ImageSharingPlatform.Service.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ImageSharingPlatform.Pages.AdminPages.SharedImageMng
 {
     public class IndexModel : PageModel
     {
         private readonly ISharedImageService _sharedImageService;
+        private readonly IUserService _userService;
+        private readonly IImageCategoryService _imageCategoryService;
 
-        public IndexModel(ISharedImageService sharedImageService)
+        public IndexModel(ISharedImageService sharedImageService, IUserService userService, IImageCategoryService imageCategoryService)
         {
             _sharedImageService = sharedImageService;
+            _userService = userService;
+            _imageCategoryService = imageCategoryService;
         }
 
         public IList<SharedImage> SharedImage { get; set; } = default!;
 
         public async Task OnGetAsync()
         {
+            var users = await _userService.GetAllUsersAsync();
+            var categories = await _imageCategoryService.GetAllImageCategoriesAsync();
+
+            ViewData["ArtistId"] = new SelectList(users, "Id", "Email");
+            ViewData["ImageCategoryId"] = new SelectList(categories, "Id", "CategoryName");
+
             SharedImage = _sharedImageService.GetAllSharedImagesAsync().Result.ToList();
         }
     }
