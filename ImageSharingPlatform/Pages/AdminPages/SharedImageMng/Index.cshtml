@@ -44,7 +44,7 @@
                                     <a asp-page="./Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.ImageName)</a>
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.ImageUrl)
+                                    <img class="bd-placeholder-img card-img-top" src="@Html.DisplayFor(modelItem => item.ImageUrl)" />
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.ImageCategory.CategoryName)
@@ -74,3 +74,9 @@
     </main>
 </div>
 
+<style>
+    .card-img-top {
+        height: 100px;
+        object-fit: cover;
+    }
+</style>
