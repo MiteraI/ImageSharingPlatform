@@ -29,7 +29,7 @@
                         var isArtist = useraccount.Roles.Any(r => r.UserRole == UserRole.ROLE_ARTIST);
                         if (isArtist)
                         {
-                            <a asp-page="/ArtistPages/MySubscriptionPackage/Index">Subcription Package</a>
+                            <a asp-page="/ArtistPages/MySubscriptionPackage/Index" class="btn btn-dark">Subcription Package</a>
                         }
                      }
                 </div>
