@@ -15,6 +15,7 @@ namespace ImageSharingPlatform.Configuration
             services.AddScoped<IReviewRepository, ReviewRepository>();
             services.AddScoped<IImageCategoryRepository, ImageCategoryRepository>();
             services.AddScoped<IImageRequestRepository, ImageRequestRepository>();
+            services.AddScoped<ISubscriptionPackageRepository, SubscriptionPackageRepository>();
             return services;
         }   
     }

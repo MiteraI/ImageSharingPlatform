@@ -25,8 +25,6 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
         }
 
         public IList<ImageRequest> ImageRequests { get;set; } = default!;
-		[BindProperty]
-		public Role role { get; set; } = default!;
 		public async Task<IActionResult> OnGetAsync()
         {
 			var userJson = HttpContext.Session.GetString("LoggedInUser");

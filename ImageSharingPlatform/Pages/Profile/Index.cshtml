@@ -23,6 +23,15 @@
                 <div class="row">
                     <a asp-page="./Edit" class="btn btn-primary">Edit Profile</a>
                     <a asp-page="./Index" class="btn btn-outline-secondary">Money</a>
+                    @{ 
+                        var userJson = HttpContext.Session.GetString("LoggedInUser");
+                        var useraccount = JsonConvert.DeserializeObject<User>(userJson);
+                        var isArtist = useraccount.Roles.Any(r => r.UserRole == UserRole.ROLE_ARTIST);
+                        if (isArtist)
+                        {
+                            <a asp-page="/ArtistPages/MySubscriptionPackage/Index">Subcription Package</a>
+                        }
+                     }
                 </div>
             </div>
         </div>
