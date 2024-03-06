@@ -9,7 +9,7 @@ using ImageSharingPlatform.Domain.Entities;
 using ImageSharingPlatform.Service.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace ImageSharingPlatform.Pages.ArtistPages.MySharedImages
+namespace ImageSharingPlatform.Pages.Search
 {
     public class DetailsModel : PageModel
     {

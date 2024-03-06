@@ -1,0 +1,150 @@
+﻿@page
+@model ImageSharingPlatform.Pages.Search.DetailsModel
+
+
+
+<div class="container">
+    <main role="main" class="pb-3">
+        <div class="card shadow border-0 my-2 col-12" style="padding-bottom:15px">
+            <div class="d-flex justify-content-between pt-4">
+                <div class="image-header">
+                    <!-- Assuming you have a property ArtistName in your model -->
+                    <h3>@Html.DisplayFor(model => model.SharedImage.Artist.Email)</h3>
+                    <!-- You can add Follow and Donate buttons here -->
+
+                </div>
+                <div class="image-actions" style="margin-bottom:13px">
+                    <!-- Add action buttons like Collect, Like, Edit in Canva, Free download here -->
+                    <a href="@Model.SharedImage.ImageUrl" download="@Model.SharedImage.ImageName" class="btn btn-primary">Free Download</a>
+                </div>
+            </div>
+          
+                <div class="col-10 p-4 image-details d-flex justify-content-evenly">
+            
+        
+                <div class="image-container">
+                    <img src="@Html.DisplayFor(model => model.SharedImage.ImageUrl)" class="image" />
+
+                </div>
+                <div>
+                    <h6>Image Name : @Html.DisplayFor(model => model.SharedImage.ImageName)</h6><br/>
+                    <h6>Image Category : @Html.DisplayFor(model => model.SharedImage.ImageCategory.CategoryName)</h6><br />
+                    <h6>Description : @Html.DisplayFor(model => model.SharedImage.Description)</h6><br />
+                    <h6>Created At : @Html.DisplayFor(model => model.SharedImage.CreatedAt)</h6>
+                    <div class="d-flex" style="padding-top:7px">
+                        <h6 style="padding: 15px 5px 0px 0px">Is Premium : </h6>
+                        <p>@Html.DisplayFor(model => model.SharedImage.IsPremium)</p>
+                    </div>
+                    
+                </div>  
+            
+            
+        </div>
+
+        <div>
+                <a href="/Search?query=" class="btn btn-outline-primary">Back</a>
+        </div>
+        </div>
+    </main>
+</div>
+
+<style>
+    .image-details {
+        max-width: 400px;
+        margin: auto;
+    }
+
+    .image-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+        .image-header h3 {
+            margin: 0;
+        }
+
+    .image-container {
+        margin-bottom: 20px;
+        max-width:250px;
+    }
+
+    .image {
+        width: 100%;
+        height: auto;
+        border: none;
+        box-shadow: none;
+    }
+
+    .image-actions {
+        display: flex;
+        justify-content: space-between;
+    }
+</style>
+
+
+
+
+@* <div class="container">
+    <main role="main" class="pb-3">
+        <partial name="_Notification" />
+        <h2 style="padding-top:25px">Shared Image</h2>
+        <hr />
+        <div class="card shadow border-0 my-2 col-12">
+            <div class="card-body p-4">
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.SharedImage.ImageName)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.SharedImage.ImageName)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.SharedImage.ImageUrl)
+                    </dt>
+                    <dd class="col-sm-10">
+                        <img src=" @Html.DisplayFor(model => model.SharedImage.ImageUrl)" class="w-25" />
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.SharedImage.ImageCategory)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.SharedImage.ImageCategory.CategoryName)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.SharedImage.Description)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.SharedImage.Description)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.SharedImage.CreatedAt)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.SharedImage.CreatedAt)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.SharedImage.IsPremium)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.SharedImage.IsPremium)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.SharedImage.Artist)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.SharedImage.Artist.Email)
+                    </dd>
+                </dl>
+                <div class="row pt-2">
+                    <div class="col-6 col-md-3">
+                        <a asp-page="./Index" class="btn btn-outline-primary border form-control">
+                            Back to List
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div> *@

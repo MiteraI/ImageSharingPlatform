@@ -4,7 +4,7 @@
 <div class="container">
     <main role="main" class="pb-3">
         <partial name="_Notification" />
-        <h2>Shared Image</h2>
+        <h2 style="padding-top:25px">Shared Image</h2>
         <hr />
         <a asp-page="Create" class="btn btn-dark">Create New Image</a>
         <div class="card shadow border-0 my-2 col-12">
@@ -44,10 +44,10 @@
                                     <a asp-page="./Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.ImageName)</a>
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.ImageUrl)
+                                    <img class="bd-placeholder-img card-img-top" src="@Html.DisplayFor(modelItem => item.ImageUrl)" />
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.ImageCategory.Id)
+                                    @Html.DisplayFor(modelItem => item.ImageCategory.CategoryName)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Description)
@@ -59,7 +59,7 @@
                                     @Html.DisplayFor(modelItem => item.IsPremium)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Artist.Id)
+                                    @Html.DisplayFor(modelItem => item.Artist.Username)
                                 </td>
                                 <td style="white-space: nowrap;">
                                     <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-outline-primary">Edit</a> |
@@ -74,3 +74,9 @@
     </main>
 </div>
 
+<style>
+    .card-img-top {
+        height: 100px;
+        object-fit: cover;
+    }
+</style>

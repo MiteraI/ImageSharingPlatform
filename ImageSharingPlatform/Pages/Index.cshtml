@@ -4,12 +4,85 @@
     ViewData["Title"] = "Home page";
 }
 
+
+<div class="container">
+    <main role="main" class="pb-3">
+        <div class="col-12 d-flex justify-content-center">
+            <div class="card shadow border-0 my-3 col-12" style="padding-bottom:20px">
+                <div class="card-body p-4">
+
 <div class="starter-template">
     <h1 style="font-family:courier,arial,helvetica;">Welcome to the Image Sharing Platform</h1>
     <p class="lead">Explore and share amazing images with the world.</p>
 </div>
 
-<div class="container">
+<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="5"></li>
+    </ol>
+    <div class="carousel-inner">
+        <div class="carousel-item active" data-interval="3000">
+            <img class="d-block w-100" src="https://i.pinimg.com/236x/d0/bc/fa/d0bcfa4ba5cfb62ab7eaffaf32ff1e7f.jpg" alt="First slide">
+        </div>
+        <div class="carousel-item">
+            <img class="d-block w-100" src="https://i.pinimg.com/236x/d0/fb/de/d0fbde1f87000927d7d70f910965060c.jpg" alt="Second slide">
+        </div>
+        
+        <div class="carousel-item">
+            <img class="d-block w-100" src="https://i.pinimg.com/736x/66/94/58/66945863cdf7c56b212c2280e91d497b.jpg" alt="Third slide">
+        </div>
+        <div class="carousel-item">
+            <img class="d-block w-100" src="https://i.pinimg.com/236x/75/90/a7/7590a74c81ed1f443aa8690900628e81.jpg" alt="Third slide">
+        </div>
+        <div class="carousel-item">
+            <img class="d-block w-100" src="https://i.pinimg.com/236x/06/b5/f0/06b5f0e13c5796c72848f6494e128de6.jpg" alt="Second slide">
+        </div>
+        <div class="carousel-item">
+            <img class="d-block w-100" src="https://i.pinimg.com/564x/e2/d5/2b/e2d52b0007be5c31693c039a7ba42ebb.jpg" alt="Third slide">
+        </div>
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<style>
+    #carouselExampleIndicators {
+        max-width: 100%;
+        overflow: hidden;
+    }
+
+    .carousel-item img {
+        max-width: 100%;
+        max-height: 70vh; 
+        object-fit: contain;
+        margin: auto;
+    }
+</style>
+
+
+
+
+
+
+
+@* <div class="container">
     <main role="main" class="pb-3">
         <div class="row">
             
@@ -80,4 +153,4 @@
         border-radius: 0.25rem;
         margin-bottom: 1rem;
     }
-</style>
+</style> *@
