@@ -8,14 +8,13 @@
 <div class="container">
     <main role="main" class="pb-3">
         <partial name="_Notification" />
-        <h2>Create Shared Image</h2>
+        <h2 style="padding-top:25px">Create Shared Image</h2>
         <hr />
         <div class="col-12 d-flex justify-content-center">
             <div class="card shadow border-0 my-4 col-8">
                 <div class="card-body p-4">
                     <form method="post" enctype="multipart/form-data">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        @* <input asp-for="SharedImage.Id" hidden> *@
                         <div class="col-12">
                             <div class="border p-3">
                                 <label asp-for="SharedImage.ImageName" class="control-label"></label>

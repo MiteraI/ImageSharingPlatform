@@ -30,7 +30,7 @@ namespace ImageSharingPlatform.Pages.AdminPages.SharedImageMng
             var users = await _userService.GetAllUsersAsync();
             var categories = await _imageCategoryService.GetAllImageCategoriesAsync();
 
-            ViewData["ArtistId"] = new SelectList(users, "Id", "Username"); // Assuming "Name" is a property you want to display
+            ViewData["ArtistId"] = new SelectList(users, "Id", "Email");
             ViewData["ImageCategoryId"] = new SelectList(categories, "Id", "CategoryName");
 
             return Page();

@@ -7,47 +7,39 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ImageSharingPlatform.Domain.Entities;
-using ImageSharingPlatform.Repository.Repositories.Interfaces;
 using ImageSharingPlatform.Service.Services.Interfaces;
+using ImageSharingPlatform.Service.Services;
 
-namespace ImageSharingPlatform.Pages.AdminPages.SharedImageMng
+namespace ImageSharingPlatform.Pages.ArtistPages.MySubscriptionPackage
 {
     public class EditModel : PageModel
     {
-        private readonly ISharedImageService _sharedImageService;
+        private readonly ISubscriptionPackageService _subscriptionPackageService;
         private readonly IUserService _userService;
-        private readonly IImageCategoryService _imageCategoryService;
 
-        public EditModel(ISharedImageService sharedImageService, IUserService userService, IImageCategoryService imageCategoryService)
+        public EditModel(ISubscriptionPackageService subscriptionPackageService, IUserService userService)
         {
-            _sharedImageService = sharedImageService;
+            _subscriptionPackageService = subscriptionPackageService;
             _userService = userService;
-            _imageCategoryService = imageCategoryService;
         }
 
         [BindProperty]
-        public SharedImage SharedImage { get; set; } = default!;
+        public SubscriptionPackage SubscriptionPackage { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
-            var users = await _userService.GetAllUsersAsync();
-            var categories = await _imageCategoryService.GetAllImageCategoriesAsync();
-
-            ViewData["ArtistId"] = new SelectList(users, "Id", "Email");
-            ViewData["ImageCategoryId"] = new SelectList(categories, "Id", "CategoryName");
-
             if (id == null)
             {
                 return NotFound();
             }
 
-            SharedImage = await _sharedImageService.GetSharedImageByIdAsync(id);
-
-            if (SharedImage == null)
+            SubscriptionPackage = await _subscriptionPackageService.GetSubscriptionPackageById(id);
+            if (SubscriptionPackage == null)
             {
                 return NotFound();
             }
-
+            var users = await _userService.GetAllUsersAsync();
+            ViewData["ArtistId"] = new SelectList(users, "Id", "Email");
             return Page();
         }
 
@@ -60,11 +52,11 @@ namespace ImageSharingPlatform.Pages.AdminPages.SharedImageMng
 
             try
             {
-                var sharedimage = _sharedImageService.EditSharedImage(SharedImage);
+                await _subscriptionPackageService.EditSubscriptionPackage(SubscriptionPackage);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!await _sharedImageService.SharedImageExistsAsync(x => x.Id == SharedImage.Id))
+                if (!await _subscriptionPackageService.SubscriptionPackageExistsAsync(x => x.Id == SubscriptionPackage.Id))
                 {
                     return NotFound();
                 }
@@ -73,7 +65,7 @@ namespace ImageSharingPlatform.Pages.AdminPages.SharedImageMng
                     throw;
                 }
             }
-
+            TempData["SuccessMessage"] = "The subscription package is updated successfully !";
             return RedirectToPage("./Index");
         }
     }

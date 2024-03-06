@@ -4,10 +4,19 @@
     string ImageSrc(byte[] imageBytes) => imageBytes == null ? "" : $"data:image/jpeg;base64,{Convert.ToBase64String(imageBytes)}";
 }
 
-<h2>MY RECEIVED IMAGE REQUEST</h2>
+
+<div class="container">
+    <main role="main" class="pb-3">
+        <partial name="_Notification" />
+        <h2 style="padding-top:25px">MY RECEIVED IMAGE REQUEST</h2>
+        <div class="card shadow border-0 my-2 col-12">
+            <div class="card-body p-4">
+
+
+@* <h2>MY RECEIVED IMAGE REQUEST</h2>
 <br />
 <div class="card shadow border-0 my-4">
-    <div class="card-body p-5">
+    <div class="card-body p-5"> *@
 <table class="table">
     <thead>
         <tr>
@@ -80,4 +89,8 @@
     </div>
 </table>
 </div>
+</div>
+</div>
+        </div>
+    </main>
 </div>

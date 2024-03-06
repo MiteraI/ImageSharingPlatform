@@ -8,32 +8,60 @@ using Microsoft.EntityFrameworkCore;
 using ImageSharingPlatform.Domain.Entities;
 using ImageSharingPlatform.Service.Services.Interfaces;
 using Newtonsoft.Json;
+using ImageSharingPlatform.Service.Services;
+using ImageSharingPlatform.Domain.Enums;
 
 namespace ImageSharingPlatform.Pages.ArtistPages.MySharedImages
 {
     public class IndexModel : PageModel
     {
         private readonly ISharedImageService _sharedImageService;
+        private readonly IUserService _userService;
 
-        public IndexModel(ISharedImageService sharedImageService)
+        public IndexModel(ISharedImageService sharedImageService, IUserService userService)
         {
 			_sharedImageService = sharedImageService;
+            _userService = userService;
 		}
 
         public IList<SharedImage> SharedImage { get;set; } = default!;
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
             // Get user session
+            //var loggedInUser = HttpContext.Session.GetString("LoggedInUser");
+            //if (!string.IsNullOrEmpty(loggedInUser))
+            //{
+            //    var user = JsonConvert.DeserializeObject<User>(loggedInUser);
+            //    SharedImage = (IList<SharedImage>) await _sharedImageService.FindSharedImagesByUserIdWithFullDetails(user.Id);
+            //} else
+            //{
+            //    RedirectToPage("/Authentication/Login");
+            //}
+ 
             var loggedInUser = HttpContext.Session.GetString("LoggedInUser");
-            if (!string.IsNullOrEmpty(loggedInUser))
-            {
-                var user = JsonConvert.DeserializeObject<User>(loggedInUser);
-                SharedImage = (IList<SharedImage>) await _sharedImageService.FindSharedImagesByUserIdWithFullDetails(user.Id);
-            } else
-            {
-                RedirectToPage("/Authentication/Login");
-            }
+
+                var useraccount = JsonConvert.DeserializeObject<User>(loggedInUser);
+
+                var userId = useraccount.Id;
+
+                if (userId == Guid.Empty)
+                {
+                    return NotFound("User not found.");
+                }
+                var user = await _userService.GetUserByIdAsync(userId);
+                if (user == null)
+                {
+                    return NotFound("User not found.");
+                }
+
+                var isArtist = useraccount.Roles.Any(r => r.UserRole == UserRole.ROLE_ARTIST);
+                if (isArtist)
+                {
+                    SharedImage = (IList<SharedImage>)await _sharedImageService.FindSharedImagesByUserIdWithFullDetails(userId);
+                }
+
+            return Page();
         }
     }
 }

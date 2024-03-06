@@ -14,7 +14,7 @@ using ImageSharingPlatform.Domain.Enums;
 
 namespace ImageSharingPlatform.Service.Services
 {
-	public class UserService : IUserService
+    public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
         private readonly IRoleRepository _roleRepository;
@@ -92,20 +92,20 @@ namespace ImageSharingPlatform.Service.Services
             return await _userRepository.GetAllAsync();
         }
 
-		public async Task UpdateRoleToArtist(Guid userId)
-		{
+        public async Task UpdateRoleToArtist(Guid userId)
+        {
             User user = await _userRepository.GetOneIncludeRolesAsync(userId);
-			Role artistRole = await _roleRepository.GetRoleByNameAsync(UserRole.ROLE_ARTIST);
+            Role artistRole = await _roleRepository.GetRoleByNameAsync(UserRole.ROLE_ARTIST);
 
             // Check if user already has the artist role
             if (user.Roles.Any(r => r.UserRole == artistRole.UserRole))
             {
-				return;
-			}
+                return;
+            }
 
             user.Roles.Add(artistRole);
-			_userRepository.Update(user);
+            _userRepository.Update(user);
             await _userRepository.SaveChangesAsync();
-		}
-	}
+        }
+    }
 }
