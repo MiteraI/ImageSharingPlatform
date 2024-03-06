@@ -20,6 +20,7 @@
 		<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
 			<div class="container">
 				<div class="col-3"><a class="navbar-brand" asp-area="" asp-page="/Index">ImageSharingPlatform</a></div>
+				<a class="navbar-brand" asp-area="" asp-page="/ArtistShareImage/Index">Artist Share Image</a>
 				<div class="col-6 d-flex align-items-center justify-content-center">
 					<form onsubmit="return false;">
 						@{
@@ -93,7 +94,7 @@
 		});
 	</script>
 	<div>
-		<partial name="_Notification" />
+		<partial name="_Notification"/>
 		@RenderBody()
 	</div>
 

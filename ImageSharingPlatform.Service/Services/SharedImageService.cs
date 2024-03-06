@@ -62,7 +62,7 @@ namespace ImageSharingPlatform.Service.Services
 
 		public async Task<IEnumerable<SharedImage>> GetAllSharedImagesAsync()
 		{
-			return await _sharedImageRepository.GetAllAsync();
+			return await _sharedImageRepository.GetAllWithFullDetails();
 		}
 
 		public async Task<SharedImage> FindSharedImageByUserIdWithFullDetails(Guid userId)

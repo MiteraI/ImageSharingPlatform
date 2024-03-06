@@ -4,108 +4,96 @@
     string ImageSrc(byte[] imageBytes) => imageBytes == null ? "" : $"data:image/jpeg;base64,{Convert.ToBase64String(imageBytes)}";
 }
 
-
-
 <div class="container">
     <main role="main" class="pb-3">
-        <partial name="_Notification" />
         <h2 style="padding-top:25px">MY IMAGE REQUEST</h2>
         <hr />
         <a asp-page="Create" class="btn btn-dark">Create New Image Request</a>
         <div class="card shadow border-0 my-2 col-12">
             <div class="card-body p-4">
-
-
-@* <h2>MY IMAGE REQUEST</h2>
-<br />
-<div class="row pt-2">
-    <div class="col-6 col-md-3">
-        <a asp-page="Create" class="btn btn-dark">Create New Image Request</a>
-    </div> *@
-    <div class="col-6 col-md-3">
-        @{
-            var userJson = HttpContext.Session.GetString("LoggedInUser");
-            var useraccount = JsonConvert.DeserializeObject<User>(userJson);
-            var isArtist = useraccount.Roles.Any(r => r.UserRole == UserRole.ROLE_ARTIST);
-            if (isArtist)
-            {
-                <a asp-page="./ReceivedImageRequest" class="btn btn-primary">Received Image Request</a>
-            }
-        }
-    </div>
-@* </div> *@
-<div class="card shadow border-0 my-4">
-    <div class="card-body p-5">
-        <table class="table">
-            <thead>
-        <tr>
-            <th>
-                Title
-            </th>
-            <th>
-                Description
-            </th>
-            <th>
-                Price
-            </th>
-            <th>
-                Status
-            </th>
-            <th>
-                Create Time
-            </th>
-            <th>
-                Image Blob
-            </th>
-            <th>
-                Requester
-            </th>
-            <th>
-                Artist
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.ImageRequests)
-        {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RequestStatus)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreateTime)
-            </td>
-            <td>
-                @if (item.ImageBlob != null)
+                <div class="col-6 col-md-3">
+                @{
+                    var userJson = HttpContext.Session.GetString("LoggedInUser");
+                    var useraccount = JsonConvert.DeserializeObject<User>(userJson);
+                    var isArtist = useraccount.Roles.Any(r => r.UserRole == UserRole.ROLE_ARTIST);
+                    if (isArtist)
                     {
-                        <img src="@ImageSrc(item.ImageBlob)" width="100" height="100"/>
+                        <a asp-page="./ReceivedImageRequest" class="btn btn-primary">Received Image Request</a>
                     }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RequesterUser.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Artist.Email)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
-</div>
-</div>
+                    }
+                </div>
+                <div class="card shadow border-0 my-4">
+                    <div class="card-body p-5">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Title
+                                    </th>
+                                    <th>
+                                        Description
+                                    </th>
+                                    <th>
+                                        Price
+                                    </th>
+                                    <th>
+                                        Status
+                                    </th>
+                                    <th>
+                                        Create Time
+                                    </th>
+                                    <th>
+                                        Image Blob
+                                    </th>
+                                    <th>
+                                        Requester
+                                    </th>
+                                    <th>
+                                        Artist
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.ImageRequests)
+                                {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Title)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Description)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Price)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.RequestStatus)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CreateTime)
+                                    </td>
+                                    <td>
+                                        @if (item.ImageBlob != null)
+                                            {
+                                                <img src="@ImageSrc(item.ImageBlob)" width="100" height="100"/>
+                                            }
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.RequesterUser.Email)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Artist.Email)
+                                    </td>
+                                    <td>
+                                        <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
+                                    </td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </main>

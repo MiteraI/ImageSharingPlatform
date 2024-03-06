@@ -50,7 +50,7 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
                     }
                     else
                     {
-                        ModelState.AddModelError("ImageUpload", "The file is too large.");
+                        TempData["error"] = "The file is too large.";
                     }
                 }
             }
@@ -86,7 +86,7 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
             {
                 return Page();
             }
-
+            TempData["success"] = "The request is created successfully !";
             return RedirectToPage("./Index");
         }
     }

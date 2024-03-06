@@ -68,7 +68,7 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
                     }
                     else
                     {
-                        ModelState.AddModelError("ImageUpload", "The file is too large.");
+                        TempData["error"] = "The file is too large."; 
                     }
                 }
             }
@@ -77,7 +77,8 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
                 || ImageRequestCopy.RequestStatus == RequestStatus.SUCCESS
                 || ImageRequestCopy.RequestStatus == RequestStatus.REJECTED) 
             {
-                ModelState.AddModelError("", "Can't update in this status");
+                TempData["error"] = "Can't update in this status";
+                return Page();
             }
 
             try
@@ -95,8 +96,7 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
                     throw;
                 }
             }
-
-            TempData["SuccessMessage"] = "The request is updated successfully !";
+            TempData["success"] = "The request is updated successfully !";
             return RedirectToPage("./Index");
         }
     }

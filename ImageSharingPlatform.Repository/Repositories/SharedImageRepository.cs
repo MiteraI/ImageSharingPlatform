@@ -19,7 +19,12 @@ namespace ImageSharingPlatform.Repository.Repositories
         {
         }
 
-		public async Task<SharedImage> GetSharedImageByUserIdWithFullDetails(Guid userId)
+        public async Task<IEnumerable<SharedImage>> GetAllWithFullDetails()
+        {
+            return await _dbSet.Include(si => si.Artist).Include(si => si.ImageCategory).ToListAsync();
+        }
+
+        public async Task<SharedImage> GetSharedImageByUserIdWithFullDetails(Guid userId)
 		{
 			return await _dbSet
 				.Include(si => si.Artist)

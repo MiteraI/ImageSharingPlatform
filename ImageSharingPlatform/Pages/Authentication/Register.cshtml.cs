@@ -39,11 +39,10 @@ namespace ImageSharingPlatform.Pages.Authentication
 
             if (user == null)
             {
-                // Handle registration failure
                 return Page();
             }
 
-            // Redirect on successful registration, adjust as needed
+            TempData["success"] = "Register successfully <3";
             return RedirectToPage("/Index");
         }
     }
