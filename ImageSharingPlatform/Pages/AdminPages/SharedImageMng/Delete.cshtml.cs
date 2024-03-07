@@ -54,7 +54,7 @@ namespace ImageSharingPlatform.Pages.AdminPages.SharedImageMng
             }
 
             SharedImage = await _sharedImageService.DeleteSharedImage(SharedImage.Id);
-
+            TempData["SuccessMessage"] = "Image is deleted successfully!";
             return RedirectToPage("./Index");
         }
     }

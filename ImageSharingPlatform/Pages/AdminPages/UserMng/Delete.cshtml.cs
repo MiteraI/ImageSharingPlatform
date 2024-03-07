@@ -47,8 +47,8 @@ namespace ImageSharingPlatform.Pages.AdminPages.UserMng
             }
 
             User = await _userService.DeleteUser(User.Id);
-            
 
+            TempData["SuccessMessage"] = "User is deleted successfully!";
             return RedirectToPage("./Index");
         }
     }

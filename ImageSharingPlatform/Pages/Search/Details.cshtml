@@ -1,15 +1,14 @@
 ﻿@page
 @model ImageSharingPlatform.Pages.Search.DetailsModel
 
-
-
 <div class="container">
     <main role="main" class="pb-3">
         <div class="card shadow border-0 my-2 col-12" style="padding-bottom:15px">
+            
             <div class="d-flex justify-content-between pt-4">
                 <div class="image-header">
                     <!-- Assuming you have a property ArtistName in your model -->
-                    <h3>@Html.DisplayFor(model => model.SharedImage.Artist.Email)</h3>
+                    <a asp-page="/ArtistProfile/Index" asp-route-id="@Model.SharedImage.ArtistId"><h3>@Html.DisplayFor(model => model.SharedImage.Artist.FirstName) @Html.DisplayFor(model => model.SharedImage.Artist.LastName)</h3></a>
                     <!-- You can add Follow and Donate buttons here -->
 
                 </div>
@@ -18,16 +17,16 @@
                     <a href="@Model.SharedImage.ImageUrl" download="@Model.SharedImage.ImageName" class="btn btn-primary">Free Download</a>
                 </div>
             </div>
-          
-                <div class="col-10 p-4 image-details d-flex justify-content-evenly">
-            
-        
+
+            <div class="col-10 p-4 image-details d-flex justify-content-evenly">
+
+
                 <div class="image-container">
                     <img src="@Html.DisplayFor(model => model.SharedImage.ImageUrl)" class="image" />
 
                 </div>
                 <div>
-                    <h6>Image Name : @Html.DisplayFor(model => model.SharedImage.ImageName)</h6><br/>
+                    <h6>Image Name : @Html.DisplayFor(model => model.SharedImage.ImageName)</h6><br />
                     <h6>Image Category : @Html.DisplayFor(model => model.SharedImage.ImageCategory.CategoryName)</h6><br />
                     <h6>Description : @Html.DisplayFor(model => model.SharedImage.Description)</h6><br />
                     <h6>Created At : @Html.DisplayFor(model => model.SharedImage.CreatedAt)</h6>
@@ -35,9 +34,9 @@
                         <h6 style="padding: 15px 5px 0px 0px">Is Premium : </h6>
                         <p>@Html.DisplayFor(model => model.SharedImage.IsPremium)</p>
                     </div>
+
+                </div>
                     
-                </div>  
-            
             
         </div>
 
@@ -50,7 +49,6 @@
 
 <style>
     .image-details {
-        max-width: 400px;
         margin: auto;
     }
 

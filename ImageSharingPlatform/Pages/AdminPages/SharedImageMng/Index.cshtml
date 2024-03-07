@@ -3,7 +3,6 @@
 
 <div class="container">
     <main role="main" class="pb-3">
-        <partial name="_Notification" />
         <h2 style="padding-top:25px">Shared Image</h2>
         <hr />
         <a asp-page="Create" class="btn btn-dark">Create New Image</a>
@@ -44,7 +43,7 @@
                                     <a asp-page="./Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.ImageName)</a>
                                 </td>
                                 <td>
-                                    <img class="bd-placeholder-img card-img-top" src="@Html.DisplayFor(modelItem => item.ImageUrl)" />
+                                    <img class="img-fluid rounded" src="@Html.DisplayFor(modelItem => item.ImageUrl)" />
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.ImageCategory.CategoryName)
@@ -73,10 +72,8 @@
         </div>
     </main>
 </div>
-
 <style>
-    .card-img-top {
-        height: 100px;
-        object-fit: cover;
+    .img-fluid {
+        height:100px
     }
 </style>

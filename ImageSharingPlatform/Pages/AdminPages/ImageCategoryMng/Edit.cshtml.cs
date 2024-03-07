@@ -63,7 +63,7 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageCategoryMng
                     throw;
                 }
             }
-
+            TempData["SuccessMessage"] = "Category is edited successfully!";
             return RedirectToPage("./Index");
         }
     }

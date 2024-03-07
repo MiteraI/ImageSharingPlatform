@@ -48,7 +48,7 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageCategoryMng
             }
 
             ImageCategory = await _imageCategoryService.DeleteImageCategory(ImageCategory.Id);
-
+            TempData["SuccessMessage"] = "Category is deleted successfully!";
             return RedirectToPage("./Index");
         }
     }

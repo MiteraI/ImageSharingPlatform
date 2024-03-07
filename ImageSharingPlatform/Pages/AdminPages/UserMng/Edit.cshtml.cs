@@ -62,7 +62,7 @@ namespace ImageSharingPlatform.Pages.AdminPages.UserMng
                     throw;
                 }
             }
-
+            TempData["SuccessMessage"] = "User is edited successfully!";
             return RedirectToPage("./Index");
         }
     }

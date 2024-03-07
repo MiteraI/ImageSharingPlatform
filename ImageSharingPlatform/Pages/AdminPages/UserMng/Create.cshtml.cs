@@ -42,7 +42,7 @@ namespace ImageSharingPlatform.Pages.AdminPages.UserMng
             {
                 return Page();
             }
-
+            TempData["SuccessMessage"] = "User is created successfully!";
             return RedirectToPage("./Index");
         }
     }

@@ -4,7 +4,6 @@
 
 <div class="container">
     <main role="main" class="pb-3">
-        <partial name="_Notification" />
         <h2 style="padding-top:25px">User</h2>
         <hr />
         <a asp-page="Create" class="btn btn-dark">Create New User</a>
@@ -36,7 +35,8 @@
                                     @Html.DisplayFor(modelItem => item.Username)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.AvatarUrl)
+                                    @* @Html.DisplayFor(modelItem => item.AvatarUrl) *@
+                                    <img src="@item.AvatarUrl" alt="Avatar" class="img-fluid rounded">
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Email)
@@ -57,3 +57,8 @@
         </div>
     </main>
 </div>
+<style>
+    .img-fluid {
+        height: 100px
+    }
+</style>
