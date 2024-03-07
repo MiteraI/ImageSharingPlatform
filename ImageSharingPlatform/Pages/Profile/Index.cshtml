@@ -21,8 +21,22 @@
 
             <div class="container">
                 <div class="row">
+                    @if (ViewData["PaymentSuccess"] != null && (bool)ViewData["PaymentSuccess"])
+                    {
+                        <div class="alert alert-success" role="alert">
+                            Payment was successful! Thank you for your purchase.
+                        </div>
+                    }
+                    else if (ViewData["PaymentSuccess"] != null && !(bool)ViewData["PaymentSuccess"])
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            Payment failed. Please try again or contact support.
+                        </div>
+                    }
+                </div>
+                <div class="row">
                     <a asp-page="./Edit" class="btn btn-primary">Edit Profile</a>
-                    <a asp-page="./Index" class="btn btn-outline-secondary">Money</a>
+                    <a asp-page="./Money" class="btn btn-primary">Money</a>
                     @{ 
                         var userJson = HttpContext.Session.GetString("LoggedInUser");
                         var useraccount = JsonConvert.DeserializeObject<User>(userJson);

@@ -23,6 +23,7 @@ namespace ImageSharingPlatform.Service.Services.Interfaces
         Task<User> GetUserByIdAsync(Guid userId);
         Task<bool> UserExistsAsync(Expression<Func<User, bool>> predicate);
         Task<IEnumerable<User>> GetAllUsersAsync();
-
+        Task IncreaseBalance(Guid userId, double amount);
+        Task DecreaseBalance(Guid userId, double amount);
     }
 }
