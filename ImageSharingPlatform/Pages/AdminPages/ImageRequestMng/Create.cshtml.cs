@@ -75,6 +75,7 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
                 return NotFound("User not found.");
             }
             ImageRequests.RequesterUserId = userId;
+            ImageRequests.CreateTime = DateTime.Now;
 
             ImageRequests.RequestStatus = RequestStatus.PROCESSING;
 

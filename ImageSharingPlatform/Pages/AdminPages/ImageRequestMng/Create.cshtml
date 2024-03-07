@@ -1,5 +1,6 @@
 ﻿@page
 @model CreateModel
+<br/>
 <h4>Create Image Request</h4>
 <hr />
 <div class="row">
@@ -17,11 +18,11 @@
                 <span asp-validation-for="ImageRequests.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ImageRequests.Price" class="control-label"></label>
+                <label asp-for="ImageRequests.Price" class="control-label">Estimated Price</label>
                 <input asp-for="ImageRequests.Price" class="form-control" />
                 <span asp-validation-for="ImageRequests.Price" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            @*<div class="form-group">
                 <label asp-for="ImageRequests.CreateTime" class="control-label"></label>
                 <input asp-for="ImageRequests.CreateTime" class="form-control" />
                 <span asp-validation-for="ImageRequests.CreateTime" class="text-danger"></span>
@@ -30,13 +31,13 @@
                 <label asp-for="ImageUpload">Image Upload</label>
                 <br/>
                 <input asp-for="ImageUpload" type="file" id="ImageUpload" name="ImageUpload" />
-            </div>
+            </div> *@
             <div class="form-group">
-                <label asp-for="ImageRequests.RequesterUserId" class="control-label"></label>
+                <label asp-for="ImageRequests.RequesterUserId" class="control-label">Requester User</label>
                 <select asp-for="ImageRequests.RequesterUserId" class="form-control" asp-items="ViewBag.RequesterUserId"></select>
             </div>
             <div class="form-group">
-                <label asp-for="ImageRequests.ArtistId" class="control-label"></label>
+                <label asp-for="ImageRequests.ArtistId" class="control-label">Artist</label>
                 <select asp-for="ImageRequests.ArtistId" class="form-control" asp-items="ViewBag.ArtistId"></select>
             </div>
             <div class="form-group">
