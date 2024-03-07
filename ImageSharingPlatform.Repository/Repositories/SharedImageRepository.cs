@@ -19,9 +19,14 @@ namespace ImageSharingPlatform.Repository.Repositories
         {
         }
 
-        public async Task<IEnumerable<SharedImage>> GetAllWithFullDetails()
+		public async Task<IEnumerable<SharedImage>> GetAllNonPreiumWithFullDetails()
+		{
+			return await _dbSet.Include(si => si.Artist).Include(si => si.ImageCategory).Where(si => !si.IsPremium).ToListAsync();
+		}
+
+        public async Task<IEnumerable<SharedImage>> GetAllPreiumWithFullDetails()
         {
-            return await _dbSet.Include(si => si.Artist).Include(si => si.ImageCategory).ToListAsync();
+            return await _dbSet.Include(si => si.Artist).Include(si => si.ImageCategory).Where(si => si.IsPremium).ToListAsync();
         }
 
         public async Task<SharedImage> GetSharedImageByUserIdWithFullDetails(Guid userId)

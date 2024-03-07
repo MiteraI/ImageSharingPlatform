@@ -6,36 +6,44 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ImageSharingPlatform.Domain.Entities;
-using ImageSharingPlatform.Repository.Repositories.Interfaces;
 using ImageSharingPlatform.Service.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace ImageSharingPlatform.Pages.AdminPages.SharedImageMng
+namespace ImageSharingPlatform.Pages.MyPremiumImage
 {
-    public class IndexModel : PageModel
+    public class DetailsModel : PageModel
     {
         private readonly ISharedImageService _sharedImageService;
         private readonly IUserService _userService;
         private readonly IImageCategoryService _imageCategoryService;
 
-        public IndexModel(ISharedImageService sharedImageService, IUserService userService, IImageCategoryService imageCategoryService)
+        public DetailsModel(ISharedImageService sharedImageService, IUserService userService, IImageCategoryService imageCategoryService)
         {
             _sharedImageService = sharedImageService;
             _userService = userService;
             _imageCategoryService = imageCategoryService;
         }
 
-        public IList<SharedImage> SharedImage { get; set; } = default!;
+        public SharedImage SharedImage { get; set; } = default!;
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(Guid id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            SharedImage = await _sharedImageService.GetSharedImageByIdAsync(id);
             var users = await _userService.GetAllUsersAsync();
             var categories = await _imageCategoryService.GetAllImageCategoriesAsync();
 
             ViewData["ArtistId"] = new SelectList(users, "Id", "Email");
             ViewData["ImageCategoryId"] = new SelectList(categories, "Id", "CategoryName");
-
-            SharedImage = _sharedImageService.GetAllNonPremiumSharedImagesAsync().Result.ToList();
+            if (SharedImage == null)
+            {
+                return NotFound();
+            }
+            return Page();
         }
     }
 }

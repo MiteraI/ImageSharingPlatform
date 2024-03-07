@@ -16,7 +16,8 @@ namespace ImageSharingPlatform.Service.Services.Interfaces
         Task<SharedImage> DeleteSharedImage(Guid sharedImageId);
         Task<SharedImage> GetSharedImageByIdAsync(Guid sharedImageId);
         Task<bool> SharedImageExistsAsync(Expression<Func<SharedImage, bool>> predicate);
-        Task<IEnumerable<SharedImage>> GetAllSharedImagesAsync();
+        Task<IEnumerable<SharedImage>> GetAllNonPremiumSharedImagesAsync();
+        Task<IEnumerable<SharedImage>> GetAllPremiumSharedImagesAsync();
         Task<IEnumerable<SharedImage>> FindSharedImagesByUserIdWithFullDetails(Guid userId);
         Task<SharedImage> FindSharedImageByUserIdWithFullDetails(Guid userId);
         Task<IEnumerable<SharedImage>> FindSharedImageWithSearchNameAndCate(string searchName, Guid? imageCategoryId);

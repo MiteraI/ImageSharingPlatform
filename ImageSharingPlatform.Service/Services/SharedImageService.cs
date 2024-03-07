@@ -60,9 +60,9 @@ namespace ImageSharingPlatform.Service.Services
 			return await _sharedImageRepository.Exists(predicate);
 		}
 
-		public async Task<IEnumerable<SharedImage>> GetAllSharedImagesAsync()
+		public async Task<IEnumerable<SharedImage>> GetAllNonPremiumSharedImagesAsync()
 		{
-			return await _sharedImageRepository.GetAllWithFullDetails();
+			return await _sharedImageRepository.GetAllNonPreiumWithFullDetails();
 		}
 
 		public async Task<SharedImage> FindSharedImageByUserIdWithFullDetails(Guid userId)
@@ -96,5 +96,10 @@ namespace ImageSharingPlatform.Service.Services
 			var category = await _imageCategoryRepository.GetOneAsync(imageCategoryId.Value);
 			return await _sharedImageRepository.GetSharedImageWithSearchNameAndCatePageableAsync(searchName, category, pageable);
 		}
-	}
+
+        public async Task<IEnumerable<SharedImage>> GetAllPremiumSharedImagesAsync()
+        {
+            return await _sharedImageRepository.GetAllPreiumWithFullDetails();
+        }
+    }
 }

@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 using ImageSharingPlatform.Service.Services;
 using ImageSharingPlatform.Domain.Enums;
 
-namespace ImageSharingPlatform.Pages.ArtistShareImage
+namespace ImageSharingPlatform.Pages.MyPremiumImage
 {
     public class IndexModel : PageModel
     {
@@ -47,7 +47,7 @@ namespace ImageSharingPlatform.Pages.ArtistShareImage
             //var isUser = useraccount.Roles.Any(r => r.UserRole == UserRole.ROLE_USER);
             //if (isUser)
             //{
-                SharedImage = (IList<SharedImage>)await _sharedImageService.GetAllNonPremiumSharedImagesAsync();
+                SharedImage = (IList<SharedImage>)await _sharedImageService.GetAllPremiumSharedImagesAsync();
             //} 
             //return Page();
         }
