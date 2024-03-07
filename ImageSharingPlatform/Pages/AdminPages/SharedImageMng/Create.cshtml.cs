@@ -52,7 +52,7 @@ namespace ImageSharingPlatform.Pages.AdminPages.SharedImageMng
             {
                 return Page();
             }
-
+            TempData["SuccessMessage"] = "Image is created successfully!";
             return RedirectToPage("./Index");
         }
     }

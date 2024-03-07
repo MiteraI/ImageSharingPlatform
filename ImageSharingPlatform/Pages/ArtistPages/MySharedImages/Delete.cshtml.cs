@@ -66,7 +66,7 @@ namespace ImageSharingPlatform.Pages.ArtistPages.MySharedImages
                 _context.SharedImages.Remove(SharedImage);
                 await _context.SaveChangesAsync();
             }
-
+            TempData["SuccessMessage"] = "Image is deleted successfully!";
             return RedirectToPage("./Index");
         }
     }

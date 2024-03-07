@@ -55,7 +55,7 @@ namespace ImageSharingPlatform.Pages.ArtistPages.MySharedImages
 				SharedImage.ImageUrl = await _azureBlobService.UploadImage(uploadImage);
                 await _sharedImageService.CreateSharedImage(SharedImage);
             }
-
+            TempData["SuccessMessage"] = "Image is created successfully!";
             return RedirectToPage("./Index");
         }
     }

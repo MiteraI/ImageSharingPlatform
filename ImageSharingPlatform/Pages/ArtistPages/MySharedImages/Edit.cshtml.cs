@@ -66,7 +66,7 @@ namespace ImageSharingPlatform.Pages.ArtistPages.MySharedImages
                     throw;
                 }
             }
-
+            TempData["SuccessMessage"] = "Image is edited successfully!";
             return RedirectToPage("./Index");
         }
 

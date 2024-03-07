@@ -42,7 +42,7 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageCategoryMng
             {
                 return Page();
             }
-
+            TempData["SuccessMessage"] = "Category is created successfully!";
             return RedirectToPage("./Index");
         }
     }

@@ -73,7 +73,7 @@ namespace ImageSharingPlatform.Pages.AdminPages.SharedImageMng
                     throw;
                 }
             }
-
+            TempData["SuccessMessage"] = "Image is edited successfully!";
             return RedirectToPage("./Index");
         }
     }
