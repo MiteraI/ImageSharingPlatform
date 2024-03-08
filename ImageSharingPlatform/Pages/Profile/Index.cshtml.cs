@@ -19,6 +19,18 @@ namespace ImageSharingPlatform.Pages.Profile
         public async Task<IActionResult> OnGetAsync()
         {
             Guid currentUserId = GetCurrentUserId();
+            string responseCode = HttpContext.Request.Query["vnp_ResponseCode"];
+            string amount = HttpContext.Request.Query["vnp_Amount"];
+
+            if (!string.IsNullOrEmpty(responseCode) && !string.IsNullOrEmpty(amount) && responseCode == "00")
+            {   
+                ViewData["PaymentSuccess"] = true;
+                await _userService.IncreaseBalance(currentUserId, double.Parse(amount)/100);
+            }
+            else
+            {
+                ViewData["PaymentSuccess"] = false;
+            }
 
             User = await _userService.GetUserByIdAsync(currentUserId);
 

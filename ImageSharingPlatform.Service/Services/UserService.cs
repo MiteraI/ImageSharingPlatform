@@ -107,5 +107,21 @@ namespace ImageSharingPlatform.Service.Services
             _userRepository.Update(user);
             await _userRepository.SaveChangesAsync();
         }
+
+        public async Task IncreaseBalance(Guid userId, double amount)
+        {
+			User user = await _userRepository.GetOneAsync(userId);
+			user.Balance += (long) amount;
+			_userRepository.Update(user);
+			await _userRepository.SaveChangesAsync();
+		}
+
+        public async Task DecreaseBalance(Guid userId, double amount)
+        {
+            User user = await _userRepository.GetOneAsync(userId);
+			user.Balance -= (long) amount;
+			_userRepository.Update(user);
+			await _userRepository.SaveChangesAsync();
+        }
     }
 }
