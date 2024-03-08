@@ -29,7 +29,7 @@ namespace ImageSharingPlatform.Service.Services
         public string CreateVnpayPortalUrl(double price, string returnUrl, HttpContext httpContext)
         {
             //Mock returnUrl, front-end will handle this in future -> return back to the page that user was on
-            returnUrl = _configuration.GetValue<string>("vnp_ReturnUrl");
+            returnUrl = _configuration.GetValue<string>("vnp_ReturnUrl") + returnUrl;
             _requestData.Add("vnp_Amount", (price * 100).ToString());
             _requestData.Add("vnp_Command", "pay");
             _requestData.Add("vnp_CreateDate", DateTime.Now.ToString("yyyyMMddHHmmss"));
