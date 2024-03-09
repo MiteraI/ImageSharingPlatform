@@ -36,5 +36,5 @@ namespace ImageSharingPlatform.Domain.Entities
 
         public Guid? ArtistId { get; set; }
         public User? Artist { get; set; }
-    }
+	}
 }

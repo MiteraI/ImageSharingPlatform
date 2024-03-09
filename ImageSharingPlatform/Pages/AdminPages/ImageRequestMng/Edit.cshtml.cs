@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using ImageSharingPlatform.Domain.Entities;
 using ImageSharingPlatform.Service.Services.Interfaces;
 using ImageSharingPlatform.Domain.Enums;
+using Newtonsoft.Json;
+using ImageSharingPlatform.Repository.Repositories.Interfaces;
 
 namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
 {
@@ -16,16 +18,21 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
     {
         private readonly IImageRequestService _imageRequestService;
         private readonly IUserService _userService;
-        public EditModel(IImageRequestService imageRequestService, IUserService userService)
+        private readonly IRequestDetailService _requestDetailService;
+        public EditModel(IImageRequestService imageRequestService, IUserService userService, IRequestDetailService requestDetailService)
         {
             _imageRequestService = imageRequestService; 
             _userService = userService;
+            _requestDetailService = requestDetailService;
         }
 
         [BindProperty]
         public ImageRequest ImageRequests { get; set; } = default!;
+		[BindProperty]
+		public RequestDetail RequestDetail { get; set; } = new RequestDetail();
 
-        [BindProperty]
+
+		[BindProperty]
         public ImageRequest ImageRequestCopy { get; set; } = new ImageRequest();
 
         [BindProperty]
@@ -72,8 +79,24 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
                     }
                 }
             }
-            
-            if (ImageRequestCopy.RequestStatus == RequestStatus.CANCELLED
+
+			var userJson = HttpContext.Session.GetString("LoggedInUser");
+			var useraccount = JsonConvert.DeserializeObject<User>(userJson);
+
+			var userId = useraccount.Id;
+
+			if (userId == Guid.Empty)
+			{
+				return NotFound("User not found.");
+			}
+
+			var user = await _userService.GetUserByIdAsync(userId);
+			if (user == null)
+			{
+				return NotFound("User not found.");
+			}
+
+			if (ImageRequestCopy.RequestStatus == RequestStatus.CANCELLED
                 || ImageRequestCopy.RequestStatus == RequestStatus.SUCCESS
                 || ImageRequestCopy.RequestStatus == RequestStatus.REJECTED) 
             {
@@ -83,8 +106,16 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
 
             try
             {
-                await _imageRequestService.EditImageRequest(ImageRequests);
-            }
+				{
+					await _imageRequestService.EditImageRequest(ImageRequests);
+
+					RequestDetail.RequestId = ImageRequests.Id;
+					RequestDetail.CreatedAt = DateTime.Now;
+                    RequestDetail.UserId = userId;
+
+                    await _requestDetailService.AddRequestDetailAsync(RequestDetail);
+				}
+			}
             catch (DbUpdateConcurrencyException)
             {
                 if (!await _imageRequestService.ImageRequestExistsAsync(x => x.Id == ImageRequests.Id))
@@ -96,7 +127,8 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
                     throw;
                 }
             }
-            TempData["success"] = "The request is updated successfully !";
+
+			TempData["success"] = "The request is updated successfully !";
             return RedirectToPage("./Index");
         }
     }

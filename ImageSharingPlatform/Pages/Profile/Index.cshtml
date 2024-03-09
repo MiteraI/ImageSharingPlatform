@@ -35,7 +35,7 @@
                 </div>
                 <div class="row">
                     <a asp-page="./Edit" class="btn btn-primary">Edit Profile</a>
-                    <a asp-page="./Money" class="btn btn-primary">Money</a>
+                    <a asp-page="./Money" class="btn btn-danger">Money</a>
                     @{ 
                         var userJson = HttpContext.Session.GetString("LoggedInUser");
                         var useraccount = JsonConvert.DeserializeObject<User>(userJson);

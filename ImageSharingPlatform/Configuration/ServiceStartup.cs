@@ -1,3 +1,4 @@
+using ImageSharingPlatform.Domain.Entities;
 using ImageSharingPlatform.Service.Services;
 using ImageSharingPlatform.Service.Services.Interfaces;
 
@@ -12,6 +13,7 @@ namespace ImageSharingPlatform.Configuration
             services.AddScoped<ISharedImageService, SharedImageService>();
             services.AddScoped<IImageRequestService, ImageRequestService>();
             services.AddScoped<ISubscriptionPackageService, SubscriptionPackageService>();
+            services.AddScoped<IRequestDetailService, RequestDetailService>();
             return services;
         }
     }
