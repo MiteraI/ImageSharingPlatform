@@ -8,7 +8,7 @@ namespace ImageSharingPlatform.Pages.Authentication
         public void OnGet()
         {
 			HttpContext.Session.Remove("LoggedInUser");
-            TempData["success"] = "Logout successfully";
+            TempData["SuccessMessage"] = "Logout successfully";
             RedirectToPage("/Index");
 		}
 	}

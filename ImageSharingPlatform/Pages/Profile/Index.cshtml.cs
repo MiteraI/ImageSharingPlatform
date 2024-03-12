@@ -27,7 +27,7 @@ namespace ImageSharingPlatform.Pages.Profile
                 ViewData["PaymentSuccess"] = true;
                 await _userService.IncreaseBalance(currentUserId, double.Parse(amount)/100);
             }
-            else
+            else if (!string.IsNullOrEmpty(responseCode) && !string.IsNullOrEmpty(amount) && responseCode != "00")
             {
                 ViewData["PaymentSuccess"] = false;
             }

@@ -87,7 +87,7 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
             {
                 return Page();
             }
-            TempData["success"] = "The request is created successfully !";
+            TempData["SuccessMessage"] = "The request is created successfully !";
             return RedirectToPage("./Index");
         }
     }

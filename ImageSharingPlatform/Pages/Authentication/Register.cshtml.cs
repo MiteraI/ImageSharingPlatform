@@ -42,7 +42,7 @@ namespace ImageSharingPlatform.Pages.Authentication
                 return Page();
             }
 
-            TempData["success"] = "Register successfully <3";
+            TempData["SuccessMessage"] = "Register successfully <3";
             return RedirectToPage("/Index");
         }
     }

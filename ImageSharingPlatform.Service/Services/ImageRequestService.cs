@@ -54,10 +54,11 @@ namespace ImageSharingPlatform.Service.Services
             return await _imageRequestRepository.GetAllWithDetailsAsync();
         }
 
-        public async Task<ImageRequest> GetImageRequestById(Guid imageRequestId)
+        public async Task<ImageRequest> GetImageRequestByIdWithFullDetailsAsync(Guid imageRequestId)
         {
-            return await _imageRequestRepository.GetOneAsync(imageRequestId);
+            return await _imageRequestRepository.GetByIdWithFullDetails(imageRequestId);
         }
+
         public async Task<bool> ImageRequestExistsAsync(Expression<Func<ImageRequest, bool>> predicate)
         {
             return await _imageRequestRepository.Exists(predicate);

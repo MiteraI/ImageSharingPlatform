@@ -35,22 +35,22 @@ namespace ImageSharingPlatform.Pages.Authentication
                     {
                         var userJson = JsonConvert.SerializeObject(result);
                         HttpContext.Session.SetString("LoggedInUser", userJson);
-                        TempData["success"] = "Login successfully <3";
+                        TempData["SuccessMessage"] = "Login successfully <3";
                         return RedirectToPage("/Index");
                     }
                     else
                     {
-                        TempData["error"] = "Invalid login attempt.";
+                        TempData["ErrorMessage"] = "Invalid login attempt.";
                     }
                 }
                 catch (Exception ex)
                 {
-                    TempData["error"] = "An error occurred while attempting to login.";
+                    TempData["ErrorMessage"] = "An error occurred while attempting to login.";
                 }
             }
             else
             {
-                TempData["error"] = "Username and Password cannot be empty.";
+                TempData["ErrorMessage"] = "Username and Password cannot be empty.";
             }
             return Page();
         }

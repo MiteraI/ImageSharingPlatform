@@ -45,7 +45,7 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
                 return NotFound();
             }
             
-            ImageRequests = await _imageRequestService.GetImageRequestById(id);
+            ImageRequests = await _imageRequestService.GetImageRequestByIdWithFullDetailsAsync(id);
             if (ImageRequests == null)
             {
                 return NotFound();
@@ -75,7 +75,7 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
                     }
                     else
                     {
-                        TempData["error"] = "The file is too large."; 
+                        TempData["ErrorMessage"] = "The file is too large."; 
                     }
                 }
             }
@@ -100,7 +100,7 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
                 || ImageRequestCopy.RequestStatus == RequestStatus.SUCCESS
                 || ImageRequestCopy.RequestStatus == RequestStatus.REJECTED) 
             {
-                TempData["error"] = "Can't update in this status";
+                TempData["ErrorMessage"] = "Can't update in this status";
                 return Page();
             }
 
@@ -128,7 +128,7 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
                 }
             }
 
-			TempData["success"] = "The request is updated successfully !";
+			TempData["SuccessMessage"] = "The request is updated successfully !";
             return RedirectToPage("./Index");
         }
     }

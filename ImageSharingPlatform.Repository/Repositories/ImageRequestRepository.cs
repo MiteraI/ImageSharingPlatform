@@ -35,5 +35,11 @@ namespace ImageSharingPlatform.Repository.Repositories
             return await _dbSet.Include(ir => ir.RequesterUser)
            .Include(ir => ir.Artist).Where(ir => ir.ArtistId == artistId).ToListAsync();
         }
+
+        public async Task<ImageRequest> GetByIdWithFullDetails(Guid id)
+        {
+            return await _dbSet.Include(si => si.Artist).Include(si => si.RequesterUser)
+                .FirstOrDefaultAsync(si => si.Id == id);
+        }
     }
 }

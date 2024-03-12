@@ -25,7 +25,7 @@ namespace ImageSharingPlatform.Repository.Repositories
 
         public async Task<SubscriptionPackage> GetByArtistIdAsync(Guid userId)
         {
-            return await _dbSet.FirstOrDefaultAsync(sp => sp.ArtistId == userId); ;
+            return await _dbSet.FirstOrDefaultAsync(sp => sp.ArtistId == userId);
         }
     }
 }
