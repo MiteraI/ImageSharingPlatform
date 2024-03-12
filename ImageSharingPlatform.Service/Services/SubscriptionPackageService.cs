@@ -70,7 +70,7 @@ namespace ImageSharingPlatform.Service.Services
 
         public async Task<IEnumerable<SubscriptionPackage>> GetAllSubscriptionsAsync()
         {
-            return await _subscriptionPackageRepository.GetAllAsync();
+            return await _subscriptionPackageRepository.GetAllArtistAsync();
         }
     }
 }

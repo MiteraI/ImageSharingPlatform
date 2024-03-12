@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ImageSharingPlatform.Domain.Entities;
 
-namespace ImageSharingPlatform.Pages.ArtistPages.MySubscriptionPackage
+namespace ImageSharingPlatform.Pages.OwnedSub
 {
     public class DetailsModel : PageModel
     {
@@ -18,7 +18,7 @@ namespace ImageSharingPlatform.Pages.ArtistPages.MySubscriptionPackage
             _context = context;
         }
 
-        public SubscriptionPackage SubscriptionPackage { get; set; } = default!;
+        public OwnedSubscription OwnedSubscription { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -27,14 +27,14 @@ namespace ImageSharingPlatform.Pages.ArtistPages.MySubscriptionPackage
                 return NotFound();
             }
 
-            var subscriptionpackage = await _context.SubscriptionPackages.FirstOrDefaultAsync(m => m.Id == id);
-            if (subscriptionpackage == null)
+            var ownedsubscription = await _context.OwnedSubscriptions.FirstOrDefaultAsync(m => m.Id == id);
+            if (ownedsubscription == null)
             {
                 return NotFound();
             }
             else
             {
-                SubscriptionPackage = subscriptionpackage;
+                OwnedSubscription = ownedsubscription;
             }
             return Page();
         }

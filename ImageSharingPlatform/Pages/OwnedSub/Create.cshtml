@@ -1,0 +1,40 @@
+﻿@page
+@model ImageSharingPlatform.Pages.OwnedSub.CreateModel
+
+<h4>OwnedSubscription</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+@*             <div class="form-group">
+                <label asp-for="OwnedSubscription.PurchasedTime" class="control-label"></label>
+                <input asp-for="OwnedSubscription.PurchasedTime" class="form-control" />
+                <span asp-validation-for="OwnedSubscription.PurchasedTime" class="text-danger"></span>
+            </div> *@
+            <div class="form-group">
+                <label asp-for="OwnedSubscription.SubscriptionPackageId" class="control-label"></label>
+                <select asp-for="OwnedSubscription.SubscriptionPackageId" class ="form-control" asp-items="ViewBag.SubscriptionPackageId"></select>
+            </div>
+@*             <div class="form-group">
+                <label asp-for="OwnedSubscription.UserId" class="control-label"></label>
+                <select asp-for="OwnedSubscription.UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
+            </div> *@
+@*             <div class="form-group">
+                <label asp-for="SubscriptionPackage.ArtistId" class="control-label"></label>
+                <select asp-for="SubscriptionPackage.ArtistId" class="form-control" asp-items="ViewBag.ArtistId"></select>
+            </div> *@
+            <div class="form-group">
+                <input type="submit" value="Subscribe" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@* <div>
+    <a asp-page="/ArtistProfile/Details" asp-route-id="@Model.SubscriptionPackage.ArtistId">Back to List</a>
+</div> *@
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,48 @@
+﻿@page
+@model ImageSharingPlatform.Pages.OwnedSub.IndexModel
+
+<p>
+    <h2>My Subscription Package</h2>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.OwnedSubscription[0].PurchasedTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OwnedSubscription[0].SubscriptionPackage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OwnedSubscription[0].User)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OwnedSubscription[0].SubscriptionPackage.Artist)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.OwnedSubscription) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PurchasedTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubscriptionPackage.ArtistId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Email)
+            </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SubscriptionPackage.Artist.Email)
+                </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

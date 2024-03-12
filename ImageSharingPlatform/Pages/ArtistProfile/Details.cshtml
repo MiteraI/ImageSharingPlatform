@@ -1,0 +1,40 @@
+﻿@page
+@model DetailsModel
+@inject IHttpContextAccessor HttpContextAccessor
+
+<div>
+    <h4>SubscriptionPackage</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SubscriptionPackage.Price)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SubscriptionPackage.Price)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SubscriptionPackage.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SubscriptionPackage.Description)
+        </dd>
+    </dl>
+</div>
+<div>
+
+    @{
+        var session = HttpContextAccessor.HttpContext.Session;
+        var loggedInUser = session.GetString("LoggedInUser");
+        if (!string.IsNullOrEmpty(loggedInUser))
+        {
+            var user = JsonConvert.DeserializeObject<User>(loggedInUser);
+            <a asp-page="/OwnedSub/Create" asp-route-id="@Model.SubscriptionPackage.ArtistId">Subscribe to Artist</a>
+        }
+        else
+        {
+            <a asp-page="/Authentication/Login">Login to Subscribe</a>
+        }
+    }
+     |
+    <a asp-page="./Index" asp-route-id="@Model.SubscriptionPackage.ArtistId">Back to List</a>
+</div>
