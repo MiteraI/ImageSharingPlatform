@@ -11,6 +11,7 @@ namespace ImageSharingPlatform.Repository.Repositories.Interfaces
     public interface ISubscriptionPackageRepository : IGenericRepository<SubscriptionPackage, Guid>
     {
 		Task<IEnumerable<SubscriptionPackage>> GetAllByArtistIdAsync(Guid userId);
+        Task<IEnumerable<SubscriptionPackage>> GetAllArtistAsync();
         Task<SubscriptionPackage> GetByArtistIdAsync(Guid userId);
     }
 }

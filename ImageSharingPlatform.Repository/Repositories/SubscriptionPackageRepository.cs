@@ -17,7 +17,12 @@ namespace ImageSharingPlatform.Repository.Repositories
             
         }
 
-		public async Task<IEnumerable<SubscriptionPackage>> GetAllByArtistIdAsync(Guid userId)
+        public async Task<IEnumerable<SubscriptionPackage>> GetAllArtistAsync()
+        {
+            return await _dbSet.Include(ir => ir.Artist).ToListAsync();
+        }
+
+        public async Task<IEnumerable<SubscriptionPackage>> GetAllByArtistIdAsync(Guid userId)
         {
             return await _dbSet.Include(ir => ir.Artist).Where(ir => ir.ArtistId == userId).ToListAsync();
 
@@ -25,7 +30,7 @@ namespace ImageSharingPlatform.Repository.Repositories
 
         public async Task<SubscriptionPackage> GetByArtistIdAsync(Guid userId)
         {
-            return await _dbSet.FirstOrDefaultAsync(sp => sp.ArtistId == userId); ;
+            return await _dbSet.FirstOrDefaultAsync(sp => sp.ArtistId == userId);
         }
     }
 }

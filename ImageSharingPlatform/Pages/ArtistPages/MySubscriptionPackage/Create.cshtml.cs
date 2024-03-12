@@ -41,31 +41,27 @@ namespace ImageSharingPlatform.Pages.ArtistPages.MySubscriptionPackage
                 return Page();
             }
 
-            var userJson = HttpContext.Session.GetString("LoggedInUser");
-            var useraccount = JsonConvert.DeserializeObject<User>(userJson);
 
-            var userId = useraccount.Id;
-
-            if (userId == Guid.Empty)
+            var loggedInUser = HttpContext.Session.GetString("LoggedInUser");
+            var user = JsonConvert.DeserializeObject<User>(loggedInUser);
+            if (!string.IsNullOrEmpty(loggedInUser))
             {
-                return NotFound("User not found.");
+                
+                SubscriptionPackage.ArtistId = user.Id;
+            }
+            else
+            {
+                RedirectToPage("/Authentication/Login");
             }
 
-            var user = await _userService.GetUserByIdAsync(userId);
-            if (user == null)
-            {
-                return NotFound("User not found.");
-            }
-            SubscriptionPackage.ArtistId = userId;
-
-            var existingSubscriptionPackage = await _subscriptionPackageService.GetSubscriptionPackageByArtistId(userId);
+            var existingSubscriptionPackage = await _subscriptionPackageService.GetSubscriptionPackageByArtistId(user.Id);
             if (existingSubscriptionPackage != null)
             {
                 ModelState.AddModelError(string.Empty, "You already have a subscription package. You cannot create another one.");
                 return Page();
             }
 
-            var isArtist = useraccount.Roles.Any(r => r.UserRole == UserRole.ROLE_ARTIST);
+            var isArtist = user.Roles.Any(r => r.UserRole == UserRole.ROLE_ARTIST);
             if (isArtist)
             {
                 var newSubcription = _subscriptionPackageService.CreateSubscriptionPackage(SubscriptionPackage);

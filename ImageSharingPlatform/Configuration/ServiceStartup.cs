@@ -12,6 +12,7 @@ namespace ImageSharingPlatform.Configuration
             services.AddScoped<ISharedImageService, SharedImageService>();
             services.AddScoped<IImageRequestService, ImageRequestService>();
             services.AddScoped<ISubscriptionPackageService, SubscriptionPackageService>();
+            services.AddScoped<IOwnedSubscriptionService, OwnedSubscriptionService>();
             return services;
         }
     }
