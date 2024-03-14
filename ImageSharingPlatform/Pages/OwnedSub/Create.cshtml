@@ -7,23 +7,10 @@
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-@*             <div class="form-group">
-                <label asp-for="OwnedSubscription.PurchasedTime" class="control-label"></label>
-                <input asp-for="OwnedSubscription.PurchasedTime" class="form-control" />
-                <span asp-validation-for="OwnedSubscription.PurchasedTime" class="text-danger"></span>
-            </div> *@
             <div class="form-group">
-                <label asp-for="OwnedSubscription.SubscriptionPackageId" class="control-label"></label>
-                <select asp-for="OwnedSubscription.SubscriptionPackageId" class ="form-control" asp-items="ViewBag.SubscriptionPackageId"></select>
+                <label asp-for="SubscriptionPackage.Id" class="control-label"></label>
+                <input asp-for="SubscriptionPackage.Id" />
             </div>
-@*             <div class="form-group">
-                <label asp-for="OwnedSubscription.UserId" class="control-label"></label>
-                <select asp-for="OwnedSubscription.UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
-            </div> *@
-@*             <div class="form-group">
-                <label asp-for="SubscriptionPackage.ArtistId" class="control-label"></label>
-                <select asp-for="SubscriptionPackage.ArtistId" class="form-control" asp-items="ViewBag.ArtistId"></select>
-            </div> *@
             <div class="form-group">
                 <input type="submit" value="Subscribe" class="btn btn-primary" />
             </div>
@@ -31,9 +18,19 @@
     </div>
 </div>
 
-@* <div>
-    <a asp-page="/ArtistProfile/Details" asp-route-id="@Model.SubscriptionPackage.ArtistId">Back to List</a>
-</div> *@
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+@if (ViewData["PaymentSuccess"] != null)
+{
+	<div class="alert alert-success">
+		@ViewData["PaymentSuccess"]
+	</div>
+}
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

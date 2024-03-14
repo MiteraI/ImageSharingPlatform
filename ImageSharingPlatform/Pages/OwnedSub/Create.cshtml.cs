@@ -16,7 +16,7 @@ namespace ImageSharingPlatform.Pages.OwnedSub
         private readonly IOwnedSubscriptionService _ownedSubscriptionService;
         private readonly ISubscriptionPackageService _subscriptionPackageService;
         private readonly IUserService _userService;
-        
+
         public CreateModel(IOwnedSubscriptionService ownedSubscriptionService, ISubscriptionPackageService subscriptionPackageService, IUserService userService)
         {
             _ownedSubscriptionService = ownedSubscriptionService;
@@ -38,45 +38,58 @@ namespace ImageSharingPlatform.Pages.OwnedSub
 
         [BindProperty]
         public OwnedSubscription OwnedSubscription { get; set; } = default!;
-        public SubscriptionPackage SubscriptionPackage { get; set; }
+        [BindProperty]
+        public SubscriptionPackage SubscriptionPackage { get; set; } = default;
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
             var userJson = HttpContext.Session.GetString("LoggedInUser");
-            var useraccount = JsonConvert.DeserializeObject<User>(userJson);
-
-            var userId = useraccount.Id;
-
-            if (userId == Guid.Empty)
+            if (userJson == null)
             {
-                return NotFound("User not found.");
+                return Redirect("/Authentication/Login");
             }
+            var user = JsonConvert.DeserializeObject<User>(userJson);
 
-            var user = await _userService.GetUserByIdAsync(userId);
-            if (user == null)
+            var existingSubscriptionPackage = await _ownedSubscriptionService.GetOwnedSubscriptionPackage(SubscriptionPackage.Id);
+            if (existingSubscriptionPackage != null)
             {
-                return NotFound("User not found.");
-            }
-
-
-
-            var existingSubscriptionPackageId = await _ownedSubscriptionService.GetOwnedSubscriptionPackage(OwnedSubscription.SubscriptionPackageId);
-            if (existingSubscriptionPackageId != null)
-            {
-                TempData["ErrorMessage"] = "You already have a subscription package of the artist. You cannot subscribe another one.";
-                return RedirectToPage("./Index");
+                if (DateTime.Now > existingSubscriptionPackage.PurchasedTime.AddDays(30))
+                {
+                    if (user.Balance < SubscriptionPackage.Price)
+                    {
+                        TempData["ErrorMessage"] = "Your balance is not enough to purchase this subscription package.";
+                        return Page();
+                    }
+                    else
+                    {
+                        await _ownedSubscriptionService.renewSubscription(OwnedSubscription.Id);
+                        await _userService.DecreaseBalance(user.Id, SubscriptionPackage.Price);
+                        ViewData["PaymentSuccess"] = "Your subscription have been renewed";
+                        return Page();
+                    }
+                }
+                TempData["ErrorMessage"] = "You already have a subscription package of the artist";
+                return Page();
             }
 
             OwnedSubscription.PurchasedTime = DateTime.Now;
-            OwnedSubscription.UserId = userId;
+            OwnedSubscription.UserId = user.Id;
+            var sub = await _subscriptionPackageService.GetSubscriptionPackageById(SubscriptionPackage.Id);
+            //OwnedSubscription.SubscriptionPackageId = sub.Id;
+            OwnedSubscription.SubscriptionPackage = sub;
 
-            await _ownedSubscriptionService.CreateOwnedSubscription(OwnedSubscription);
-
-            return RedirectToPage("./Index");
+            if (user.Balance < SubscriptionPackage.Price)
+            {
+                TempData["ErrorMessage"] = "Your balance is not enough to purchase this subscription package.";
+                return Page();
+            }
+            else
+            {
+                await _ownedSubscriptionService.CreateOwnedSubscription(OwnedSubscription);
+                await _userService.DecreaseBalance(user.Id, SubscriptionPackage.Price);
+                ViewData["PaymentSuccess"] = "You have succesfully subscribed to the artist";
+                return Page();
+            }
         }
     }
 }

@@ -35,5 +35,18 @@ namespace ImageSharingPlatform.Service.Services
         {
             return await _ownedSubscriptionRepository.GetBySubscriptionPackageIdAsync(packageId);
         }
+
+        public async Task renewSubscription(Guid? packageId)
+        {
+            var existingSubscriptionPackage = await _ownedSubscriptionRepository.GetBySubscriptionPackageIdAsync(packageId);
+            if (existingSubscriptionPackage != null)
+            {
+                if (DateTime.Now > existingSubscriptionPackage.PurchasedTime.AddDays(30))
+                {
+                    existingSubscriptionPackage.PurchasedTime = DateTime.Now;
+                    await _ownedSubscriptionRepository.SaveChangesAsync();
+                }
+            }
+        }
     }
 }

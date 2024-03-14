@@ -73,7 +73,7 @@ namespace ImageSharingPlatform.Repository.Repositories
 				return await _dbSet
 					.Include(si => si.Artist)
 					.Include(si => si.ImageCategory)
-					.Where(si => si.ImageName.Contains(searchName))
+					.Where(si => si.ImageName.Contains(searchName) && si.IsPremium == false)
 					.UsePageableAsync(pageable);
 			}
 			else
@@ -81,7 +81,7 @@ namespace ImageSharingPlatform.Repository.Repositories
 				return await _dbSet
 					.Include(si => si.Artist)
 					.Include(si => si.ImageCategory)
-					.Where(si => si.ImageName.Contains(searchName) && si.ImageCategory == imageCategory)
+					.Where(si => si.ImageName.Contains(searchName) && si.ImageCategory == imageCategory && si.IsPremium == false)
 					.UsePageableAsync(pageable);
 			}
 		}

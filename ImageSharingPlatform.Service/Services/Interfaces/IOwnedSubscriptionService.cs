@@ -12,6 +12,6 @@ namespace ImageSharingPlatform.Service.Services.Interfaces
         Task<OwnedSubscription> CreateOwnedSubscription(OwnedSubscription ownedSubscription);
         Task<IEnumerable<OwnedSubscription>> GetAllOwnedSubscriptionsAsync();
         Task<OwnedSubscription> GetOwnedSubscriptionPackage(Guid? packageId);
-        
+        Task renewSubscription(Guid? packageId);
     }
 }

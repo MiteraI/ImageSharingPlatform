@@ -12,6 +12,7 @@ namespace ImageSharingPlatform.Pages.Profile
     {
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
+        private readonly ISubscriptionPackageService _subscriptionPackageService;
         private readonly IAzureBlobService _azureBlobService;
 
         public EditModel(IMapper mapper, IUserService userService, IAzureBlobService azureBlobService)
@@ -65,6 +66,12 @@ namespace ImageSharingPlatform.Pages.Profile
         {
             Guid currentUserId = GetCurrentUserId();
             await _userService.UpdateRoleToArtist(currentUserId);
+            await _subscriptionPackageService.CreateSubscriptionPackage(new SubscriptionPackage
+            {
+                ArtistId = currentUserId,
+                Price = 100000,
+                Description = "Default package price for new artists"
+            });
             return RedirectToPage("/Authentication/Logout");
         }
 
