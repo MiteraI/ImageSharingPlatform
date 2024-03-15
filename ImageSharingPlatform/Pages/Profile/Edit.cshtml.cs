@@ -15,10 +15,13 @@ namespace ImageSharingPlatform.Pages.Profile
         private readonly ISubscriptionPackageService _subscriptionPackageService;
         private readonly IAzureBlobService _azureBlobService;
 
-        public EditModel(IMapper mapper, IUserService userService, IAzureBlobService azureBlobService)
+        public EditModel(IMapper mapper, IUserService userService
+            , ISubscriptionPackageService subscriptionPackageService
+            , IAzureBlobService azureBlobService)
         {
             _mapper = mapper;
             _userService = userService;
+            _subscriptionPackageService = subscriptionPackageService;
             _azureBlobService = azureBlobService;
         }
 

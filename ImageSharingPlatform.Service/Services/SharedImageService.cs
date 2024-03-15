@@ -90,11 +90,11 @@ namespace ImageSharingPlatform.Service.Services
 		{
 			if (imageCategoryId == null)
 			{
-				return await _sharedImageRepository.GetSharedImageWithSearchNameAndCatePageableAsync(searchName, null, pageable);
+				return await _sharedImageRepository.QueryHelper().Filter(si => si.ImageName.Contains(searchName)).GetPageAsync(pageable);
 			}
 
 			var category = await _imageCategoryRepository.GetOneAsync(imageCategoryId.Value);
-			return await _sharedImageRepository.GetSharedImageWithSearchNameAndCatePageableAsync(searchName, category, pageable);
+			return await _sharedImageRepository.QueryHelper().Filter(si => si.ImageName.Contains(searchName) && si.ImageCategory == category).GetPageAsync(pageable);
 		}
 
         public async Task<IEnumerable<SharedImage>> GetAllPremiumSharedImagesAsync()

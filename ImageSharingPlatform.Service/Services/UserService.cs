@@ -38,7 +38,7 @@ namespace ImageSharingPlatform.Service.Services
 
         public async Task<User> LoginUser(string username, string password)
         {
-            var loginUser = await _userRepository.QueryHelper().GetOneAsync(u => u.Username.Equals(username));
+            var loginUser = await _userRepository.QueryHelper().Include(u => u.Roles).GetOneAsync(u => u.Username.Equals(username));
             if (loginUser == null)
             {
                 throw new Exception("User not found");
@@ -79,7 +79,7 @@ namespace ImageSharingPlatform.Service.Services
 
         public async Task<User> GetUserByIdAsync(Guid userId)
         {
-            return await _userRepository.GetOneAsync(userId);
+            return await _userRepository.QueryHelper().Include(u => u.Roles).GetOneAsync(u => u.Id.Equals(userId));
         }
 
         public async Task<bool> UserExistsAsync(Expression<Func<User, bool>> predicate)
