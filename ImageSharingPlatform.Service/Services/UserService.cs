@@ -18,11 +18,13 @@ namespace ImageSharingPlatform.Service.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IRoleRepository _roleRepository;
+        private readonly ITransactionRepository _transactionRepository;
 
-        public UserService(IUserRepository userRepository, IRoleRepository roleRepository)
+        public UserService(IUserRepository userRepository, IRoleRepository roleRepository, ITransactionRepository transactionRepository)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;
+            _transactionRepository = transactionRepository;
         }
 
         public virtual async Task<User> RegisterUser(User user)
@@ -113,6 +115,13 @@ namespace ImageSharingPlatform.Service.Services
 			User user = await _userRepository.GetOneAsync(userId);
 			user.Balance += (long) amount;
 			_userRepository.Update(user);
+			_transactionRepository.Add(new Transaction
+			{
+				Amount = (long)amount,
+				TransactionDate = DateTime.Now,
+				TransactionType = TransactionType.INCREASE,
+				UserId = userId
+			});
 			await _userRepository.SaveChangesAsync();
 		}
 
@@ -121,6 +130,13 @@ namespace ImageSharingPlatform.Service.Services
             User user = await _userRepository.GetOneAsync(userId);
 			user.Balance -= (long) amount;
 			_userRepository.Update(user);
+            _transactionRepository.Add(new Transaction
+            {
+				Amount = (long) amount,
+                TransactionDate = DateTime.Now,
+				TransactionType = TransactionType.DECREASE,
+				UserId = userId
+			});
 			await _userRepository.SaveChangesAsync();
         }
     }

@@ -48,17 +48,20 @@ namespace ImageSharingPlatform.Pages.Profile
         {
             if (ModelState.IsValid)
             {
-                var updatedUser = _mapper.Map<User>(UserEditDto);
+                var userToUpdate = await _userService.GetUserByIdAsync(UserEditDto.Id);
 
                 if (avatar != null)
                 {
                     string avatarUrl = await _azureBlobService.UploadAvatar(avatar);
-                    updatedUser.AvatarUrl = avatarUrl;
+                    userToUpdate.AvatarUrl = avatarUrl;
                 }
 
-                await _userService.EditUser(updatedUser);
-                // Redirect to profile page or show success message
-                return RedirectToPage("/Profile/Index");
+                userToUpdate.Username = UserEditDto.Username;
+                userToUpdate.Email = UserEditDto.Email;
+                userToUpdate.FirstName = UserEditDto.FirstName;
+                userToUpdate.LastName = UserEditDto.LastName;
+
+                await _userService.EditUser(userToUpdate);
             }
 
             // If ModelState is not valid, return to the edit page with errors

@@ -17,5 +17,7 @@ namespace ImageSharingPlatform.Service.Services.Interfaces
         Task<Transaction> FindOne(Guid id);
 
         Task Delete(Guid id);
-    }
+        Task<IEnumerable<Transaction>> GetAllForUser(Guid userId);
+
+	}
 }

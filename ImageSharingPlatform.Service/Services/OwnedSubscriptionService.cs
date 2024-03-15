@@ -36,6 +36,14 @@ namespace ImageSharingPlatform.Service.Services
             return await _ownedSubscriptionRepository.GetBySubscriptionPackageIdAsync(packageId);
         }
 
+        //Check if user with userId has a subscription to the package with packageId
+        public async Task<OwnedSubscription> GetUserOwnedSubscriptionPackage(Guid? userId, Guid? packageId)
+        {
+			return await _ownedSubscriptionRepository.QueryHelper()
+				.Filter(os => os.SubscriptionPackageId.Equals(packageId))
+				.GetOneAsync(os => os.UserId.Equals(userId));
+		}
+
         public async Task renewSubscription(Guid? packageId)
         {
             var existingSubscriptionPackage = await _ownedSubscriptionRepository.GetBySubscriptionPackageIdAsync(packageId);

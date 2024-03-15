@@ -10,7 +10,7 @@
     <h2>Welcome, @Model.User.FirstName @Model.User.LastName!</h2>
     <div class="row mt-4">
         <div class="col-md-4">
-            <img src="@Model.User.AvatarUrl" alt="Avatar" class="img-fluid rounded">
+            <img src="@Model.User.AvatarUrl" alt="Avatar" class="img-fluid rounded w-100">
         </div>
         <div class="col-md-8">
             <h4>Email: @Model.User.Email</h4>
@@ -34,15 +34,16 @@
                     }
                 </div>
                 <div class="row">
-                    <a asp-page="./Edit" class="btn btn-primary">Edit Profile</a>
-                    <a asp-page="./Money" class="btn btn-danger">Money</a>
+                    <a asp-page="./Edit" class="btn btn-primary m-2">Edit Profile</a>
+                    <a asp-page="./Money" class="btn btn-danger m-2">Money</a>
+                    <a asp-page="./Transaction" class="btn btn-danger m-2">Transaction</a>
                     @{ 
                         var userJson = HttpContext.Session.GetString("LoggedInUser");
                         var userAccount = JsonConvert.DeserializeObject<User>(userJson);
                         var isArtist = userAccount.Roles.Any(r => r.UserRole == UserRole.ROLE_ARTIST);
                         if (isArtist)
                         {
-                            <a asp-page="/ArtistPages/MySubscriptionPackage/Index" class="btn btn-dark">Subcription Package</a>
+                            <a asp-page="/ArtistPages/MySubscriptionPackage/Index" class="btn btn-dark m-2">Subcription Package</a>
                         }
                      }
                 </div>

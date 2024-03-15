@@ -46,6 +46,7 @@ namespace ImageSharingPlatform.Service.Services
         {
             return await _transactionRepository.QueryHelper()
                 .Filter(t => t.UserId == userId)
+                .OrderBy(t => t.OrderByDescending(t => t.TransactionDate))
                 .GetAllAsync();
         }
     }

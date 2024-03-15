@@ -1,0 +1,45 @@
+﻿@page
+@model ImageSharingPlatform.Pages.Profile.TransactionModel
+
+@{
+    ViewData["Title"] = "Transactions";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <h2>Transactions</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var transaction in Model.Transactions)
+            {
+                <tr class="@GetColorClass(transaction.TransactionType)">
+                    <td>@transaction.Amount</td>
+                    <td>@transaction.TransactionDate.ToString("yyyy-MM-dd")</td>
+                    <td>@transaction.TransactionType.ToString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@functions {
+    private string GetColorClass(TransactionType type)
+    {
+        switch (type)
+        {
+            case TransactionType.INCREASE:
+                return "table-success";
+            case TransactionType.DECREASE:
+                return "table-danger";
+            default:
+                return "";
+        }
+    }
+}

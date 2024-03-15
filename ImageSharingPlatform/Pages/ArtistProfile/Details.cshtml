@@ -1,40 +1,60 @@
-﻿@page
+﻿    @page
 @model DetailsModel
 @inject IHttpContextAccessor HttpContextAccessor
 
-<div>
-    <h4>SubscriptionPackage</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.SubscriptionPackage.Price)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.SubscriptionPackage.Price)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.SubscriptionPackage.Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.SubscriptionPackage.Description)
-        </dd>
-    </dl>
-</div>
-<div>
+<form method="post" class="container pt-4">
+	<input type="hidden" asp-for="SubscriptionPackage.Id" />
+	<input type="hidden" asp-for="SubscriptionPackage.Price" />
+	<input type="hidden" asp-for="SubscriptionPackage.Description" />
+	<input type="hidden" asp-for="SubscriptionPackage.ArtistId" />
 
-    @{
-        var session = HttpContextAccessor.HttpContext.Session;
-        var loggedInUser = session.GetString("LoggedInUser");
-        if (!string.IsNullOrEmpty(loggedInUser))
-        {
-            var user = JsonConvert.DeserializeObject<User>(loggedInUser);
-            <a asp-page="/OwnedSub/Create" asp-route-id="@Model.SubscriptionPackage.ArtistId">Subscribe to Artist</a>
-        }
-        else
-        {
-            <a asp-page="/Authentication/Login">Login to Subscribe</a>
-        }
-    }
-     |
-    <a asp-page="./Index" asp-route-id="@Model.SubscriptionPackage.ArtistId">Back to List</a>
-</div>
+	@if (TempData["ErrorMessage"] != null)
+	{
+		<div class="alert alert-danger">
+			@TempData["ErrorMessage"]
+		</div>
+	}
+
+	@if (ViewData["PaymentSuccess"] != null)
+	{
+		<div class="alert alert-success">
+			@ViewData["PaymentSuccess"]
+		</div>
+	}
+	<div class="row">
+		<div class="col-4 d-flex justify-content-between">
+			<p>
+				@Html.DisplayNameFor(model => model.SubscriptionPackage.Price) :
+			</p>
+			<span>
+				@Html.DisplayFor(model => model.SubscriptionPackage.Price)
+			</span>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-4 d-flex justify-content-between">
+			<p>
+				@Html.DisplayNameFor(model => model.SubscriptionPackage.Description) :
+			</p>
+			<span>
+				@Html.DisplayFor(model => model.SubscriptionPackage.Description)
+			</span>
+		</div>
+	</div>
+	<div>
+		@{
+			var session = HttpContextAccessor.HttpContext.Session;
+			var loggedInUser = session.GetString("LoggedInUser");
+			if (!string.IsNullOrEmpty(loggedInUser))
+			{
+				<button type="submit" class="btn btn-danger">Subscribe to Artist</button>
+			}
+			else
+			{
+				<a asp-page="/Authentication/Login" class="btn btn-primary">Login to Subscribe</a>
+			}
+		}
+		<a asp-page="./Index" class="btn btn-primary" asp-route-id="@Model.SubscriptionPackage.ArtistId">Back to artist profile</a>
+	</div>
+</form>
+

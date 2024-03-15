@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ImageSharingPlatform.Service.Services
 {
-	public class SharedImageService : ISharedImageService
+    public class SharedImageService : ISharedImageService
 	{
 
 		private readonly ISharedImageRepository _sharedImageRepository;
@@ -75,31 +75,33 @@ namespace ImageSharingPlatform.Service.Services
 			return await _sharedImageRepository.GetSharedImagesByUserIdWithFullDetails(userId);
 		}
 
-		public async Task<IEnumerable<SharedImage>> FindSharedImageWithSearchNameAndCate(string searchName, Guid? imageCategoryId)
-		{
-			if (imageCategoryId == null)
-			{
-				return await _sharedImageRepository.GetSharedImageWithSearchNameAndCateAsync(searchName, null);
-			} 
-
-			var category = await _imageCategoryRepository.GetOneAsync(imageCategoryId.Value);
-			return await _sharedImageRepository.GetSharedImageWithSearchNameAndCateAsync(searchName, category);
-		}
-
 		public async Task<IPage<SharedImage>> FindSharedImageWithSearchNameAndCatePageable(string searchName, Guid? imageCategoryId, IPageable pageable)
 		{
 			if (imageCategoryId == null)
 			{
-				return await _sharedImageRepository.QueryHelper().Filter(si => si.ImageName.Contains(searchName)).GetPageAsync(pageable);
+				return await _sharedImageRepository.QueryHelper()
+					.Filter(si => si.ImageName.Contains(searchName) && si.IsPremium == false)
+					.GetPageAsync(pageable);
 			}
 
 			var category = await _imageCategoryRepository.GetOneAsync(imageCategoryId.Value);
-			return await _sharedImageRepository.QueryHelper().Filter(si => si.ImageName.Contains(searchName) && si.ImageCategory == category).GetPageAsync(pageable);
+			return await _sharedImageRepository.QueryHelper()
+				.Filter(si => si.ImageName.Contains(searchName) && si.ImageCategory == category && si.IsPremium == false)
+				.GetPageAsync(pageable);
 		}
 
         public async Task<IEnumerable<SharedImage>> GetAllPremiumSharedImagesAsync()
         {
             return await _sharedImageRepository.GetAllPreiumWithFullDetails();
+        }
+
+        public async Task<IEnumerable<SharedImage>> FindSharedImageByArtistId(Guid artistId, bool isPremium)
+        {
+            if (isPremium)
+			{
+                return await _sharedImageRepository.QueryHelper().Filter(si => si.ArtistId.Equals(artistId)).GetAllAsync();
+            } 
+			return await _sharedImageRepository.QueryHelper().Filter(si => si.ArtistId.Equals(artistId) && si.IsPremium == false).GetAllAsync();
         }
     }
 }

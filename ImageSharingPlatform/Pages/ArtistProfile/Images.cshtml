@@ -2,3 +2,34 @@
 @model ImageSharingPlatform.Pages.ArtistProfile.ImagesModel
 @{
 }
+
+<input type="hidden" asp-for="SubscriptionPackageModel.ArtistId" />
+
+<div class="container m-3">
+	@if (ViewData["Subscription"] != null)
+	{
+		<div class="alert alert-warning" role="alert">
+			@ViewData["Subscription"]
+		</div>
+	}	
+	<h2>You are viewing @Model.Artist.FirstName @Model.Artist.LastName's shared images</h2>
+	<div class="row">
+		@foreach (var item in Model.SharedImages)
+		{
+			<div class="col-md-3">
+				<div class="card mb-2" style="background-color: #f8f9fa">
+					<img class="bd-placeholder-img card-img-top" src="@Html.DisplayFor(modelItem => item.ImageUrl)" />
+					<div class="card-body text-black">
+						<p class="card-text" style="text-align:center"><b>@Html.DisplayFor(modelItem => item.ImageName)</b></p>
+						<div class="d-flex justify-content-center align-items-center">
+							<div class="btn-group">
+								<a asp-page="/Search/Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info text-black">Details</a>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		}
+	</div>
+</div>
