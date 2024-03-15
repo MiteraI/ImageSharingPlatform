@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace ImageSharingPlatform.Domain.Enums
 {
-    public enum RequestStatus
+    public enum TransactionType
     {
-        PROCESSING, USER_ACCEPTED, ARTIST_ACCEPTED, ACCEPTED, REJECTED, CANCELLED, UPLOADED, SUCCESS 
+        INCREASE, DECREASE
     }
 }

@@ -28,6 +28,9 @@ namespace ImageSharingPlatform.Domain.Entities
         [Column("created_at")]
         public DateTime CreateTime { get; set; }
 
+        [Column("expected_time")]
+        public DateTime ExpectedTime { get; set; }  
+
         [Column("image")]
         public byte[]? ImageBlob { get; set; }
 
