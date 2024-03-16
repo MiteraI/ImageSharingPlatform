@@ -128,16 +128,32 @@ namespace ImageSharingPlatform.Service.Services
         public async Task DecreaseBalance(Guid userId, double amount)
         {
             User user = await _userRepository.GetOneAsync(userId);
-			user.Balance -= (long) amount;
-			_userRepository.Update(user);
+            user.Balance -= (long)amount;
+            _userRepository.Update(user);
             _transactionRepository.Add(new Transaction
             {
-				Amount = (long) amount,
+                Amount = (long)amount,
                 TransactionDate = DateTime.Now,
-				TransactionType = TransactionType.DECREASE,
-				UserId = userId
-			});
-			await _userRepository.SaveChangesAsync();
+                TransactionType = TransactionType.DECREASE,
+                UserId = userId
+            });
+            await _userRepository.SaveChangesAsync();
+        }
+
+        public async Task<User> CheckRegisterUser(string username, string email)
+        {
+            var regisUsername = await _userRepository.QueryHelper().GetOneAsync(u => u.Username.Equals(username));
+            if (regisUsername != null)
+            {
+                throw new Exception("Username is existed.");
+            }
+
+            var regisEmail = await _userRepository.QueryHelper().GetOneAsync(u => u.Email.Equals(email));
+            if (regisEmail != null)
+            {
+                throw new Exception("Email is existed.");
+            }
+            return null;
         }
     }
 }
