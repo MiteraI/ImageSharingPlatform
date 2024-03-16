@@ -7,72 +7,85 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ImageSharingPlatform.Domain.Entities;
+using ImageSharingPlatform.Domain.Enums;
+using Newtonsoft.Json;
 
 namespace ImageSharingPlatform.Pages.ArtistPages.MySharedImages
 {
-    public class EditModel : PageModel
-    {
-        private readonly ImageSharingPlatform.Domain.Entities.ApplicationDbContext _context;
+	public class EditModel : PageModel
+	{
+		private readonly ImageSharingPlatform.Domain.Entities.ApplicationDbContext _context;
 
-        public EditModel(ImageSharingPlatform.Domain.Entities.ApplicationDbContext context)
-        {
-            _context = context;
-        }
+		public EditModel(ImageSharingPlatform.Domain.Entities.ApplicationDbContext context)
+		{
+			_context = context;
+		}
 
-        [BindProperty]
-        public SharedImage SharedImage { get; set; } = default!;
+		[BindProperty]
+		public SharedImage SharedImage { get; set; } = default!;
 
-        public async Task<IActionResult> OnGetAsync(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+		public async Task<IActionResult> OnGetAsync(Guid? id)
+		{
+			var userJson = HttpContext.Session.GetString("LoggedInUser");
+			if (string.IsNullOrEmpty(userJson))
+			{
+				return Redirect("/Authentication/Login");
+			}
+			var userAccount = JsonConvert.DeserializeObject<User>(userJson);
+			var isArtist = userAccount.Roles.Any(r => r.UserRole == UserRole.ROLE_ARTIST);
+			if (!isArtist)
+			{
+				TempData["ErrorMessage"] = "You are not authorized to view this page!";
+				return Redirect("/Index");
+			}
 
-            var sharedimage =  await _context.SharedImages.FirstOrDefaultAsync(m => m.Id == id);
-            if (sharedimage == null)
-            {
-                return NotFound();
-            }
-            SharedImage = sharedimage;
-           ViewData["ArtistId"] = new SelectList(_context.Users, "Id", "Email");
-           ViewData["ImageCategoryId"] = new SelectList(_context.ImageCategories, "Id", "CategoryName");
-            return Page();
-        }
+			if (id == null)
+			{
+				return NotFound();
+			}
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
-        {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
+			var sharedimage = await _context.SharedImages.FirstOrDefaultAsync(m => m.Id == id);
+			if (sharedimage == null)
+			{
+				return NotFound();
+			}
+			SharedImage = sharedimage;
+			ViewData["ArtistId"] = new SelectList(_context.Users, "Id", "Email");
+			ViewData["ImageCategoryId"] = new SelectList(_context.ImageCategories, "Id", "CategoryName");
+			return Page();
+		}
 
-            _context.Attach(SharedImage).State = EntityState.Modified;
+		public async Task<IActionResult> OnPostAsync()
+		{
+			if (!ModelState.IsValid)
+			{
+				return Page();
+			}
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SharedImageExists(SharedImage.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-            TempData["SuccessMessage"] = "Image is edited successfully!";
-            return RedirectToPage("./Index");
-        }
+			_context.Attach(SharedImage).State = EntityState.Modified;
 
-        private bool SharedImageExists(Guid id)
-        {
-            return _context.SharedImages.Any(e => e.Id == id);
-        }
-    }
+			try
+			{
+				await _context.SaveChangesAsync();
+			}
+			catch (DbUpdateConcurrencyException)
+			{
+				if (!SharedImageExists(SharedImage.Id))
+				{
+					return NotFound();
+				}
+				else
+				{
+					throw;
+				}
+			}
+			TempData["SuccessMessage"] = "Image is edited successfully!";
+			return RedirectToPage("./Index");
+		}
+
+		private bool SharedImageExists(Guid id)
+		{
+			return _context.SharedImages.Any(e => e.Id == id);
+		}
+	}
 }

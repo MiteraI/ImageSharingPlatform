@@ -18,6 +18,10 @@ namespace ImageSharingPlatform.Pages.Profile
 
         public void OnGet()
         {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("LoggedInUser")))
+            {
+				Response.Redirect("/Authentication/Login");
+			}
         }
 
         public IActionResult OnPost() 

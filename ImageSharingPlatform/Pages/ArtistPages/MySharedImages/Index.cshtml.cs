@@ -13,55 +13,40 @@ using ImageSharingPlatform.Domain.Enums;
 
 namespace ImageSharingPlatform.Pages.ArtistPages.MySharedImages
 {
-    public class IndexModel : PageModel
-    {
-        private readonly ISharedImageService _sharedImageService;
-        private readonly IUserService _userService;
+	public class IndexModel : PageModel
+	{
+		private readonly ISharedImageService _sharedImageService;
+		private readonly IUserService _userService;
 
-        public IndexModel(ISharedImageService sharedImageService, IUserService userService)
-        {
+		public IndexModel(ISharedImageService sharedImageService, IUserService userService)
+		{
 			_sharedImageService = sharedImageService;
-            _userService = userService;
+			_userService = userService;
 		}
 
-        public IList<SharedImage> SharedImage { get;set; } = default!;
+		public IList<SharedImage> SharedImage { get; set; } = default!;
 
-        public async Task<IActionResult> OnGetAsync()
-        {
-            // Get user session
-            //var loggedInUser = HttpContext.Session.GetString("LoggedInUser");
-            //if (!string.IsNullOrEmpty(loggedInUser))
-            //{
-            //    var user = JsonConvert.DeserializeObject<User>(loggedInUser);
-            //    SharedImage = (IList<SharedImage>) await _sharedImageService.FindSharedImagesByUserIdWithFullDetails(user.Id);
-            //} else
-            //{
-            //    RedirectToPage("/Authentication/Login");
-            //}
- 
-            var loggedInUser = HttpContext.Session.GetString("LoggedInUser");
+		public async Task<IActionResult> OnGetAsync()
+		{
+			var userJson = HttpContext.Session.GetString("LoggedInUser");
+			if (string.IsNullOrEmpty(userJson))
+			{
+				return Redirect("/Authentication/Login");
+			}
+			var userAccount = JsonConvert.DeserializeObject<User>(userJson);
+			var isArtist = userAccount.Roles.Any(r => r.UserRole == UserRole.ROLE_ARTIST);
 
-                var useraccount = JsonConvert.DeserializeObject<User>(loggedInUser);
+			if (isArtist)
+			{
+				SharedImage = (IList<SharedImage>)await _sharedImageService.FindSharedImagesByUserIdWithFullDetails(userAccount.Id);
+			}
+			else
+			{
+				TempData["ErrorMessage"] = "You are not authorized to see this page";
+				return Redirect("/Index");
+			}
 
-                var userId = useraccount.Id;
-
-                if (userId == Guid.Empty)
-                {
-                    return NotFound("User not found.");
-                }
-                var user = await _userService.GetUserByIdAsync(userId);
-                if (user == null)
-                {
-                    return NotFound("User not found.");
-                }
-
-                var isArtist = useraccount.Roles.Any(r => r.UserRole == UserRole.ROLE_ARTIST);
-                if (isArtist)
-                {
-                    SharedImage = (IList<SharedImage>)await _sharedImageService.FindSharedImagesByUserIdWithFullDetails(userId);
-                }
-
-            return Page();
-        }
-    }
+			return Page();
+		}
+	}
 }

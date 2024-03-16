@@ -36,7 +36,7 @@ namespace ImageSharingPlatform.Pages.Profile
 
             if (user == null)
             {
-                return NotFound();
+                return Redirect("/Authentication/Login");
             }
 
             UserEditDto = _mapper.Map<UserEditDto>(user);

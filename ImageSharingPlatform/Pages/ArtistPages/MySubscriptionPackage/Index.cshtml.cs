@@ -28,28 +28,21 @@ namespace ImageSharingPlatform.Pages.ArtistPages.MySubscriptionPackage
         public async Task<IActionResult> OnGetAsync()
         {
             var userJson = HttpContext.Session.GetString("LoggedInUser");
-            var useraccount = JsonConvert.DeserializeObject<User>(userJson);
-
-            var userId = useraccount.Id;
-
-            if (userId == Guid.Empty)
+            if (string.IsNullOrEmpty(userJson))
             {
-                return NotFound("User not found.");
-            }
+				return Redirect("/Authentication/Login");
+			}
+            var userAccount = JsonConvert.DeserializeObject<User>(userJson);
+            var isArtist = userAccount.Roles.Any(r => r.UserRole == UserRole.ROLE_ARTIST);
 
-            var user = await _userService.GetUserByIdAsync(userId);
-            if (user == null)
+            if (isArtist)
             {
-                return NotFound("User not found.");
-            }
-            var isAdmin = useraccount.Roles.Any(r => r.UserRole == UserRole.ROLE_ADMIN);
-            if (isAdmin)
-            {
-                SubscriptionPackage = (IList<SubscriptionPackage>) await _subscriptionPackageService.GetAllSubscriptionsAsync();
+				SubscriptionPackage = (IList<SubscriptionPackage>)await _subscriptionPackageService.GetSubscriptionPackagesByArtistIdWithFullDetails(userAccount.Id);
             }
             else
             {
-                SubscriptionPackage = (IList<SubscriptionPackage>)await _subscriptionPackageService.GetSubscriptionPackagesByArtistIdWithFullDetails(userId);
+                TempData["ErrorMessage"] = "You are not authorized to see this page";
+                return Redirect("/Index");
             }           
             return Page();
         }

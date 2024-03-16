@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using ImageSharingPlatform.Domain.Entities;
 using ImageSharingPlatform.Service.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using ImageSharingPlatform.Domain.Enums;
+using Newtonsoft.Json;
 
 namespace ImageSharingPlatform.Pages.ArtistPages.MySharedImages
 {
@@ -28,7 +30,20 @@ namespace ImageSharingPlatform.Pages.ArtistPages.MySharedImages
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
-            if (id == null)
+			var userJson = HttpContext.Session.GetString("LoggedInUser");
+			if (string.IsNullOrEmpty(userJson))
+			{
+				return Redirect("/Authentication/Login");
+			}
+			var userAccount = JsonConvert.DeserializeObject<User>(userJson);
+			var isArtist = userAccount.Roles.Any(r => r.UserRole == UserRole.ROLE_ARTIST);
+            if (!isArtist)
+            {
+                TempData["ErrorMessage"] = "You are not authorized to view this page!";
+				return Redirect("/Index");
+			}
+
+			if (id == null)
             {
                 return NotFound();
             }

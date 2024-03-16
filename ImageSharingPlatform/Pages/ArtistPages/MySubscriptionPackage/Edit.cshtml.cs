@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using ImageSharingPlatform.Domain.Entities;
 using ImageSharingPlatform.Service.Services.Interfaces;
 using ImageSharingPlatform.Service.Services;
+using ImageSharingPlatform.Domain.Enums;
+using Newtonsoft.Json;
 
 namespace ImageSharingPlatform.Pages.ArtistPages.MySubscriptionPackage
 {
@@ -28,12 +30,21 @@ namespace ImageSharingPlatform.Pages.ArtistPages.MySubscriptionPackage
 
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+			var userJson = HttpContext.Session.GetString("LoggedInUser");
+			if (string.IsNullOrEmpty(userJson))
+			{
+				return Redirect("/Authentication/Login");
+			}
+			var userAccount = JsonConvert.DeserializeObject<User>(userJson);
+			var isArtist = userAccount.Roles.Any(r => r.UserRole == UserRole.ROLE_ARTIST);
 
-            SubscriptionPackage = await _subscriptionPackageService.GetSubscriptionPackageById(id);
+            if (!isArtist)
+            {
+                TempData["ErrorMessage"] = "You are not authorized to see this page";
+				return Redirect("/Index");
+			}
+
+			SubscriptionPackage = await _subscriptionPackageService.GetSubscriptionPackageById(id);
             if (SubscriptionPackage == null)
             {
                 return NotFound();
