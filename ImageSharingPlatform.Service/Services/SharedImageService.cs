@@ -12,16 +12,18 @@ using System.Threading.Tasks;
 
 namespace ImageSharingPlatform.Service.Services
 {
-    public class SharedImageService : ISharedImageService
+	public class SharedImageService : ISharedImageService
 	{
 
 		private readonly ISharedImageRepository _sharedImageRepository;
 		private readonly IImageCategoryRepository _imageCategoryRepository;
+		private readonly IReviewRepository _reviewRepository;
 
-		public SharedImageService(ISharedImageRepository sharedImageRepository, IImageCategoryRepository imageCategoryRepository)
+		public SharedImageService(ISharedImageRepository sharedImageRepository, IImageCategoryRepository imageCategoryRepository, IReviewRepository reviewRepository)
 		{
 			_sharedImageRepository = sharedImageRepository;
 			_imageCategoryRepository = imageCategoryRepository;
+			_reviewRepository = reviewRepository;
 		}
 
 		public async Task<SharedImage> CreateSharedImage(SharedImage sharedImage)
@@ -52,7 +54,7 @@ namespace ImageSharingPlatform.Service.Services
 
 		public async Task<SharedImage> GetSharedImageByIdAsync(Guid sharedImageId)
 		{
-			return await _sharedImageRepository.GetOneAsync(sharedImageId);
+			return await _sharedImageRepository.QueryHelper().Include(si => si.Reviews).GetOneAsync(si => si.Id.Equals(sharedImageId));
 		}
 
 		public async Task<bool> SharedImageExistsAsync(Expression<Func<SharedImage, bool>> predicate)
@@ -103,5 +105,13 @@ namespace ImageSharingPlatform.Service.Services
             } 
 			return await _sharedImageRepository.QueryHelper().Filter(si => si.ArtistId.Equals(artistId) && si.IsPremium == false).GetAllAsync();
         }
-    }
+
+		public async Task<Review> CreateReviewForImage(Guid sharedImageId, Review review)
+		{
+			review.SharedImageId = sharedImageId;
+			_reviewRepository.Add(review);
+			await _reviewRepository.SaveChangesAsync();
+			return review;
+		}
+	}
 }

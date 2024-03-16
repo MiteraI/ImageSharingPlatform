@@ -9,6 +9,7 @@ namespace ImageSharingPlatform.Configuration.AutoMapper
         public AutoMapperProfile()
         {
             CreateMap<User, UserEditDto>().ReverseMap();
+            CreateMap<Review, ReviewDto>().ReverseMap();
         }
     }
 }
