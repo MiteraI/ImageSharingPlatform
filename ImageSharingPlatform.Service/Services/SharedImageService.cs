@@ -101,5 +101,21 @@ namespace ImageSharingPlatform.Service.Services
         {
             return await _sharedImageRepository.GetAllPreiumWithFullDetails();
         }
+
+        public async Task<IPage<SharedImage>> FindSharedImageForArtistPageable(Guid artist, bool? isPremium, IPageable pageable)
+        {
+            if (isPremium == null)
+			{
+				return await _sharedImageRepository.QueryHelper().Filter(si => si.ArtistId.Equals(artist)).GetPageAsync(pageable);
+			}
+			else if (isPremium == true)
+			{
+				var pre = await _sharedImageRepository.QueryHelper().Filter(si => si.ArtistId.Equals(artist) && si.IsPremium == true).GetPageAsync(pageable);
+				var p = pre.Content;
+                return await _sharedImageRepository.QueryHelper().Filter(si => si.ArtistId.Equals(artist) && si.IsPremium == true).GetPageAsync(pageable);
+			}
+            return await _sharedImageRepository.QueryHelper().Filter(si => si.ArtistId.Equals(artist) && si.IsPremium == false).GetPageAsync(pageable);
+
+        }
     }
 }

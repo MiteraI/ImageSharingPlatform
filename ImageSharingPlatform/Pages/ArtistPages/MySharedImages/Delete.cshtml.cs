@@ -13,13 +13,13 @@ namespace ImageSharingPlatform.Pages.ArtistPages.MySharedImages
 {
     public class DeleteModel : PageModel
     {
-        private readonly ImageSharingPlatform.Domain.Entities.ApplicationDbContext _context;
+        private readonly ISharedImageService _sharedImageService;
         private readonly IUserService _userService;
         private readonly IImageCategoryService _imageCategoryService;
 
-        public DeleteModel(ImageSharingPlatform.Domain.Entities.ApplicationDbContext context, IUserService userService, IImageCategoryService imageCategoryService)
+        public DeleteModel(ISharedImageService sharedImageService, IUserService userService, IImageCategoryService imageCategoryService)
         {
-            _context = context;
+            _sharedImageService = sharedImageService;
             _userService = userService;
             _imageCategoryService = imageCategoryService;
         }
@@ -27,45 +27,36 @@ namespace ImageSharingPlatform.Pages.ArtistPages.MySharedImages
         [BindProperty]
         public SharedImage SharedImage { get; set; } = default!;
 
-        public async Task<IActionResult> OnGetAsync(Guid? id)
+        public async Task<IActionResult> OnGetAsync(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var sharedimage = await _context.SharedImages.FirstOrDefaultAsync(m => m.Id == id);
             var users = await _userService.GetAllUsersAsync();
             var categories = await _imageCategoryService.GetAllImageCategoriesAsync();
 
             ViewData["ArtistId"] = new SelectList(users, "Id", "Email");
             ViewData["ImageCategoryId"] = new SelectList(categories, "Id", "CategoryName");
 
-            if (sharedimage == null)
+            SharedImage = await _sharedImageService.GetSharedImageByIdAsync(id);
+
+            if (SharedImage == null)
             {
                 return NotFound();
-            }
-            else
-            {
-                SharedImage = sharedimage;
             }
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(Guid? id)
+        public async Task<IActionResult> OnPostAsync(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var sharedimage = await _context.SharedImages.FindAsync(id);
-            if (sharedimage != null)
-            {
-                SharedImage = sharedimage;
-                _context.SharedImages.Remove(SharedImage);
-                await _context.SaveChangesAsync();
-            }
+            SharedImage = await _sharedImageService.DeleteSharedImage(SharedImage.Id);
             TempData["SuccessMessage"] = "Image is deleted successfully!";
             return RedirectToPage("./Index");
         }

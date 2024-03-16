@@ -22,5 +22,6 @@ namespace ImageSharingPlatform.Service.Services.Interfaces
         Task<SharedImage> FindSharedImageByUserIdWithFullDetails(Guid userId);
         Task<IEnumerable<SharedImage>> FindSharedImageWithSearchNameAndCate(string searchName, Guid? imageCategoryId);
         Task<IPage<SharedImage>> FindSharedImageWithSearchNameAndCatePageable(string searchName, Guid? imageCategoryId, IPageable pageable);
+        Task<IPage<SharedImage>> FindSharedImageForArtistPageable(Guid artist, bool? isPremium, IPageable pageable);
     }
 }

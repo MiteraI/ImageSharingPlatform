@@ -8,45 +8,45 @@ using Microsoft.EntityFrameworkCore;
 using ImageSharingPlatform.Domain.Entities;
 using ImageSharingPlatform.Service.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using ImageSharingPlatform.Service.Services;
 
 namespace ImageSharingPlatform.Pages.ArtistPages.MySharedImages
 {
     public class DetailsModel : PageModel
     {
-        private readonly ImageSharingPlatform.Domain.Entities.ApplicationDbContext _context;
+        private readonly ISharedImageService _sharedImageService;
         private readonly IUserService _userService;
         private readonly IImageCategoryService _imageCategoryService;
 
-        public DetailsModel(ImageSharingPlatform.Domain.Entities.ApplicationDbContext context, IUserService userService, IImageCategoryService imageCategoryService)
+        public DetailsModel(ISharedImageService sharedImageService, IUserService userService, IImageCategoryService imageCategoryService)
         {
-            _context = context;
+            _sharedImageService = sharedImageService;
             _userService = userService;
             _imageCategoryService = imageCategoryService;
         }
 
         public SharedImage SharedImage { get; set; } = default!;
 
-        public async Task<IActionResult> OnGetAsync(Guid? id)
+        public async Task<IActionResult> OnGetAsync(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var sharedimage = await _context.SharedImages.FirstOrDefaultAsync(m => m.Id == id);
             var users = await _userService.GetAllUsersAsync();
             var categories = await _imageCategoryService.GetAllImageCategoriesAsync();
 
             ViewData["ArtistId"] = new SelectList(users, "Id", "Email");
             ViewData["ImageCategoryId"] = new SelectList(categories, "Id", "CategoryName");
-            if (sharedimage == null)
+
+            SharedImage = await _sharedImageService.GetSharedImageByIdAsync(id);
+
+            if (SharedImage == null)
             {
                 return NotFound();
             }
-            else
-            {
-                SharedImage = sharedimage;
-            }
+
             return Page();
         }
     }

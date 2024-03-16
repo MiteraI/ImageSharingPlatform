@@ -7,41 +7,49 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ImageSharingPlatform.Domain.Entities;
+using ImageSharingPlatform.Service.Services.Interfaces;
 
 namespace ImageSharingPlatform.Pages.ArtistPages.MySharedImages
 {
     public class EditModel : PageModel
     {
-        private readonly ImageSharingPlatform.Domain.Entities.ApplicationDbContext _context;
+        private readonly ISharedImageService _sharedImageService;
+        private readonly IUserService _userService;
+        private readonly IImageCategoryService _imageCategoryService;
 
-        public EditModel(ImageSharingPlatform.Domain.Entities.ApplicationDbContext context)
+        public EditModel(ISharedImageService sharedImageService, IUserService userService, IImageCategoryService imageCategoryService)
         {
-            _context = context;
+            _sharedImageService = sharedImageService;
+            _userService = userService;
+            _imageCategoryService = imageCategoryService;
         }
 
         [BindProperty]
         public SharedImage SharedImage { get; set; } = default!;
 
-        public async Task<IActionResult> OnGetAsync(Guid? id)
+        public async Task<IActionResult> OnGetAsync(Guid id)
         {
+            var users = await _userService.GetAllUsersAsync();
+            var categories = await _imageCategoryService.GetAllImageCategoriesAsync();
+
+            ViewData["ArtistId"] = new SelectList(users, "Id", "Email");
+            ViewData["ImageCategoryId"] = new SelectList(categories, "Id", "CategoryName");
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            var sharedimage =  await _context.SharedImages.FirstOrDefaultAsync(m => m.Id == id);
-            if (sharedimage == null)
+            SharedImage = await _sharedImageService.GetSharedImageByIdAsync(id);
+
+            if (SharedImage == null)
             {
                 return NotFound();
             }
-            SharedImage = sharedimage;
-           ViewData["ArtistId"] = new SelectList(_context.Users, "Id", "Email");
-           ViewData["ImageCategoryId"] = new SelectList(_context.ImageCategories, "Id", "CategoryName");
+
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -49,15 +57,30 @@ namespace ImageSharingPlatform.Pages.ArtistPages.MySharedImages
                 return Page();
             }
 
-            _context.Attach(SharedImage).State = EntityState.Modified;
+            var entity = await _sharedImageService.GetSharedImageByIdAsync(SharedImage.Id);
+
+            if (entity == null)
+            {
+                return NotFound();
+            }
+
+            if (!string.IsNullOrEmpty(SharedImage.ImageUrl))
+            {
+                entity.ImageUrl = SharedImage.ImageUrl;
+            }
+
+            entity.ImageName = SharedImage.ImageName;
+            entity.Description = SharedImage.Description;
+            entity.ImageCategoryId = SharedImage.ImageCategoryId;
+            entity.IsPremium = SharedImage.IsPremium;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _sharedImageService.EditSharedImage(entity);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!SharedImageExists(SharedImage.Id))
+                if (!await _sharedImageService.SharedImageExistsAsync(x => x.Id == SharedImage.Id))
                 {
                     return NotFound();
                 }
@@ -70,9 +93,5 @@ namespace ImageSharingPlatform.Pages.ArtistPages.MySharedImages
             return RedirectToPage("./Index");
         }
 
-        private bool SharedImageExists(Guid id)
-        {
-            return _context.SharedImages.Any(e => e.Id == id);
-        }
     }
 }
