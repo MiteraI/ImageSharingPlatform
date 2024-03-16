@@ -34,27 +34,22 @@ namespace ImageSharingPlatform.Pages.Authentication
                 return Page();
             }
 
-            try
+            if (await _userService.CheckDuplicateUsername(InputUser.Username))
             {
-                var isAvailable = await _userService.CheckRegisterUser(InputUser.Username, InputUser.Email);
+				ModelState.AddModelError("InputUser.Username", "Username already exists");
+				return Page();
+			}
 
-                if (isAvailable == null)
-                {
-                    var user = await _userService.RegisterUser(_mapper.Map<User>(InputUser));
-
-                    if (user != null)
-                    {
-                        TempData["SuccessMessage"] = "Register successfully <3";
-                        return RedirectToPage("/Index");
-                    }
-                }
-            }
-            catch (Exception ex)
+            if (await _userService.CheckDuplicateEmail(InputUser.Email))
             {
-                ModelState.AddModelError(string.Empty, ex.Message);
+                ModelState.AddModelError("InputUser.Email", "Email already exists");
+                return Page();
             }
 
-            return Page();
+            var user = _mapper.Map<User>(InputUser);
+            user = await _userService.RegisterUser(user);
+
+            return Redirect("/Authentication/Login");
         }
     }
 }
