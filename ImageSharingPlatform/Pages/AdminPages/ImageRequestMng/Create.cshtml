@@ -5,7 +5,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form method="post" enctype="multipart/form-data">
+        <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="ImageRequests.Title" class="control-label"></label>
@@ -22,19 +22,10 @@
                 <input asp-for="ImageRequests.Price" class="form-control" />
                 <span asp-validation-for="ImageRequests.Price" class="text-danger"></span>
             </div>
-            @*<div class="form-group">
-                <label asp-for="ImageRequests.CreateTime" class="control-label"></label>
-                <input asp-for="ImageRequests.CreateTime" class="form-control" />
-                <span asp-validation-for="ImageRequests.CreateTime" class="text-danger"></span>
-            </div>
             <div class="form-group">
-                <label asp-for="ImageUpload">Image Upload</label>
-                <br/>
-                <input asp-for="ImageUpload" type="file" id="ImageUpload" name="ImageUpload" />
-            </div> *@
-            <div class="form-group">
-                <label asp-for="ImageRequests.RequesterUserId" class="control-label">Requester User</label>
-                <select asp-for="ImageRequests.RequesterUserId" class="form-control" asp-items="ViewBag.RequesterUserId"></select>
+                <label asp-for="ImageRequests.ExpectedTime" class="control-label">Expected Time</label>
+                <input asp-for="ImageRequests.ExpectedTime" class="form-control" style="padding-top:0; padding-bottom:0;" />
+                <span asp-validation-for="ImageRequests.ExpectedTime" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ImageRequests.ArtistId" class="control-label">Artist</label>

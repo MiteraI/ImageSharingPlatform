@@ -1,0 +1,46 @@
+﻿@page
+@model ImageSharingPlatform.Pages.AdminPages.ImageRequestMng.CreateRequestDetailModel
+@{
+}
+
+<h4>Create Request Detail</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden"  asp-for="RequestDetail.RequestId"/>
+            <div class="form-group">
+                <label asp-for="RequestDetail.Title" class="control-label"></label>
+                <input asp-for="RequestDetail.Title" class="form-control" />
+                <span asp-validation-for="RequestDetail.Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RequestDetail.Comment" class="control-label"></label>
+                <input asp-for="RequestDetail.Comment" class="form-control" />
+                <span asp-validation-for="RequestDetail.Comment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RequestDetail.NewPrice" class="control-label">New Price</label>
+                <input asp-for="RequestDetail.NewPrice" class="form-control" />
+                <span asp-validation-for="RequestDetail.NewPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RequestDetail.ExpectedTime" class="control-label">Expected Time</label>
+                <input asp-for="RequestDetail.ExpectedTime" class="form-control" style="padding-top:0; padding-bottom:0;" />
+                <span asp-validation-for="RequestDetail.ExpectedTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

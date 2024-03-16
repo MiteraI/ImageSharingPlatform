@@ -22,46 +22,33 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
             _imageRequestService = imageRequestService;
             _userService = userService; 
         }
-
-        public async Task<IActionResult> OnGet()
-        {
-            var users =  await _userService.GetAllUsersAsync(); 
-            ViewData["ArtistId"] = new SelectList(users, "Id", "Email");
-            ViewData["RequesterUserId"] = new SelectList(users, "Id", "Email");
-            return Page();
-        }
-
         [BindProperty]
         public ImageRequest ImageRequests { get; set; } = default!;
         [BindProperty]
         public IFormFile? ImageUpload { get; set; }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnGet(Guid id)
         {
-            if (ImageUpload != null)
+            if (id == Guid.Empty)
             {
-                using (var memoryStream = new MemoryStream())
-                {
-                    await ImageUpload.CopyToAsync(memoryStream);
-
-                    if (memoryStream.Length < 2097152)
-                    {
-                        ImageRequests.ImageBlob = memoryStream.ToArray();
-                    }
-                    else
-                    {
-                        TempData["error"] = "The file is too large.";
-                    }
-                }
-            }
-            if (!ModelState.IsValid)
-            {
+                var users = await _userService.GetAllUsersAsync();
+                ViewData["ArtistId"] = new SelectList(users, "Id", "Email");
+                ViewData["RequesterUserId"] = new SelectList(users, "Id", "Email");
                 return Page();
             }
 
+            var users1 = await _userService.GetAllUsersAsync();
+            users1 = users1.Where(u => u.Id == id).ToList();
+            ViewData["ArtistId"] = new SelectList(users1, "Id", "Email");
+            ViewData["RequesterUserId"] = new SelectList(users1, "Id", "Email");
+            return Page();
+           
+        }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
             var userJson = HttpContext.Session.GetString("LoggedInUser");
             var useraccount = JsonConvert.DeserializeObject<User>(userJson);
-
             var userId = useraccount.Id;
 
             if (userId == Guid.Empty)
@@ -74,21 +61,30 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
             {
                 return NotFound("User not found.");
             }
+
             ImageRequests.RequesterUserId = userId;
             ImageRequests.CreateTime = DateTime.Now;
-
             ImageRequests.RequestStatus = RequestStatus.PROCESSING;
-
-            
+            if (ImageRequests.RequesterUserId == ImageRequests.ArtistId)
+            {
+                TempData["ErrorMessage"] = "Cannot create duplicated !";
+                return Redirect("./Create");
+            }
+            if (ImageRequests.ExpectedTime < ImageRequests.CreateTime)
+            {
+                TempData["ErrorMessage"] = "The expected time cannot be less than the created time !";
+                return Redirect("./Create");
+            }
 
             var newImageRequest = _imageRequestService.CreateImageRequest(ImageRequests);
 
             if (newImageRequest == null)
             {
-                return Page();
+                TempData["ErrorMessage"] = "Cannot create a Image Request!";
+                return Redirect("./Index");
             }
             TempData["SuccessMessage"] = "The request is created successfully !";
-            return RedirectToPage("./Index");
+            return Redirect("./Index");
         }
     }
 }
