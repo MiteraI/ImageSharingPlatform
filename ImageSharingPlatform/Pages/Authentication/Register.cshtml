@@ -13,6 +13,11 @@
 		<div>
 			<label asp-for="InputUser.Username" class="form-label text-black"></label>
 			<input asp-for="InputUser.Username" class="form-control text-black" style="background-color: #f8f9fa; border: 1px solid #ced4da; border-radius: 4px;" />
+			<span asp-validation-for="InputUser.Username" class="text-danger"></span>
+		</div>
+		<div>
+			<label asp-for="InputUser.Password" class="form-label text-black"></label>
+			<input asp-for="InputUser.Password" class="form-control text-black" style="background-color: #f8f9fa; border: 1px solid #ced4da; border-radius: 4px;" />
 		</div>
 		<div>
 			<label asp-for="InputUser.FirstName" type="text" class="form-label text-black"></label>
@@ -25,6 +30,7 @@
 		<div>
 			<label asp-for="InputUser.Email" type="email" class="form-label text-black"></label>
 			<input asp-for="InputUser.Email" class="form-control text-black" style="background-color: #f8f9fa; border: 1px solid #ced4da; border-radius: 4px;" />
+			<span asp-validation-for="InputUser.Email" class="text-danger"></span>
 		</div>
 		<div class="d-flex justify-content-around align-items-center mt-2">
 			<button type="submit" class="btn btn-primary">Register</button>

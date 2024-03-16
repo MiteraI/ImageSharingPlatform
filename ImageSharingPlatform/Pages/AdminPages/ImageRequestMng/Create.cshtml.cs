@@ -27,12 +27,22 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
         [BindProperty]
         public IFormFile? ImageUpload { get; set; }
 
-        public async Task<IActionResult> OnGet()
+        public async Task<IActionResult> OnGet(Guid id)
         {
-            var users =  await _userService.GetAllUsersAsync();
-            ViewData["ArtistId"] = new SelectList(users, "Id", "Email") ;
-            ViewData["RequesterUserId"] = new SelectList(users, "Id", "Email");
+            if (id == Guid.Empty)
+            {
+                var users = await _userService.GetAllUsersAsync();
+                ViewData["ArtistId"] = new SelectList(users, "Id", "Email");
+                ViewData["RequesterUserId"] = new SelectList(users, "Id", "Email");
+                return Page();
+            }
+
+            var users1 = await _userService.GetAllUsersAsync();
+            users1 = users1.Where(u => u.Id == id).ToList();
+            ViewData["ArtistId"] = new SelectList(users1, "Id", "Email");
+            ViewData["RequesterUserId"] = new SelectList(users1, "Id", "Email");
             return Page();
+           
         }
 
         public async Task<IActionResult> OnPostAsync()

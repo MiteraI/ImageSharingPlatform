@@ -14,7 +14,7 @@ using ImageSharingPlatform.Domain.Enums;
 
 namespace ImageSharingPlatform.Service.Services
 {
-    public class UserService : IUserService
+	public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
         private readonly IRoleRepository _roleRepository;
@@ -140,20 +140,16 @@ namespace ImageSharingPlatform.Service.Services
             await _userRepository.SaveChangesAsync();
         }
 
-        public async Task<User> CheckRegisterUser(string username, string email)
-        {
-            var regisUsername = await _userRepository.QueryHelper().GetOneAsync(u => u.Username.Equals(username));
-            if (regisUsername != null)
-            {
-                throw new Exception("Username is existed.");
-            }
+		public async Task<bool> CheckDuplicateUsername(string username)
+		{
+			var user = await _userRepository.QueryHelper().GetOneAsync(u => u.Username.Equals(username));
+            return user == null ? false : true;
+		}
 
-            var regisEmail = await _userRepository.QueryHelper().GetOneAsync(u => u.Email.Equals(email));
-            if (regisEmail != null)
-            {
-                throw new Exception("Email is existed.");
-            }
-            return null;
-        }
-    }
+		public async Task<bool> CheckDuplicateEmail(string email)
+		{
+			var user = await _userRepository.QueryHelper().GetOneAsync(u => u.Email.ToLower().Equals(email.ToLower()));
+			return user == null ? false : true;
+		}
+	}
 }
