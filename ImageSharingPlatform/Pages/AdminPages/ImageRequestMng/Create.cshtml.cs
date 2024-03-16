@@ -55,6 +55,11 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
             ImageRequests.RequesterUserId = userId;
             ImageRequests.CreateTime = DateTime.Now;
             ImageRequests.RequestStatus = RequestStatus.PROCESSING;
+            if (ImageRequests.RequesterUserId == ImageRequests.ArtistId)
+            {
+                TempData["ErrorMessage"] = "Cannot create duplicated !";
+                return Redirect("./Create");
+            }
             if (ImageRequests.ExpectedTime < ImageRequests.CreateTime)
             {
                 TempData["ErrorMessage"] = "The expected time cannot be less than the created time !";

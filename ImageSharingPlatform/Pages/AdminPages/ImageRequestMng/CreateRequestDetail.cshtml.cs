@@ -25,6 +25,8 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
         public ImageRequest ImageRequest { get; set; }
         [BindProperty]
         public RequestDetail RequestDetail { get; set; } = new RequestDetail();
+        [BindProperty] 
+        public ImageRequest imageRequest { get; set; } = new ImageRequest();
 
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
@@ -33,25 +35,20 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
                 return NotFound();
             }
 
-            ImageRequest = await _imageRequestService.GetImageRequestByIdWithFullDetailsAsync(id);
-            if (ImageRequest == null)
+            imageRequest = await _imageRequestService.GetImageRequestByIdWithFullDetailsAsync(id);
+            if (imageRequest == null)
             {
                 return NotFound();
             }
             RequestDetail.RequestId = id;
-            RequestDetail.NewPrice = ImageRequest.Price;
-            RequestDetail.ExpectedTime = ImageRequest.ExpectedTime;
+            RequestDetail.NewPrice = imageRequest.Price;
+            RequestDetail.ExpectedTime = imageRequest.ExpectedTime;
 
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            //if (!ModelState.IsValid)
-            //{
-            //    return Page();
-            //}
-
             var userJson = HttpContext.Session.GetString("LoggedInUser");
             var useraccount = JsonConvert.DeserializeObject<User>(userJson);
             var userId = useraccount.Id;
@@ -69,6 +66,11 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
 
             RequestDetail.CreatedAt = DateTime.Now;
             RequestDetail.UserId = userId;
+            if (RequestDetail.ExpectedTime < RequestDetail.CreatedAt)
+            {
+                TempData["ErrorMessage"] = "The expected time cannot be less than the created time !";
+                return Redirect($"./Details?id={ImageRequest.Id.ToString()}");
+            }
 
             var newRequestDetail = await _requestDetailService.AddRequestDetailAsync(RequestDetail);
 
@@ -83,7 +85,7 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
             updateImageRequest.ExpectedTime = newRequestDetail.ExpectedTime;
             updateImageRequest.RequestStatus = Domain.Enums.RequestStatus.PROCESSING;
             await _imageRequestService.EditImageRequest(updateImageRequest);
-            return RedirectToPage("./Details", new {id = RequestDetail.RequestId});
+            return Redirect($"./Details?id={ImageRequest.Id.ToString()}");
         }
     }
 }

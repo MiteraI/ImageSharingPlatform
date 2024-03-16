@@ -79,6 +79,13 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
             }
             var editImageRequest = await _imageRequestService.GetImageRequestByIdWithFullDetailsAsync(ImageRequest.Id);
             editImageRequest.RequesterUserId = ImageRequest.RequesterUserId;
+            if (editImageRequest.RequestStatus == RequestStatus.USER_ACCEPTED || editImageRequest.RequestStatus == RequestStatus.ARTIST_ACCEPTED)
+            {
+                editImageRequest.RequestStatus = RequestStatus.ACCEPTED;
+                await _imageRequestService.EditImageRequest(editImageRequest);
+                TempData["SuccessMessage"] = "Details of Image Request is accepted successfully <3";
+                return Redirect($"./Details?id={ImageRequest.Id.ToString()}");
+            }
 
             if (userId != editImageRequest.RequesterUserId)
             {
@@ -91,11 +98,6 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
                 await _imageRequestService.EditImageRequest(editImageRequest);
             }
 
-            if (editImageRequest.RequestStatus == RequestStatus.USER_ACCEPTED || editImageRequest.RequestStatus == RequestStatus.ARTIST_ACCEPTED)
-            {
-                editImageRequest.RequestStatus = RequestStatus.ACCEPTED;
-                await _imageRequestService.EditImageRequest(editImageRequest);
-            }
             TempData["SuccessMessage"] = "Details of Image Request is accepted successfully <3";
             return Redirect($"./Details?id={ImageRequest.Id.ToString()}");
         }
@@ -221,7 +223,7 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
                 await _userService.IncreaseBalance(editImageRequest.ArtistId, editImageRequest.Price);
                 editImageRequest.RequestStatus = RequestStatus.SUCCESS;
                 await _imageRequestService.EditImageRequest(editImageRequest);
-                ViewData["PaymentSuccess"] = "You have succesfully pay the image to the artist";
+                ViewData["SuccessMessage"] = "You have succesfully pay the image to the artist";
                 return Redirect($"./Details?id={ImageRequest.Id.ToString()}");
             }
         }

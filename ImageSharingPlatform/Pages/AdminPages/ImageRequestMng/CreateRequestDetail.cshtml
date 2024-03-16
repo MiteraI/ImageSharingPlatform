@@ -9,7 +9,7 @@
     <div class="col-md-4">
         <form method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input  asp-for="RequestDetail.RequestId"/>
+            <input type="hidden"  asp-for="RequestDetail.RequestId"/>
             <div class="form-group">
                 <label asp-for="RequestDetail.Title" class="control-label"></label>
                 <input asp-for="RequestDetail.Title" class="form-control" />
