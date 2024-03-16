@@ -25,5 +25,6 @@ namespace ImageSharingPlatform.Service.Services.Interfaces
         Task<IEnumerable<User>> GetAllUsersAsync();
         Task IncreaseBalance(Guid userId, double amount);
         Task DecreaseBalance(Guid userId, double amount);
+        Task<User> CheckRegisterUser(string username, string email);
     }
 }

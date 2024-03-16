@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using ImageSharingPlatform.Domain.Entities;
 using ImageSharingPlatform.Dto;
 using ImageSharingPlatform.Service.Services;
@@ -34,16 +34,27 @@ namespace ImageSharingPlatform.Pages.Authentication
                 return Page();
             }
 
-
-            var user = await _userService.RegisterUser(_mapper.Map<User>(InputUser));
-
-            if (user == null)
+            try
             {
-                return Page();
+                var isAvailable = await _userService.CheckRegisterUser(InputUser.Username, InputUser.Email);
+
+                if (isAvailable == null)
+                {
+                    var user = await _userService.RegisterUser(_mapper.Map<User>(InputUser));
+
+                    if (user != null)
+                    {
+                        TempData["SuccessMessage"] = "Register successfully <3";
+                        return RedirectToPage("/Index");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
             }
 
-            TempData["SuccessMessage"] = "Register successfully <3";
-            return RedirectToPage("/Index");
+            return Page();
         }
     }
 }
