@@ -9,14 +9,14 @@ namespace ImageSharingPlatform.Domain.Entities
 {
 	public class RequestDetail : BaseEntity<Guid>
 	{
-		public Guid? RequestId { get; set; }
-		public ImageRequest? Request { get; set; }
+		public Guid RequestId { get; set; }
+		public ImageRequest Request { get; set; }
 		public string? Title { get; set; }
 		public string? Comment { get; set; }
 		public DateTime CreatedAt { get; set; }
 
         [Column("expected_time")]
-        public DateTime ExpectedTime { get; set; }
+        public DateTime? ExpectedTime { get; set; }
 
         public double? NewPrice { get; set; }
 		public Guid? UserId { get; set; }

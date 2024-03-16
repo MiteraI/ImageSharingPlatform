@@ -76,7 +76,7 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
             }
             ImageRequests.RequesterUserId = userId;
             ImageRequests.CreateTime = DateTime.Now;
-
+            
             ImageRequests.RequestStatus = RequestStatus.PROCESSING;
 
             

@@ -41,7 +41,9 @@ namespace ImageSharingPlatform.Service.Services
 
         public async Task<IEnumerable<ImageRequest>> GetAllImageRequestsByArtistAsync(Guid artistId)
         {
-            return await _imageRequestRepository.GetAllByArtistIdAsync(artistId);
+            return await _imageRequestRepository.QueryHelper()
+                .Include(ir => ir.RequesterUser)
+                .Filter(ir => ir.ArtistId == artistId && ir.RequestStatus != RequestStatus.CANCELLED).GetAllAsync();
         }
 
         public async Task<IEnumerable<ImageRequest>> GetAllImageRequestsByUserAsync(Guid userId)
@@ -63,5 +65,6 @@ namespace ImageSharingPlatform.Service.Services
         {
             return await _imageRequestRepository.Exists(predicate);
         }
+
     }
 }
