@@ -8,8 +8,6 @@
 				<div class="image-header">
 					<!-- Assuming you have a property ArtistName in your model -->
 					<a asp-page="/ArtistProfile/Index" asp-route-id="@Model.SharedImage.ArtistId"><h3>@Html.DisplayFor(model => model.SharedImage.Artist.FirstName) @Html.DisplayFor(model => model.SharedImage.Artist.LastName)</h3></a>
-					<!-- You can add Follow and Donate buttons here -->
-
 				</div>
 				<div class="d-flex">
 					<div class="image-actions" style="margin-bottom:13px">

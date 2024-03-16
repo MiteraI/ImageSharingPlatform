@@ -92,19 +92,19 @@ namespace ImageSharingPlatform.Service.Services
 				.GetPageAsync(pageable);
 		}
 
-        public async Task<IEnumerable<SharedImage>> GetAllPremiumSharedImagesAsync()
-        {
-            return await _sharedImageRepository.GetAllPreiumWithFullDetails();
-        }
+		public async Task<IEnumerable<SharedImage>> GetAllPremiumSharedImagesAsync()
+		{
+			return await _sharedImageRepository.GetAllPreiumWithFullDetails();
+		}
 
-        public async Task<IEnumerable<SharedImage>> FindSharedImageByArtistId(Guid artistId, bool isPremium)
-        {
-            if (isPremium)
+		public async Task<IEnumerable<SharedImage>> FindSharedImageByArtistId(Guid artistId, bool isPremium)
+		{
+			if (isPremium)
 			{
-                return await _sharedImageRepository.QueryHelper().Filter(si => si.ArtistId.Equals(artistId)).GetAllAsync();
-            } 
+				return await _sharedImageRepository.QueryHelper().Filter(si => si.ArtistId.Equals(artistId)).GetAllAsync();
+			}
 			return await _sharedImageRepository.QueryHelper().Filter(si => si.ArtistId.Equals(artistId) && si.IsPremium == false).GetAllAsync();
-        }
+		}
 
 		public async Task<Review> CreateReviewForImage(Guid sharedImageId, Review review)
 		{
@@ -113,5 +113,20 @@ namespace ImageSharingPlatform.Service.Services
 			await _reviewRepository.SaveChangesAsync();
 			return review;
 		}
+		public async Task<IPage<SharedImage>> FindSharedImageForArtistPageable(Guid artist, bool? isPremium, IPageable pageable)
+		{
+			if (isPremium == null)
+			{
+				return await _sharedImageRepository.QueryHelper().Filter(si => si.ArtistId.Equals(artist)).GetPageAsync(pageable);
+			}
+			else if (isPremium == true)
+			{
+				return await _sharedImageRepository.QueryHelper().Filter(si => si.ArtistId.Equals(artist) && si.IsPremium == true).GetPageAsync(pageable);
+			}
+			return await _sharedImageRepository.QueryHelper().Filter(si => si.ArtistId.Equals(artist) && si.IsPremium == false).GetPageAsync(pageable);
+
+		}
 	}
 }
+        
+

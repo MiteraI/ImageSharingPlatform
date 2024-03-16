@@ -14,36 +14,36 @@
                             <div class="border p-3">
                                 <label asp-for="SharedImage.ImageName" class="control-label"></label>
                                 <div class="form-floating py-2 col-12">
-                                    <input asp-for="SharedImage.ImageName" class="form-control" style="padding-top:0; padding-bottom:0;" />
+                                    <input asp-for="SharedImage.ImageName" class="form-control" style="padding-top:0; padding-bottom:0;" readonly/>
                                     <span asp-validation-for="SharedImage.ImageName" class="text-danger"></span>
                                 </div>
 
                                 <label class="form-label">Upload image</label>
                                 <div class="form-floating py-2 col-12">
-                                    <input type="file" name="uploadImage" class="form-control text-black" style="background-color: #f8f9fa; border: 1px solid #ced4da; padding-top:16px;" />
+                                    <input type="file" name="uploadImage" class="form-control text-black" style="background-color: #f8f9fa; border: 1px solid #ced4da; padding-top:16px;" readonly/>
                                 </div>
 
                                 <label asp-for="SharedImage.ImageCategoryId" class="control-label"></label>
                                 <div class="form-floating py-2 col-12">
-                                    <input asp-for="SharedImage.ImageCategoryId" class="form-control" style="padding-top:0; padding-bottom:0;" />
+                                    <input asp-for="SharedImage.ImageCategoryId" class="form-control" style="padding-top:0; padding-bottom:0;" readonly />
                                     <span asp-validation-for="SharedImage.ImageCategoryId" class="text-danger"></span>
                                 </div>
 
                                 <label asp-for="SharedImage.Description" class="control-label"></label>
                                 <div class="form-floating py-2 col-12">
-                                    <input asp-for="SharedImage.Description" class="form-control" style="padding-top:0; padding-bottom:0;" />
+                                    <input asp-for="SharedImage.Description" class="form-control" style="padding-top:0; padding-bottom:0;" readonly />
                                     <span asp-validation-for="SharedImage.Description" class="text-danger"></span>
                                 </div>
 
                                 <label asp-for="SharedImage.CreatedAt" class="control-label"></label>
                                 <div class="form-floating py-2 col-12">
-                                    <input asp-for="SharedImage.CreatedAt" class="form-control" style="padding-top:0; padding-bottom:0;" />
+                                    <input asp-for="SharedImage.CreatedAt" class="form-control" style="padding-top:0; padding-bottom:0;" readonly />
                                     <span asp-validation-for="SharedImage.CreatedAt" class="text-danger"></span>
                                 </div>
 
                                 <label asp-for="SharedImage.ArtistId" class="control-label"></label>
                                 <div class="form-floating py-2 col-12">
-                                    <input asp-for="SharedImage.ArtistId" class="form-control" style="padding-top:0; padding-bottom:0;" />
+                                    <input asp-for="SharedImage.ArtistId" class="form-control" style="padding-top:0; padding-bottom:0;" readonly />
                                     <span asp-validation-for="SharedImage.ArtistId" class="text-danger"></span>
                                 </div>
 
