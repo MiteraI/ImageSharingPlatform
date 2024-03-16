@@ -36,6 +36,13 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageCategoryMng
                 return Page();
             }
 
+            var category = ImageCategory.CategoryName;
+            if (category != null)
+            {
+				ModelState.AddModelError(string.Empty, "Category is already on the list.");
+				return Page();
+			}
+
             var imagecategory = await _imageCategoryService.CreateImageCategory(ImageCategory);
 
             if (imagecategory == null)
