@@ -16,7 +16,7 @@ namespace ImageSharingPlatform.Domain.Entities
 		public DateTime CreatedAt { get; set; }
 
         [Column("expected_time")]
-        public DateTime? ExpectedTime { get; set; }
+        public DateTime ExpectedTime { get; set; }
 
         public double? NewPrice { get; set; }
 		public Guid? UserId { get; set; }
