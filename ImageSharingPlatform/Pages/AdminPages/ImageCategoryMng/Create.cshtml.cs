@@ -12,45 +12,50 @@ using ImageSharingPlatform.Service.Services;
 
 namespace ImageSharingPlatform.Pages.AdminPages.ImageCategoryMng
 {
-    public class CreateModel : PageModel
-    {
-        private readonly IImageCategoryService _imageCategoryService;
+	public class CreateModel : PageModel
+	{
+		private readonly IImageCategoryService _imageCategoryService;
 
-        public CreateModel(IImageCategoryService imageCategoryService)
-        {
-            _imageCategoryService = imageCategoryService;
-        }
+		public CreateModel(IImageCategoryService imageCategoryService)
+		{
+			_imageCategoryService = imageCategoryService;
+		}
 
-        public IActionResult OnGet()
-        {
-            return Page();
-        }
+		public IActionResult OnGet()
+		{
+			return Page();
+		}
 
-        [BindProperty]
-        public ImageCategory ImageCategory { get; set; } = default!;
+		[BindProperty]
+		public ImageCategory ImageCategory { get; set; } = default!;
 
-        public async Task<IActionResult> OnPostAsync()
-        {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-
-            var category = ImageCategory.CategoryName;
-            if (category != null)
-            {
-				ModelState.AddModelError(string.Empty, "Category is already on the list.");
+		public async Task<IActionResult> OnPostAsync()
+		{
+			if (!ModelState.IsValid)
+			{
 				return Page();
 			}
 
-            var imagecategory = await _imageCategoryService.CreateImageCategory(ImageCategory);
+			try
+			{
+				var existingCategory = await _imageCategoryService.CheckCategoryName(ImageCategory.CategoryName);
 
-            if (imagecategory == null)
-            {
-                return Page();
-            }
-            TempData["SuccessMessage"] = "Category is created successfully!";
-            return RedirectToPage("./Index");
-        }
-    }
+				if (existingCategory == null)
+				{
+					var imagecategory = await _imageCategoryService.CreateImageCategory(ImageCategory);
+					if (imagecategory != null)
+					{
+						TempData["SuccessMessage"] = "Category is created successfully!";
+						return RedirectToPage("./Index");
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				ModelState.AddModelError(string.Empty, ex.Message);
+			}
+
+			return Page();
+		}
+	}
 }
