@@ -11,7 +11,7 @@ using ImageSharingPlatform.Service.Services;
 using Newtonsoft.Json;
 using ImageSharingPlatform.Domain.Enums;
 
-namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
+namespace ImageSharingPlatform.Pages.ImageRequestMng
 {
     public class DetailsModel : PageModel
     {
@@ -36,11 +36,16 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
 
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
+            var userJson = HttpContext.Session.GetString("LoggedInUser");
+            if (string.IsNullOrEmpty(userJson))
+            {
+                TempData["ErrorMessage"] = "You must login to access";
+                return RedirectToPage("/Authentication/Login");
+            }
             if (id == Guid.Empty)
             {
                 return NotFound();
             }
-
             ImageRequest = await _imageRequestService.GetImageRequestByIdWithFullDetailsAsync(id);
             if (ImageRequest == null)
             {
@@ -54,6 +59,12 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
         public async Task<IActionResult> OnPostAcceptedAsync(Guid id)
         {
             var userJson = HttpContext.Session.GetString("LoggedInUser");
+            if (string.IsNullOrEmpty(userJson))
+            {
+                TempData["ErrorMessage"] = "You must login to access";
+                return RedirectToPage("/Authentication/Login");
+            }
+
             var useraccount = JsonConvert.DeserializeObject<User>(userJson);
             var userId = useraccount.Id;
 
@@ -105,6 +116,11 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
         public async Task<IActionResult> OnPostCanReAsync(Guid id)
         {
             var userJson = HttpContext.Session.GetString("LoggedInUser");
+            if (string.IsNullOrEmpty(userJson))
+            {
+                TempData["ErrorMessage"] = "You must login to access";
+                return RedirectToPage("/Authentication/Login");
+            }
             var useraccount = JsonConvert.DeserializeObject<User>(userJson);
             var userId = useraccount.Id;
 
@@ -195,6 +211,11 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
                 return NotFound();
             }
             var userJson = HttpContext.Session.GetString("LoggedInUser");
+            if (string.IsNullOrEmpty(userJson))
+            {
+                TempData["ErrorMessage"] = "You must login to access";
+                return RedirectToPage("/Authentication/Login");
+            }
             var useraccount = JsonConvert.DeserializeObject<User>(userJson);
             var userId = useraccount.Id;
 

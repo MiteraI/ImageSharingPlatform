@@ -10,8 +10,9 @@ using ImageSharingPlatform.Service.Services.Interfaces;
 using ImageSharingPlatform.Service.Services;
 using Newtonsoft.Json;
 using ImageSharingPlatform.Domain.Enums;
+using Microsoft.IdentityModel.Tokens;
 
-namespace ImageSharingPlatform.Pages.ImageRequestMng
+namespace ImageSharingPlatform.Pages.ArtistPages.ReceivedImageRequest
 {
     public class ReceivedImageRequestModel : PageModel
     {
@@ -30,8 +31,12 @@ namespace ImageSharingPlatform.Pages.ImageRequestMng
         public async Task<IActionResult> OnGetAsync()
         {
             var userJson = HttpContext.Session.GetString("LoggedInUser");
+            if (string.IsNullOrEmpty(userJson))
+            {
+                TempData["ErrorMessage"] = "You must login to access";
+                return RedirectToPage("/Authentication/Login");
+            }
             var useraccount = JsonConvert.DeserializeObject<User>(userJson);
-
             var userId = useraccount.Id;
 
             if (userId == Guid.Empty)
@@ -45,14 +50,15 @@ namespace ImageSharingPlatform.Pages.ImageRequestMng
                 return NotFound("User not found.");
             }
 
-            var isAdmin = useraccount.Roles.Any(r => r.UserRole == UserRole.ROLE_ADMIN);
-            if (isAdmin)
+            var isArtist = useraccount.Roles.Any(r => r.UserRole == UserRole.ROLE_ARTIST);
+            if (isArtist)
             {
-                ImageRequests = (IList<ImageRequest>)await _imageRequestService.GetAllImageRequestsDetailsAsync();
+                ImageRequests = (IList<ImageRequest>)await _imageRequestService.GetAllImageRequestsByArtistAsync(userId);
             }
             else
             {
-                ImageRequests = (IList<ImageRequest>)await _imageRequestService.GetAllImageRequestsByArtistAsync(userId);
+                TempData["ErrorMessage"] = "You are not authorized to view this page";
+                return Redirect("/Index");
             }
 
             return Page();

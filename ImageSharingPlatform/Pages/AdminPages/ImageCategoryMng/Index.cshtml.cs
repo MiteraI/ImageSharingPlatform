@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using ImageSharingPlatform.Domain.Entities;
 using ImageSharingPlatform.Repository.Repositories.Interfaces;
 using ImageSharingPlatform.Service.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using ImageSharingPlatform.Domain.Enums;
 
 namespace ImageSharingPlatform.Pages.AdminPages.ImageCategoryMng
 {

@@ -11,7 +11,7 @@ using ImageSharingPlatform.Service.Services;
 using Newtonsoft.Json;
 using ImageSharingPlatform.Domain.Enums;
 
-namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
+namespace ImageSharingPlatform.Pages.ImageRequestMng
 {
     public class IndexModel : PageModel
     {
@@ -28,7 +28,12 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
 		public async Task<IActionResult> OnGetAsync()
         {
 			var userJson = HttpContext.Session.GetString("LoggedInUser");
-			var useraccount = JsonConvert.DeserializeObject<User>(userJson);
+            if (string.IsNullOrEmpty(userJson))
+            {
+                TempData["ErrorMessage"] = "You must login to access";
+                return RedirectToPage("/Authentication/Login");
+            }
+            var useraccount = JsonConvert.DeserializeObject<User>(userJson);
 
 			var userId = useraccount.Id;
 

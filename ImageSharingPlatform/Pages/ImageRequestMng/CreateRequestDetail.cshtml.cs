@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.DiaSymReader;
 using Newtonsoft.Json;
 
-namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
+namespace ImageSharingPlatform.Pages.ImageRequestMng
 {
     public class CreateRequestDetailModel : PageModel
     {
@@ -33,6 +33,13 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
             if (id == null)
             {
                 return NotFound();
+            }
+
+            var userJson = HttpContext.Session.GetString("LoggedInUser");
+            if (string.IsNullOrEmpty(userJson))
+            {
+                TempData["ErrorMessage"] = "You must login to access";
+                return RedirectToPage("/Authentication/Login");
             }
 
             imageRequest = await _imageRequestService.GetImageRequestByIdWithFullDetailsAsync(id);
@@ -73,7 +80,6 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
             }
 
             var newRequestDetail = await _requestDetailService.AddRequestDetailAsync(RequestDetail);
-
             var updateImageRequest = await _imageRequestService.GetImageRequestByIdWithFullDetailsAsync(RequestDetail.RequestId);
 
             if (updateImageRequest == null)
@@ -84,6 +90,7 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
             updateImageRequest.Price = (double)newRequestDetail.NewPrice;
             updateImageRequest.ExpectedTime = newRequestDetail.ExpectedTime;
             updateImageRequest.RequestStatus = Domain.Enums.RequestStatus.PROCESSING;
+            TempData["SuccessMessage"] = "The Image Request Status has editted !";
             await _imageRequestService.EditImageRequest(updateImageRequest);
             return Redirect($"./Details?id={ImageRequest.Id.ToString()}");
         }

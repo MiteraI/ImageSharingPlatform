@@ -14,6 +14,7 @@
 	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" />
 	<link rel="stylesheet" href="~/ImageSharingPlatform.styles.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/custom-style.css">
 </head>
 <body>
 	<header>
@@ -53,18 +54,17 @@
 												<li><a class="dropdown-item text-black" asp-area="Management" asp-page="/AdminPages/UserMng/Index">User Management</a></li>
 												<li><a class="dropdown-item text-black" asp-area="Management" asp-page="/AdminPages/ImageCategoryMng/Index">Category Management</a></li>
 												<li><a class="dropdown-item text-black" asp-area="Management" asp-page="/AdminPages/SharedImageMng/Index">Image Management</a></li>
-												<li><a class="dropdown-item text-black" asp-area="Management" asp-page="/AdminPages/ImageRequestMng/Index">Request Management</a></li>
-
 											}
 											else if (role.UserRole == UserRole.ROLE_ARTIST)
 											{
 												// Artist Urls in asp razor pages route
 												<li><a class="dropdown-item text-black" asp-page="/ArtistPages/MySharedImages/Index">My images</a></li>
-												<li><a class="dropdown-item text-black" asp-page="/AdminPages/ImageRequestMng/ReceivedImageRequest">Received requests</a></li>
+												<li><a class="dropdown-item text-black" asp-area="Management" asp-page="/ImageRequestMng/Index">Image Request Management</a></li>
+												<li><a class="dropdown-item text-black" asp-page="/ArtistPages/ReceivedImageRequest/ReceivedImageRequest">Received requests</a></li>
 											}
 											else
 											{
-												<li><a class="dropdown-item text-black" asp-page="/AdminPages/ImageRequestMng/Index">My requests</a></li>
+												<li><a class="dropdown-item text-black" asp-page="/ImageRequestMng/Index">My requests</a></li>
 												<li><a class="dropdown-item text-black" asp-page="/OwnedSub/Index">My Subscription Package</a></li>
 											}
 										}

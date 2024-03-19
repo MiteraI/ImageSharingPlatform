@@ -94,6 +94,12 @@ namespace ImageSharingPlatform.Service.Services
             return await _userRepository.GetAllAsync();
         }
 
+        public async Task<IEnumerable<User>> GetUserByRoles()
+        {
+            var result = await _userRepository.QueryHelper().Include(u => u.Roles).GetAllAsync();
+            return result;
+        }
+
         public async Task UpdateRoleToArtist(Guid userId)
         {
             User user = await _userRepository.GetOneIncludeRolesAsync(userId);

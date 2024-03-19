@@ -10,7 +10,7 @@ using ImageSharingPlatform.Service.Services.Interfaces;
 using ImageSharingPlatform.Domain.Enums;
 using Newtonsoft.Json;
 
-namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
+namespace ImageSharingPlatform.Pages.ImageRequestMng
 {
     public class CreateModel : PageModel
     {
@@ -20,7 +20,7 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
         public CreateModel(IImageRequestService imageRequestService, IUserService userService)
         {
             _imageRequestService = imageRequestService;
-            _userService = userService; 
+            _userService = userService;
         }
         [BindProperty]
         public ImageRequest ImageRequests { get; set; } = default!;
@@ -29,20 +29,42 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageRequestMng
 
         public async Task<IActionResult> OnGet(Guid id)
         {
+            var userJson = HttpContext.Session.GetString("LoggedInUser");
+            if (string.IsNullOrEmpty(userJson))
+            {
+                TempData["ErrorMessage"] = "You must login to access";
+                return RedirectToPage("/Authentication/Login");
+            }
+
             if (id == Guid.Empty)
             {
+                var users1 = await _userService.GetUserByRoles();
+                List<User> listArtist = new List<User>();
+                foreach (var user in users1)
+                {
+                    List<Role> userRole = user.Roles.ToList();
+                    if (userRole.Count > 0)
+                    {
+                        foreach (var role in userRole)
+                        {
+                            if (role.UserRole.Equals(UserRole.ROLE_ARTIST))
+                            {
+                                listArtist.Add(user);
+                            }
+                        }
+                    }
+                }
+                ViewData["ArtistId"] = new SelectList(listArtist, "Id", "Email");
+                ViewData["RequesterUserId"] = new SelectList(users1, "Id", "Email");
+                return Page();
+            } else
+            {
                 var users = await _userService.GetAllUsersAsync();
+                users = users.Where(u => u.Id == id).ToList();
                 ViewData["ArtistId"] = new SelectList(users, "Id", "Email");
                 ViewData["RequesterUserId"] = new SelectList(users, "Id", "Email");
                 return Page();
             }
-
-            var users1 = await _userService.GetAllUsersAsync();
-            users1 = users1.Where(u => u.Id == id).ToList();
-            ViewData["ArtistId"] = new SelectList(users1, "Id", "Email");
-            ViewData["RequesterUserId"] = new SelectList(users1, "Id", "Email");
-            return Page();
-           
         }
 
         public async Task<IActionResult> OnPostAsync()

@@ -1,0 +1,203 @@
+﻿@page
+@model ImageSharingPlatform.Pages.ImageRequestMng.DetailsModel
+@{
+    string ImageSrc(byte[] imageBytes) => imageBytes == null ? "" : $"data:image/jpeg;base64,{Convert.ToBase64String(imageBytes)}";
+}
+@{
+
+    var userJson = HttpContext.Session.GetString("LoggedInUser");
+    var useraccount = JsonConvert.DeserializeObject<User>(userJson);
+    var userId = useraccount.Id;
+}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            <h4>Detail Information</h4>
+        </div>
+        <div class="card-body">
+            <input type="hidden" asp-for="ImageRequest.Id" />
+            <dl class="row">
+                <dt class="col-sm-4">Status of request</dt>
+                <dd class="col-sm-8"> <span class="badge badge-pill @GetStatusClass(Model.ImageRequest.RequestStatus)">@Html.DisplayFor(modelItem => Model.ImageRequest.RequestStatus)</span></dd>
+
+                <dt class="col-sm-4">Image:</dt>
+                <dd class="col-sm-8">
+                    @if (userId == Model.ImageRequest.RequesterUserId && Model.ImageRequest.ImageBlob != null && Model.ImageRequest.RequestStatus == RequestStatus.SUCCESS)
+                    {
+                        <img src="@ImageSrc(Model.ImageRequest.ImageBlob)" alt="Request Image" class="img-fluid"/>
+                    }
+                    else if (userId == Model.ImageRequest.RequesterUserId && Model.ImageRequest.ImageBlob != null && Model.ImageRequest.RequestStatus == RequestStatus.UPLOADED)
+                    {
+                        <p>Please pay the image fee to download your own image request! Thank you</p>
+                    }
+                    else
+                    {
+                        <p>No image available</p>
+                    }
+                </dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.ImageRequest.Title)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.ImageRequest.Title)</dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.ImageRequest.Description)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.ImageRequest.Description)</dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.ImageRequest.CreateTime)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.ImageRequest.CreateTime)</dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.ImageRequest.ExpectedTime)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.ImageRequest.ExpectedTime)</dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.ImageRequest.Price)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.ImageRequest.Price)</dd>
+
+                @if (userId == Model.ImageRequest.RequesterUserId)
+                {
+                    <dt class="col-sm-4">Artist</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.ImageRequest.Artist.FirstName) @Html.DisplayFor(model => model.ImageRequest.Artist.LastName)</dd>
+                }
+                else if (userId != Model.ImageRequest.RequesterUserId)
+                {
+                    <dt class="col-sm-4">Requester User</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.ImageRequest.RequesterUser.FirstName) @Html.DisplayFor(model => model.ImageRequest.RequesterUser.LastName)</dd>
+                }
+            </dl>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-4">
+    <main role="main" class="pb-3">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>HISTORY REQUEST DETAILS</h2>
+            <hr class="mb-0" style="flex-grow: 1; margin-left: 20px;">
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped m-0">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Comment</th>
+                                        <th>New Price</th>
+                                        <th>Create Time</th>
+                                        <th>Expected Time</th>
+                                        <th>Requester</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.RequestDetail)
+                                    {
+                                        <tr>
+                                            <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Comment)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.NewPrice)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.CreatedAt)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.ExpectedTime)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.User.FirstName) @Html.DisplayFor(modelItem => item.User.LastName)</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<div class="container mt-4">
+    <div class="d-flex flex-column flex-md-row justify-content-start align-items-center gap-3">
+        @{
+            if (Model.ImageRequest.RequestStatus != RequestStatus.ACCEPTED && Model.ImageRequest.RequestStatus != RequestStatus.CANCELLED
+            && Model.ImageRequest.RequestStatus != RequestStatus.UPLOADED && Model.ImageRequest.RequestStatus != RequestStatus.SUCCESS
+            && Model.ImageRequest.RequestStatus != RequestStatus.REJECTED)
+            {
+                if (userId == Model.ImageRequest.RequesterUserId)
+                {
+                    <div>
+                        <form method="post">
+                            <button type="submit" class="btn btn-outline-danger" asp-route-id="@Model.ImageRequest.Id" asp-page-handler="CanRe">Cancel Request</button>
+                        </form>
+                    </div>
+                }
+                else
+                {
+                    <div>
+                        <form method="post">
+                            <button type="submit" class="btn btn-outline-danger" asp-route-id="@Model.ImageRequest.Id" asp-page-handler="CanRe">Reject Request</button>
+                        </form>
+                    </div>
+                }
+                <div>
+                    <form method="post">
+                        <button type="submit" class="btn btn-outline-success" asp-route-id="@Model.ImageRequest.Id" asp-page-handler="Accepted">Accept Request</button>
+                    </form>
+                </div>
+                <div>
+                    <a asp-page="./CreateRequestDetail" asp-route-id="@Model.ImageRequest.Id" class="btn btn-outline-info">Create Request Detail</a>
+                </div>
+            }
+            else if (userId != Model.ImageRequest.RequesterUserId && Model.ImageRequest.RequestStatus == RequestStatus.ACCEPTED)
+            {
+                <div class="form-group">
+                    <form method="post" enctype="multipart/form-data" class="form-inline">
+                        <label asp-for="ImageUpload" class="mr-2">Image Upload:</label>
+                        <input asp-for="ImageUpload" type="file" id="ImageUpload" name="ImageUpload" class="form-control-file mr-2" />
+                        <button type="submit" class="btn btn-outline-primary" asp-route-id="@Model.ImageRequest.Id" asp-page-handler="UploadImage">Upload Image</button>
+                    </form>
+                </div>
+            }
+        }
+        @{
+            if (userId == Model.ImageRequest.RequesterUserId && Model.ImageRequest.RequestStatus == RequestStatus.UPLOADED)
+            {
+                <div>
+                    <form method="post">
+                        <button type="submit" class="btn btn-outline-secondary" asp-route-id="@Model.ImageRequest.Id" asp-page-handler="PayToDownload">Pay to Download</button>
+                    </form>
+                </div>
+            }
+        }
+        @if (userId == Model.ImageRequest.RequesterUserId && Model.ImageRequest.RequestStatus == RequestStatus.SUCCESS)
+        {
+            <a href="@ImageSrc(Model.ImageRequest.ImageBlob)" download="ISP_DownloadImage" class="btn btn-success">Download Image</a>
+        }
+        <div>
+            <a asp-page="./Index" class="btn btn-outline-dark">Back to List</a>
+        </div>
+    </div>
+</div>
+
+
+@functions {
+    public string GetStatusClass(RequestStatus status)
+    {
+        string baseClass = "status-badge ";
+        switch (status)
+        {
+            case RequestStatus.PROCESSING:
+                return baseClass + "status-processing";
+            case RequestStatus.USER_ACCEPTED:
+                return baseClass + "status-user-accepted";
+            case RequestStatus.ARTIST_ACCEPTED:
+                return baseClass + "status-artist-accepted";
+            case RequestStatus.ACCEPTED:
+                return baseClass + "status-accepted";
+            case RequestStatus.REJECTED:
+                return baseClass + "status-rejected";
+            case RequestStatus.CANCELLED:
+                return baseClass + "status-cancelled";
+            case RequestStatus.UPLOADED:
+                return baseClass + "status-uploaded";
+            case RequestStatus.SUCCESS:
+                return baseClass + "status-success";
+            default:
+                return baseClass + "text-muted"; 
+        }
+    }
+}
