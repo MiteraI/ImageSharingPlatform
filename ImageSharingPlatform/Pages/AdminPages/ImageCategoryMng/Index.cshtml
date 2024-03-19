@@ -1,45 +1,45 @@
 ﻿@page
 @model IndexModel
 
-<div class="container">
+<div class="container my-5">
     <main role="main" class="pb-3">
-        <h2 style="padding-top:25px">Image Category</h2>
+        <h2 class="text-center pb-3">Image Category</h2>
         <hr />
-        <a asp-page="Create" class="btn btn-dark">Create New Image Category</a>
-            <div class="card shadow border-0 my-2 col-12">
-                <div class="card-body p-4">
-                    <table class="table table-hover">
-                        <thead>
+        <a asp-page="Create" class="btn btn-success">Create New Image Category</a>
+        <div class="card shadow border-0 my-2">
+            <div class="card-body p-4">
+                <table class="table table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ImageCategory[0].CategoryName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ImageCategory[0].Description)
+                            </th>
+                            <th class="text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.ImageCategory)
+                        {
                             <tr>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.ImageCategory[0].CategoryName)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.ImageCategory[0].Description)
-                                </th>                    
-                                <th></th>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CategoryName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Description)
+                                </td>
+                                <td class="text-right">
+                                    <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-outline-primary btn-sm mr-1">Edit</a>
+                                    <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-outline-danger btn-sm">Delete</a>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model.ImageCategory)
-                            {
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.CategoryName)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Description)
-                                    </td>
-                                    <td style="text-align: right;">
-                                        <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-outline-primary">Edit</a> |
-                                        <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Delete</a>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
+                        }
+                    </tbody>
+                </table>
             </div>
+        </div>
     </main>
 </div>
 

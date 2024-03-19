@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using ImageSharingPlatform.Domain.Entities;
 using ImageSharingPlatform.Repository.Repositories.Interfaces;
 using ImageSharingPlatform.Service.Services.Interfaces;
+using ImageSharingPlatform.Domain.Enums;
+using Newtonsoft.Json;
 
 namespace ImageSharingPlatform.Pages.AdminPages.UserMng
 {
@@ -22,9 +24,30 @@ namespace ImageSharingPlatform.Pages.AdminPages.UserMng
 
         public IList<User> User { get; set; } = default!;
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
-            User = _userService.GetAllUsersAsync().Result.ToList();
+            var userJson = HttpContext.Session.GetString("LoggedInUser");
+            if (string.IsNullOrEmpty(userJson))
+            {
+                TempData["ErrorMessage"] = "You must login to access";
+                return Redirect("/Authentication/Login");
+            }
+            else
+            {
+                var userAccount = JsonConvert.DeserializeObject<User>(userJson);
+                var isAdmin = userAccount.Roles.Any(r => r.UserRole == UserRole.ROLE_ADMIN);
+
+                if (isAdmin)
+                {
+                    User = _userService.GetAllUsersAsync().Result.ToList();
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "You are not authorized to view this page";
+                    return Redirect("/Index");
+                }
+            }
+            return Page();
         }
     }
 }

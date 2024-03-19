@@ -9,6 +9,8 @@ using ImageSharingPlatform.Domain.Entities;
 using ImageSharingPlatform.Repository.Repositories.Interfaces;
 using ImageSharingPlatform.Service.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using ImageSharingPlatform.Domain.Enums;
+using Newtonsoft.Json;
 
 namespace ImageSharingPlatform.Pages.AdminPages.SharedImageMng
 {
@@ -27,15 +29,36 @@ namespace ImageSharingPlatform.Pages.AdminPages.SharedImageMng
 
         public IList<SharedImage> SharedImage { get; set; } = default!;
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
-            var users = await _userService.GetAllUsersAsync();
-            var categories = await _imageCategoryService.GetAllImageCategoriesAsync();
+            var userJson = HttpContext.Session.GetString("LoggedInUser");
+            if (string.IsNullOrEmpty(userJson))
+            {
+                TempData["ErrorMessage"] = "You must login to access";
+                return Redirect("/Authentication/Login");
+            }
+            else
+            {
+                var userAccount = JsonConvert.DeserializeObject<User>(userJson);
+                var isAdmin = userAccount.Roles.Any(r => r.UserRole == UserRole.ROLE_ADMIN);
 
-            ViewData["ArtistId"] = new SelectList(users, "Id", "Email");
-            ViewData["ImageCategoryId"] = new SelectList(categories, "Id", "CategoryName");
+                if (isAdmin)
+                {
+                    var users = await _userService.GetAllUsersAsync();
+                    var categories = await _imageCategoryService.GetAllImageCategoriesAsync();
 
-            SharedImage = _sharedImageService.GetAllNonPremiumSharedImagesAsync().Result.ToList();
+                    ViewData["ArtistId"] = new SelectList(users, "Id", "Email");
+                    ViewData["ImageCategoryId"] = new SelectList(categories, "Id", "CategoryName");
+
+                    SharedImage = _sharedImageService.GetAllNonPremiumSharedImagesAsync().Result.ToList();
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "You are not authorized to view this page";
+                    return Redirect("/Index");
+                }
+            }
+            return Page();
         }
     }
 }

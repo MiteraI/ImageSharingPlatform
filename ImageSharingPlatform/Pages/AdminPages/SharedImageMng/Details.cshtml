@@ -3,65 +3,72 @@
 
 <div class="container">
     <main role="main" class="pb-3">
-        <h2 style="padding-top:25px">Shared Image</h2>
+        <h2 class="pt-4 pb-2 text-center">Shared Image Details</h2>
         <hr />
-        <div class="card shadow border-0 my-5 col-12">
+        <div class="card shadow border-0 my-5">
             <div class="card-body p-4">
                 <dl class="row">
-                    <dt class="col-sm-2">
+                    <dt class="col-sm-4 col-md-2 font-weight-bold">
                         @Html.DisplayNameFor(model => model.SharedImage.ImageName)
                     </dt>
-                    <dd class="col-sm-10">
+                    <dd class="col-sm-8 col-md-10">
                         @Html.DisplayFor(model => model.SharedImage.ImageName)
                     </dd>
-                    <dt class="col-sm-2">
+
+                    <dt class="col-sm-4 col-md-2 font-weight-bold">
                         @Html.DisplayNameFor(model => model.SharedImage.ImageUrl)
                     </dt>
-                    <dd class="col-sm-10">
-                        <img src=" @Html.DisplayFor(model => model.SharedImage.ImageUrl)" class="w-25" />
+                    <dd class="col-sm-8 col-md-10">
+                        <img src="@Html.DisplayFor(model => model.SharedImage.ImageUrl)" class="img-fluid rounded" alt="Image" />
                     </dd>
-                    <dt class="col-sm-2">
+
+                    <dt class="col-sm-4 col-md-2 font-weight-bold">
                         @Html.DisplayNameFor(model => model.SharedImage.ImageCategory)
                     </dt>
-                    <dd class="col-sm-10">
+                    <dd class="col-sm-8 col-md-10">
                         @Html.DisplayFor(model => model.SharedImage.ImageCategory.CategoryName)
                     </dd>
-                    <dt class="col-sm-2">
+
+                    <dt class="col-sm-4 col-md-2 font-weight-bold">
                         @Html.DisplayNameFor(model => model.SharedImage.Description)
                     </dt>
-                    <dd class="col-sm-10">
+                    <dd class="col-sm-8 col-md-10">
                         @Html.DisplayFor(model => model.SharedImage.Description)
                     </dd>
-                    <dt class="col-sm-2">
+
+                    <dt class="col-sm-4 col-md-2 font-weight-bold">
                         @Html.DisplayNameFor(model => model.SharedImage.CreatedAt)
                     </dt>
-                    <dd class="col-sm-10">
+                    <dd class="col-sm-8 col-md-10">
                         @Html.DisplayFor(model => model.SharedImage.CreatedAt)
                     </dd>
-                    <dt class="col-sm-2">
+
+                    <dt class="col-sm-4 col-md-2 font-weight-bold">
                         @Html.DisplayNameFor(model => model.SharedImage.IsPremium)
                     </dt>
-                    <dd class="col-sm-10">
+                    <dd class="col-sm-8 col-md-10">
                         @Html.DisplayFor(model => model.SharedImage.IsPremium)
                     </dd>
-                    <dt class="col-sm-2">
+
+                    <dt class="col-sm-4 col-md-2 font-weight-bold">
                         @Html.DisplayNameFor(model => model.SharedImage.Artist)
                     </dt>
-                    <dd class="col-sm-10">
+                    <dd class="col-sm-8 col-md-10">
                         @Html.DisplayFor(model => model.SharedImage.Artist.Username)
                     </dd>
                 </dl>
-                <div class="row pt-2">
-                    <div class="col-6 col-md-1">
-                        <a asp-page="./Edit" asp-route-id="@Model.SharedImage.Id" class="btn btn-outline-primary">Edit</a>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <a asp-page="./Index" class="btn btn-outline-primary border form-control">
+                <div class="d-flex justify-content-center">
+                        <a asp-page="./Edit" asp-route-id="@Model.SharedImage.Id" class="btn btn-primary btn-block">Edit</a>
+                        <a asp-page="./Index" class="btn btn-outline-secondary btn-block">
                             Back to List
                         </a>
-                    </div>
                 </div>
             </div>
         </div>
     </main>
 </div>
+<style>
+    .img-fluid {
+        max-height: 500px
+    }
+</style>
