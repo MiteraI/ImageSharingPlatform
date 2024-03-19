@@ -14,19 +14,20 @@
 	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" />
 	<link rel="stylesheet" href="~/ImageSharingPlatform.styles.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/custom-style.css">
 </head>
 <body>
 	<header>
 		<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
 			<div class="container">
 				<div class="col-3"><a class="navbar-brand" asp-area="" asp-page="/Index">ImageSharingPlatform</a></div>
-				<div class="col-6 d-flex justify-content-center">
-					<form onsubmit="return false;">
+				<div class="col-6 d-flex justify-content-center align-items-center">
+					<form onsubmit="return false;" class="input-group">
 						@{
 							var query = HttpContextAccessor.HttpContext.Request.Query["query"];
-							<input class="text-black p-1 m-0 float-start" style="min-width: 350px; border-radius: 12px 0px 0px 12px" value="@query" type="search" placeholder="Search" aria-label="Search" name="query" />
+							<input type="text" class="form-control" placeholder="Search..." aria-label="Search" value="@query" name="query" aria-describedby="button-addon2">
 						}
-						<button id="searchButton" class="text-black p-1 m-0 float-start" style="border-radius: 0px 12px 12px 0px">Search</button>
+						<button class="btn btn-primary" id="searchButton">Search</button>
 					</form>
 				</div>
 				<div class="navbar-collapse collapse d-flex justify-content-end">
@@ -53,18 +54,17 @@
 												<li><a class="dropdown-item text-black" asp-area="Management" asp-page="/AdminPages/UserMng/Index">User Management</a></li>
 												<li><a class="dropdown-item text-black" asp-area="Management" asp-page="/AdminPages/ImageCategoryMng/Index">Category Management</a></li>
 												<li><a class="dropdown-item text-black" asp-area="Management" asp-page="/AdminPages/SharedImageMng/Index">Image Management</a></li>
-												<li><a class="dropdown-item text-black" asp-area="Management" asp-page="/AdminPages/ImageRequestMng/Index">Request Management</a></li>
-
 											}
 											else if (role.UserRole == UserRole.ROLE_ARTIST)
 											{
 												// Artist Urls in asp razor pages route
 												<li><a class="dropdown-item text-black" asp-page="/ArtistPages/MySharedImages/Index">My images</a></li>
-												<li><a class="dropdown-item text-black" asp-page="/AdminPages/ImageRequestMng/ReceivedImageRequest">Received requests</a></li>
+												<li><a class="dropdown-item text-black" asp-area="Management" asp-page="/ImageRequestMng/Index">Image Request Management</a></li>
+												<li><a class="dropdown-item text-black" asp-page="/ArtistPages/ReceivedImageRequest/ReceivedImageRequest">Received requests</a></li>
 											}
 											else
 											{
-												<li><a class="dropdown-item text-black" asp-page="/AdminPages/ImageRequestMng/Index">My requests</a></li>
+												<li><a class="dropdown-item text-black" asp-page="/ImageRequestMng/Index">My requests</a></li>
 												<li><a class="dropdown-item text-black" asp-page="/OwnedSub/Index">My Subscription Package</a></li>
 											}
 										}
@@ -94,7 +94,7 @@
 		});
 	</script>
 	<div>
-		<partial name="_Notification"/>
+		<partial name="_Notification" />
 		@RenderBody()
 	</div>
 

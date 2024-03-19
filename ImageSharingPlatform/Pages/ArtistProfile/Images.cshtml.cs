@@ -33,7 +33,22 @@ namespace ImageSharingPlatform.Pages.ArtistProfile
 
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
-            Artist = await _userService.GetUserByIdAsync(id);
+			if (id == null)
+			{
+				return Redirect("/");
+			}
+
+			var userJson = HttpContext.Session.GetString("LoggedInUser");
+			if (userJson != null)
+			{
+				User user = JsonConvert.DeserializeObject<User>(userJson);
+				if (user.Id.Equals(id))
+				{
+					return Redirect("/ArtistPages/MySharedImages/Index");
+				}
+			}
+
+			Artist = await _userService.GetUserByIdAsync(id);
             var artistSubscription = await _subscriptionPackageService.GetSubscriptionPackageByArtistId(id);
             if (artistSubscription == null)
             {
@@ -42,7 +57,6 @@ namespace ImageSharingPlatform.Pages.ArtistProfile
             SubscriptionPackageModel = artistSubscription;
 
             // Check if the user has a subscription to the artist
-            var userJson = HttpContext.Session.GetString("LoggedInUser");
             if (string.IsNullOrEmpty(userJson))
             {
 				// If the user is not logged in, show the images that are not premium
