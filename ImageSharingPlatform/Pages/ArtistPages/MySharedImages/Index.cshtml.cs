@@ -27,23 +27,12 @@ namespace ImageSharingPlatform.Pages.ArtistPages.MySharedImages
 
         public IPage<SharedImage> SharedImages { get; set; }
         public int PageNumber { get; set; } = 0;
-        public int PageSize { get; set; } = 4;
+        public int PageSize { get; set; } = 8;
         public string SearchQuery { get; set; }
         public bool? IsPremium { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
-            // Get user session
-            //var loggedInUser = HttpContext.Session.GetString("LoggedInUser");
-            //if (!string.IsNullOrEmpty(loggedInUser))
-            //{
-            //    var user = JsonConvert.DeserializeObject<User>(loggedInUser);
-            //    SharedImage = (IList<SharedImage>) await _sharedImageService.FindSharedImagesByUserIdWithFullDetails(user.Id);
-            //} else
-            //{
-            //    RedirectToPage("/Authentication/Login");
-            //}
-
             var loggedInUser = HttpContext.Session.GetString("LoggedInUser");
 
             var useraccount = JsonConvert.DeserializeObject<User>(loggedInUser);

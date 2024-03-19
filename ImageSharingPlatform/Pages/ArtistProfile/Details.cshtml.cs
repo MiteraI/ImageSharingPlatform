@@ -36,10 +36,21 @@ namespace ImageSharingPlatform.Pages.ArtistProfile
         {
             if (id == null)
             {
-                return NotFound();
+                return Redirect("/");
             }
 
-            SubscriptionPackage = await _subscriptionPackageService.GetSubscriptionPackageByArtistId(id);
+			var userJson = HttpContext.Session.GetString("LoggedInUser");
+			if (userJson != null)
+			{
+				User user = JsonConvert.DeserializeObject<User>(userJson);
+				if (user.Id.Equals(id))
+				{
+					return Redirect("/ArtistPages/MySubscriptionPackage");
+				}
+			}
+
+
+			SubscriptionPackage = await _subscriptionPackageService.GetSubscriptionPackageByArtistId(id);
             if (SubscriptionPackage == null)
             {
                 return NotFound();
@@ -52,11 +63,19 @@ namespace ImageSharingPlatform.Pages.ArtistProfile
 			var userJson = HttpContext.Session.GetString("LoggedInUser");
             if (userJson == null)
             {
+				TempData["ErrorMessage"] = "You must login to subscribe";
 				return Redirect("/Authentication/Login");
 			}
             var user = await _userService.GetUserByIdAsync(JsonConvert.DeserializeObject<User>(userJson).Id);
 
 			var subscriptionPackage = await _subscriptionPackageService.GetSubscriptionPackageById(SubscriptionPackage.Id);
+
+			// Check if the subscription package belongs to the user making the request
+			if (subscriptionPackage.ArtistId == user.Id)
+			{
+				TempData["ErrorMessage"] = "I don't know how you access this, but you cannot subscribe to your own subscription package";
+				return Page();
+			}
 
             // Check if the user already has a subscription package of the artist
 			var existingSubscriptionPackage = await _ownedSubscriptionService.GetUserOwnedSubscriptionPackage(user.Id, subscriptionPackage.Id);

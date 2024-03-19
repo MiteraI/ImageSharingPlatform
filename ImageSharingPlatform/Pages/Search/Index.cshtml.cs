@@ -18,7 +18,7 @@ namespace ImageSharingPlatform.Pages.Search
         }
 
 		public int PageNumber { get; set; } = 0;
-		public int PageSize { get; set; } = 4;
+		public int PageSize { get; set; } = 8;
         public string SearchQuery { get; set; }
         public string CategoryId { get; set; }
 		public IPage<SharedImage> SharedImages { get; set; }

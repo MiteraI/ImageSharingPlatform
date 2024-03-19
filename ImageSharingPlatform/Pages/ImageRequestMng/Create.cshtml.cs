@@ -89,12 +89,12 @@ namespace ImageSharingPlatform.Pages.ImageRequestMng
             ImageRequests.RequestStatus = RequestStatus.PROCESSING;
             if (ImageRequests.RequesterUserId == ImageRequests.ArtistId)
             {
-                TempData["ErrorMessage"] = "Cannot create duplicated !";
+                TempData["ErrorMessage"] = "Cannot request to yourself !";
                 return Redirect("./Create");
             }
             if (ImageRequests.ExpectedTime < ImageRequests.CreateTime)
             {
-                TempData["ErrorMessage"] = "The expected time cannot be less than the created time !";
+                TempData["ErrorMessage"] = "The expected time must be in the future !";
                 return Redirect("./Create");
             }
 

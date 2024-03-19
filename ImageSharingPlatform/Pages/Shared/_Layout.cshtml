@@ -21,13 +21,13 @@
 		<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
 			<div class="container">
 				<div class="col-3"><a class="navbar-brand" asp-area="" asp-page="/Index">ImageSharingPlatform</a></div>
-				<div class="col-6 d-flex justify-content-center">
-					<form onsubmit="return false;">
+				<div class="col-6 d-flex justify-content-center align-items-center">
+					<form onsubmit="return false;" class="input-group">
 						@{
 							var query = HttpContextAccessor.HttpContext.Request.Query["query"];
-							<input class="text-black p-1 m-0 float-start" style="min-width: 350px; border-radius: 12px 0px 0px 12px" value="@query" type="search" placeholder="Search" aria-label="Search" name="query" />
+							<input type="text" class="form-control" placeholder="Search..." aria-label="Search" value="@query" name="query" aria-describedby="button-addon2">
 						}
-						<button id="searchButton" class="text-black p-1 m-0 float-start" style="border-radius: 0px 12px 12px 0px">Search</button>
+						<button class="btn btn-primary" id="searchButton">Search</button>
 					</form>
 				</div>
 				<div class="navbar-collapse collapse d-flex justify-content-end">
@@ -94,7 +94,7 @@
 		});
 	</script>
 	<div>
-		<partial name="_Notification"/>
+		<partial name="_Notification" />
 		@RenderBody()
 	</div>
 
