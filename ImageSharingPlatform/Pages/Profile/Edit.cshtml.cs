@@ -82,6 +82,7 @@ namespace ImageSharingPlatform.Pages.Profile
                 Price = 100000,
                 Description = "Default package price for new artists"
             });
+            TempData["SuccessMessage"] = "You have became to an artist <3";
             return RedirectToPage("/Authentication/Logout");
         }
 

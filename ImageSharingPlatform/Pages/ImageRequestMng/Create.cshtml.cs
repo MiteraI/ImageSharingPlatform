@@ -78,12 +78,6 @@ namespace ImageSharingPlatform.Pages.ImageRequestMng
                 return NotFound("User not found.");
             }
 
-            var user = await _userService.GetUserByIdAsync(userId);
-            if (user == null)
-            {
-                return NotFound("User not found.");
-            }
-
             ImageRequests.RequesterUserId = userId;
             ImageRequests.CreateTime = DateTime.Now;
             ImageRequests.RequestStatus = RequestStatus.PROCESSING;
