@@ -62,11 +62,13 @@ namespace ImageSharingPlatform.Pages.Search
 			var userJson = HttpContext.Session.GetString("LoggedInUser");
 			if (string.IsNullOrEmpty(userJson))
 			{
+                TempData["ErrorMessage"] = "You must login to leave review";
 				return Redirect("/Authentication/Login");
 			}
 			var userAccount = JsonConvert.DeserializeObject<User>(userJson);
+            ModelState.Remove("ImageCategory");
             ModelState.Remove("ImageName");
-			if (ModelState.IsValid)
+            if (ModelState.IsValid)
 			{
                 var review = _mapper.Map<Review>(Review);
                 review.UserId = userAccount.Id;
