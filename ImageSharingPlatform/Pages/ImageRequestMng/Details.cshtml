@@ -140,7 +140,7 @@
                     </form>
                 </div>
                 <div>
-                    <a asp-page="./CreateRequestDetail" asp-route-id="@Model.ImageRequest.Id" class="btn btn-outline-info">Create Request Detail</a>
+                    <a asp-page="./CreateRequestDetail" asp-route-id="@Model.ImageRequest.Id" class="btn btn-outline-info">Create Negotiating Request</a>
                 </div>
             }
             else if (userId != Model.ImageRequest.RequesterUserId && Model.ImageRequest.RequestStatus == RequestStatus.ACCEPTED)
