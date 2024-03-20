@@ -76,8 +76,13 @@ namespace ImageSharingPlatform.Pages.ImageRequestMng
             if (RequestDetail.ExpectedTime < RequestDetail.CreatedAt)
             {
                 TempData["ErrorMessage"] = "The expected time cannot be less than the created time !";
-                return Redirect($"./Details?id={ImageRequest.Id.ToString()}");
+                return Page();
             }
+            if (RequestDetail.Title == null)
+            {
+                TempData["ErrorMessage"] = "The title cannot empty !";
+                return Page();
+             }
 
             var newRequestDetail = await _requestDetailService.AddRequestDetailAsync(RequestDetail);
             var updateImageRequest = await _imageRequestService.GetImageRequestByIdWithFullDetailsAsync(RequestDetail.RequestId);
@@ -90,7 +95,7 @@ namespace ImageSharingPlatform.Pages.ImageRequestMng
             updateImageRequest.Price = (double)newRequestDetail.NewPrice;
             updateImageRequest.ExpectedTime = newRequestDetail.ExpectedTime;
             updateImageRequest.RequestStatus = Domain.Enums.RequestStatus.PROCESSING;
-            TempData["SuccessMessage"] = "The Image Request Status has editted !";
+            TempData["SuccessMessage"] = "The Image Request has updated !";
             await _imageRequestService.EditImageRequest(updateImageRequest);
             return Redirect($"./Details?id={ImageRequest.Id.ToString()}");
         }

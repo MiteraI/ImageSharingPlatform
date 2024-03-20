@@ -92,7 +92,7 @@ namespace ImageSharingPlatform.Pages.ImageRequestMng
                 return Redirect("./Create");
             }
 
-            var newImageRequest = _imageRequestService.CreateImageRequest(ImageRequests);
+            var newImageRequest = await _imageRequestService.CreateImageRequest(ImageRequests);
 
             if (newImageRequest == null)
             {

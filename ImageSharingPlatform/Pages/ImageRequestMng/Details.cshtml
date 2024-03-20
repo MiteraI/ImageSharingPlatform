@@ -140,7 +140,7 @@
                     </form>
                 </div>
                 <div>
-                    <a asp-page="./CreateRequestDetail" asp-route-id="@Model.ImageRequest.Id" class="btn btn-outline-info">Create Request Detail</a>
+                    <a asp-page="./CreateRequestDetail" asp-route-id="@Model.ImageRequest.Id" class="btn btn-outline-info">Create Negotiating Request</a>
                 </div>
             }
             else if (userId != Model.ImageRequest.RequesterUserId && Model.ImageRequest.RequestStatus == RequestStatus.ACCEPTED)
@@ -169,7 +169,7 @@
             <a href="@ImageSrc(Model.ImageRequest.ImageBlob)" download="ISP_DownloadImage" class="btn btn-success">Download Image</a>
         }
         <div>
-            <a asp-page="./Index" class="btn btn-outline-dark">Back to List</a>
+            <a asp-page="/ArtistPages/ReceivedImageRequest/ReceivedImageRequest" class="btn btn-outline-dark">Back to List</a>
         </div>
     </div>
 </div>
