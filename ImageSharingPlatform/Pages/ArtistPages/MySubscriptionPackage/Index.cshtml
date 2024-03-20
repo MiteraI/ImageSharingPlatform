@@ -1,0 +1,63 @@
+﻿@page
+@model ImageSharingPlatform.Pages.ArtistPages.MySubscriptionPackage.IndexModel
+
+<style>
+    .action-link {
+        margin-right: 10px;
+        color: #fff;
+    }
+
+        .action-link.create {
+            background-color: #28a745;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .action-link.edit {
+            background-color: #ffc107;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+    .table th, .table td {
+        vertical-align: middle;
+    }
+</style>
+
+<div class="container mt-4">
+    <table class="table table-hover">
+        <thead class="thead-light">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.SubscriptionPackage[0].Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SubscriptionPackage[0].Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SubscriptionPackage[0].Artist)
+                </th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.SubscriptionPackage)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Artist.Username)
+                    </td>
+                    <td>
+                        <a asp-page="./Edit" asp-route-id="@item.Id" class="action-link edit">Edit</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

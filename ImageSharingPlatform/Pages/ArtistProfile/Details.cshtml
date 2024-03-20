@@ -1,0 +1,60 @@
+﻿    @page
+@model DetailsModel
+@inject IHttpContextAccessor HttpContextAccessor
+
+<form method="post" class="container pt-4">
+	<input type="hidden" asp-for="SubscriptionPackage.Id" />
+	<input type="hidden" asp-for="SubscriptionPackage.Price" />
+	<input type="hidden" asp-for="SubscriptionPackage.Description" />
+	<input type="hidden" asp-for="SubscriptionPackage.ArtistId" />
+
+	@if (TempData["ErrorMessage"] != null)
+	{
+		<div class="alert alert-danger">
+			@TempData["ErrorMessage"]
+		</div>
+	}
+
+	@if (ViewData["PaymentSuccess"] != null)
+	{
+		<div class="alert alert-success">
+			@ViewData["PaymentSuccess"]
+		</div>
+	}
+	<div class="row">
+		<div class="col-4 d-flex justify-content-between">
+			<p>
+				@Html.DisplayNameFor(model => model.SubscriptionPackage.Price) :
+			</p>
+			<span>
+				@Html.DisplayFor(model => model.SubscriptionPackage.Price)
+			</span>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-4 d-flex justify-content-between">
+			<p>
+				@Html.DisplayNameFor(model => model.SubscriptionPackage.Description) :
+			</p>
+			<span>
+				@Html.DisplayFor(model => model.SubscriptionPackage.Description)
+			</span>
+		</div>
+	</div>
+	<div>
+		@{
+			var session = HttpContextAccessor.HttpContext.Session;
+			var loggedInUser = session.GetString("LoggedInUser");
+			if (!string.IsNullOrEmpty(loggedInUser))
+			{
+				<button type="submit" class="btn btn-danger">Subscribe to Artist</button>
+			}
+			else
+			{
+				<a asp-page="/Authentication/Login" class="btn btn-primary">Login to Subscribe</a>
+			}
+		}
+		<a asp-page="./Index" class="btn btn-primary" asp-route-id="@Model.SubscriptionPackage.ArtistId">Back to artist profile</a>
+	</div>
+</form>
+

@@ -61,5 +61,15 @@ namespace ImageSharingPlatform.Service.Services
         {
             return await _imageCategoryRepository.GetAllAsync();
         }
-    }
+
+		public async Task<ImageCategory> CheckCategoryName(string category)
+		{
+			var cate = await _imageCategoryRepository.QueryHelper().GetOneAsync(u => u.CategoryName.Equals(category));
+            if (cate != null)
+            {
+				throw new Exception("Category is existed.");
+			}
+            return null;
+		}
+	}
 }

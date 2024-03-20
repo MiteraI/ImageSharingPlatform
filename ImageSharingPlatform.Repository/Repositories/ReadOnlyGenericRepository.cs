@@ -3,6 +3,8 @@ using ImageSharingPlatform.Repository.Repositories.Interfaces;
 using JHipsterNet.Core.Pagination;
 using JHipsterNet.Core.Pagination.Extensions;
 using Microsoft.EntityFrameworkCore;
+using PartyRentingPlatform.Domain.Repositories.Interfaces;
+using PartyRentingPlatform.Infrastructure.Data.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,6 +54,12 @@ namespace ImageSharingPlatform.Repository.Repositories
         public void Dispose()
         {
             _context?.Dispose();
+        }
+
+        public IFluentRepository<TEntity> QueryHelper()
+        {
+            var fluentRepository = new FluentRepository<TEntity>(_dbSet);
+            return fluentRepository;
         }
     }
 }

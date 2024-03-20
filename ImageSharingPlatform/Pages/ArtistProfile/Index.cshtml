@@ -1,0 +1,30 @@
+﻿@page
+@model ImageSharingPlatform.Pages.ArtistProfile.IndexModel
+@{
+    ViewData["Title"] = "ArtistProfile";
+}
+
+<div class="container mt-5">
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <img src="@Model.User.AvatarUrl" alt="Avatar" class="img-fluid rounded" style="width: 100%">
+        </div>
+        <div class="col-md-8">
+            <h4>Email: @Model.User.Email</h4>
+            <p>Fistname: @Model.User.FirstName</p>
+            <p>Lastname: @Model.User.LastName</p>
+
+            <div class="container">
+                <div class="row">
+                    <a asp-page="./Details" asp-route-id="@Model.User.Id" class="btn btn-danger m-2">View Subscribe Package</a>
+                </div>
+                <div class="row">
+                    <a asp-page="./Images" asp-route-id="@Model.User.Id" class="btn btn-primary m-2">View Shared Images</a>
+                </div>
+                <div class="row">
+                    <a asp-page="/ImageRequestMng/Create" asp-route-id="@Model.User.Id" class="btn btn-primary m-2">Make Image Request</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using ImageSharingPlatform.Domain.Entities;
 using ImageSharingPlatform.Dto;
 using ImageSharingPlatform.Service.Services;
@@ -34,17 +34,22 @@ namespace ImageSharingPlatform.Pages.Authentication
                 return Page();
             }
 
-
-            var user = await _userService.RegisterUser(_mapper.Map<User>(InputUser));
-
-            if (user == null)
+            if (await _userService.CheckDuplicateUsername(InputUser.Username))
             {
-                // Handle registration failure
+				ModelState.AddModelError("InputUser.Username", "Username already exists");
+				return Page();
+			}
+
+            if (await _userService.CheckDuplicateEmail(InputUser.Email))
+            {
+                ModelState.AddModelError("InputUser.Email", "Email already exists");
                 return Page();
             }
 
-            // Redirect on successful registration, adjust as needed
-            return RedirectToPage("/Index");
+            var user = _mapper.Map<User>(InputUser);
+            user = await _userService.RegisterUser(user);
+
+            return Redirect("/Authentication/Login");
         }
     }
 }

@@ -1,28 +1,52 @@
 ﻿@page
 @model ImageSharingPlatform.Pages.Profile.IndexModel
-
-@*Profile page to display user*@
 @{
 	ViewData["Title"] = "Profile";
 }
-
 <div class="container mt-5">
-    <h2>Welcome, @Model.User.FirstName @Model.User.LastName!</h2>
-
-    <div class="row mt-4">
+    <div class="row">
+        <!-- Avatar column -->
         <div class="col-md-4">
-            <img src="@Model.User.AvatarUrl" alt="Avatar" class="img-fluid rounded">
+            <div style="padding: 20px;">
+                <img src="@Model.User.AvatarUrl" alt="Avatar" style="border-radius: 50%; width: 100%; max-width: 200px; height: auto; margin-bottom: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            </div>
         </div>
-        <div class="col-md-8">
-            <h4>Email: @Model.User.Email</h4>
-            <p>Username: @Model.User.Username</p>
-            <p>Balance: @Model.User.Balance</p>
-            <!-- Add more details as needed -->
 
-            <div class="container">
-                <div class="row">
-                    <a asp-page="./Edit" class="btn btn-primary">Edit Profile</a>
-                    <a asp-page="./Index" class="btn btn-outline-secondary">Money</a>
+        <!-- Profile details column -->
+        <div class="col-md-8">
+            <div style="background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                <h2>Welcome, @Model.User.FirstName @Model.User.LastName!</h2>
+                <p style="margin-bottom: 0; color: #666;">Email: @Model.User.Email</p>
+                <p style="color: #666;">Username: @Model.User.Username</p>
+                <p>Balance: @Model.User.Balance</p>
+                <!-- Payment success or failure messages -->
+                @if (ViewData["PaymentSuccess"] != null && (bool)ViewData["PaymentSuccess"])
+                {
+                    <div class="alert alert-success" role="alert">
+                        Payment was successful! Thank you for your purchase.
+                    </div>
+                }
+                else if (ViewData["PaymentSuccess"] != null && !(bool)ViewData["PaymentSuccess"])
+                {
+                    <div class="alert alert-danger" role="alert">
+                        Payment failed. Please try again or contact support.
+                    </div>
+                }
+
+                <!-- Action buttons -->
+                <div style="margin-top: 20px;">
+                    <a asp-page="./Edit" class="btn btn-primary" style="margin-right: 5px;">Edit Profile</a>
+                    <a asp-page="./Money" class="btn btn-info" style="margin-right: 5px;">Wallet</a>
+                    <a asp-page="./Transaction" class="btn btn-success" style="margin-right: 5px;">Transaction</a>
+                    @{
+                        var userJson = HttpContext.Session.GetString("LoggedInUser");
+                        var userAccount = JsonConvert.DeserializeObject<User>(userJson);
+                        var isArtist = userAccount.Roles.Any(r => r.UserRole == UserRole.ROLE_ARTIST);
+                        if (isArtist)
+                        {
+                            <a asp-page="/ArtistPages/MySubscriptionPackage/Index" class="btn btn-dark">Subscription Package</a>
+                        }
+                    }
                 </div>
             </div>
         </div>

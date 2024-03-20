@@ -1,0 +1,65 @@
+﻿@page
+@model IndexModel
+
+
+<div class="container">
+    <main role="main" class="pb-3">
+        <h2 class="pt-4 pb-2 text-center">User Management</h2>
+        <hr />
+        <div class="text-right mb-3">
+            <a asp-page="Create" class="btn btn-success">Create New User</a>
+        </div>
+        <div class="card shadow border-0 my-2">
+            <div class="card-body p-4">
+                <table class="table table-hover table-responsive-md">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.User[0].Username)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.User[0].AvatarUrl)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.User[0].Email)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.User[0].Balance)
+                            </th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.User)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Username)
+                                </td>
+                                <td>
+                                    <img src="@item.AvatarUrl" alt="Avatar" class="img-thumbnail" style="width: 60px; height: 60px;">
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Email)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Balance)
+                                </td>
+                                <td class="text-nowrap">
+                                    <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Edit</a>
+                                    <a asp-page="./Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">Details</a>
+                                    <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+<style>
+    .img-fluid {
+        height: 100px
+    }
+</style>

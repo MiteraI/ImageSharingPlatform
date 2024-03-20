@@ -1,0 +1,107 @@
+﻿@page
+@model ImageSharingPlatform.Pages.Search.IndexModel
+@{
+}
+
+<main class="d-flex" id="search-main">
+	<div class="flex-shrink-0 p-2 bg-white" style="width: 240px; box-shadow: 0px 0 10px -2px rgba(0, 0, 0, 0.7);">
+		<div id="sidebar-content">
+			<form method="get" class="d-flex flex-column justify-content-between">
+				<div>
+					<input type="hidden" name="query" value="@HttpContext.Request.Query["query"]" />
+					<fieldset class="text-black border-black">
+						<legend>Category filter:</legend>
+						@foreach (var category in Model.ImageCategories)
+						{
+							<div class="d-flex align-items-center gap-2">
+								<input class="custom-radio" type="radio" id="@category.Id" name="category" value="@category.Id"
+								@(HttpContext.Request.Query["category"] == category.Id.ToString() ? "checked" : "") />
+								<label for="@category.Id">@category.CategoryName</label>
+							</div>
+						}
+					</fieldset>
+				</div>
+				<div>
+					<button type="submit" class="btn btn-info text-black">Filter</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="container" style="margin: 50px">
+		<div class="row">
+			@foreach (var item in (IList<SharedImage>)Model.SharedImages.Content)
+			{
+				<div class="col-md-3">
+					<div class="card mb-2" style="background-color: #f8f9fa">
+						<img class="bd-placeholder-img card-img-top" src="@Html.DisplayFor(modelItem => item.ImageUrl)" />
+						<div class="card-body text-black">
+							<p class="card-text" style="text-align:center"><b>@Html.DisplayFor(modelItem => item.ImageName)</b></p>
+							<div class="d-flex justify-content-center align-items-center">
+								<div class="btn-group">
+									<a asp-page="./Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info text-black">Details</a>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			}
+		</div>
+		<div class="d-flex justify-content-center">
+			<nav>
+				<ul class="pagination">
+					<ul class="pagination">
+						@if (Model.SharedImages.HasPrevious)
+						{
+							<li class="page-item">
+								<a class="page-link" href="?query=@Model.SearchQuery&amp;category=@Model.CategoryId&amp;page=@(Model.SharedImages.Number - 1)" aria-label="Previous">
+									<span aria-hidden="true">&laquo;</span>
+								</a>
+							</li>
+						}
+						@for (var i = 0; i <= Model.SharedImages.TotalPages; i++)
+						{
+							<li class="page-item @(i == Model.SharedImages.Number ? "active" : "")">
+								<a class="page-link" href="?query=@Model.SearchQuery&amp;category=@Model.CategoryId&amp;page=@i">@i</a>
+							</li>
+						}
+						@if (Model.SharedImages.HasNext)
+						{
+							<li class="page-item">
+								<a class="page-link" href="?query=@Model.SearchQuery&amp;category=@Model.CategoryId&amp;page=@(Model.SharedImages.Number + 1)" aria-label="Next">
+									<span aria-hidden="true">&raquo;</span>
+								</a>
+							</li>
+						}
+					</ul>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</main>
+<style>
+	.custom-radio{
+		width: 15px;
+		height: 15px;
+		margin-bottom: 0.4rem;
+	}
+</style>
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		// Get header and footer elements
+		const headerHeight = document.querySelector('header').offsetHeight;
+		const footerHeight = document.querySelector('footer').offsetHeight;
+
+		// Calculate the main content height
+		const mainContent = document.getElementById('search-main');
+		const sidebarContent = document.getElementById('sidebar-content');
+
+
+		const windowHeight = window.innerHeight;
+		const mainHeight = windowHeight - headerHeight - footerHeight;
+
+		// Set the height of the main content
+		mainContent.style.minHeight = mainHeight + 'px';
+		sidebarContent.style.minHeight = mainHeight + 'px';
+	});
+</script>

@@ -8,6 +8,6 @@ namespace ImageSharingPlatform.Domain.Enums
 {
     public enum RequestStatus
     {
-        SUCCESS, REJECTED, CANCELLED, ACCEPTED, PROCESSING
+        PROCESSING, USER_ACCEPTED, ARTIST_ACCEPTED, ACCEPTED, REJECTED, CANCELLED, UPLOADED, SUCCESS 
     }
 }

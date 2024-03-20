@@ -1,0 +1,44 @@
+﻿@page
+@model ImageSharingPlatform.Pages.ArtistPages.MySubscriptionPackage.CreateModel
+
+<style>
+    .form-heading {
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <br/>
+            <h2 class="form-heading">Create Subscription Package</h2>
+            <hr />
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="SubscriptionPackage.Price" class="control-label"></label>
+                    <input asp-for="SubscriptionPackage.Price" class="form-control" />
+                    <span asp-validation-for="SubscriptionPackage.Price" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="SubscriptionPackage.Description" class="control-label"></label>
+                    <input asp-for="SubscriptionPackage.Description" class="form-control" />
+                    <span asp-validation-for="SubscriptionPackage.Description" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                    <a asp-page="Index" class="btn btn-outline-dark">Back to List</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

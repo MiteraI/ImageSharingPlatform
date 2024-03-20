@@ -14,17 +14,31 @@ namespace ImageSharingPlatform.Pages.Profile
             _userService = userService;
         }
 
+        [BindProperty]
         public User User { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
             Guid currentUserId = GetCurrentUserId();
 
+            string responseCode = HttpContext.Request.Query["vnp_ResponseCode"];
+            string amount = HttpContext.Request.Query["vnp_Amount"];
+
+            if (!string.IsNullOrEmpty(responseCode) && !string.IsNullOrEmpty(amount) && responseCode == "00")
+            {
+                ViewData["PaymentSuccess"] = true;
+                await _userService.IncreaseBalance(currentUserId, double.Parse(amount) / 100, $"You deposited {double.Parse(amount) / 100}VND");
+            }
+            else if (!string.IsNullOrEmpty(responseCode) && !string.IsNullOrEmpty(amount) && responseCode != "00")
+            {
+                ViewData["PaymentSuccess"] = false;
+            }
+
             User = await _userService.GetUserByIdAsync(currentUserId);
 
             if (User == null)
             {
-                return NotFound();
+                return Redirect("/Authentication/Login");
             }
 
             return Page();
@@ -35,8 +49,8 @@ namespace ImageSharingPlatform.Pages.Profile
             var userJson = HttpContext.Session.GetString("LoggedInUser");
 
             if (string.IsNullOrEmpty(userJson))
-            { 
-                return Guid.Empty; 
+            {
+                return Guid.Empty;
             }
 
             var loggedInUser = JsonConvert.DeserializeObject<User>(userJson);

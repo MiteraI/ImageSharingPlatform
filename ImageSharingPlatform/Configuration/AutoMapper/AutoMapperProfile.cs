@@ -8,8 +8,8 @@ namespace ImageSharingPlatform.Configuration.AutoMapper
     {
         public AutoMapperProfile()
         {
-            CreateMap<User, UserEditDto>()
-                .ForMember(dest => dest.Avatar, opt => opt.Ignore()).ReverseMap();
+            CreateMap<User, UserEditDto>().ReverseMap();
+            CreateMap<Review, ReviewDto>().ReverseMap();
         }
     }
 }

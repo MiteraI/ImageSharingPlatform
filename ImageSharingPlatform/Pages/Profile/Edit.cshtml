@@ -8,66 +8,69 @@
 @{
 }
 
-<h3>Edit Profile</h3>
+<div class="container pt-4">
+	<h3>Edit Profile</h3>
 
-<form method="post" enctype="multipart/form-data" class="bg-white p-4">
-	<input type="hidden" asp-for="UserEditDto.Id" />
-	<input type="hidden" asp-for="UserEditDto.Password"/>
+	<form method="post" enctype="multipart/form-data" class="bg-white p-4">
+		<input type="hidden" asp-for="UserEditDto.Id" />
+		<input type="hidden" asp-for="UserEditDto.AvatarUrl" />
 
-	<div class="mb-3">
-		<label asp-for="UserEditDto.Username" class="form-label text-black"></label>
-		<input asp-for="UserEditDto.Username" class="form-control text-black" style="background-color: #f8f9fa; border: 1px solid #ced4da; border-radius: 4px;" />
-		<span asp-validation-for="UserEditDto.Username" class="text-danger"></span>
-	</div>
+		<div class="mb-3">
+			<label asp-for="UserEditDto.Username" class="form-label text-black"></label>
+			<input asp-for="UserEditDto.Username" class="form-control text-black" style="background-color: #f8f9fa; border: 1px solid #ced4da; border-radius: 4px;" />
+			<span asp-validation-for="UserEditDto.Username" class="text-danger"></span>
+		</div>
 
-	<div class="mb-3">
-		<label asp-for="UserEditDto.Email" class="form-label text-black"></label>
-		<input asp-for="UserEditDto.Email" class="form-control text-black" style="background-color: #f8f9fa; border: 1px solid #ced4da; border-radius: 4px;" />
-		<span asp-validation-for="UserEditDto.Email" class="text-danger"></span>
-	</div>
+		<div class="mb-3">
+			<label asp-for="UserEditDto.Email" class="form-label text-black"></label>
+			<input asp-for="UserEditDto.Email" class="form-control text-black" style="background-color: #f8f9fa; border: 1px solid #ced4da; border-radius: 4px;" />
+			<span asp-validation-for="UserEditDto.Email" class="text-danger"></span>
+		</div>
 
-	<div class="mb-3">
-		<label asp-for="UserEditDto.FirstName" class="form-label text-black"></label>
-		<input asp-for="UserEditDto.FirstName" class="form-control text-black" style="background-color: #f8f9fa; border: 1px solid #ced4da; border-radius: 4px;" />
-		<span asp-validation-for="UserEditDto.FirstName" class="text-danger"></span>
-	</div>
+		<div class="mb-3">
+			<label asp-for="UserEditDto.FirstName" class="form-label text-black"></label>
+			<input asp-for="UserEditDto.FirstName" class="form-control text-black" style="background-color: #f8f9fa; border: 1px solid #ced4da; border-radius: 4px;" />
+			<span asp-validation-for="UserEditDto.FirstName" class="text-danger"></span>
+		</div>
 
-	<div class="mb-3">
-		<label asp-for="UserEditDto.LastName" class="form-label text-black"></label>
-		<input asp-for="UserEditDto.LastName" class="form-control text-black" style="background-color: #f8f9fa; border: 1px solid #ced4da; border-radius: 4px;" />
-		<span asp-validation-for="UserEditDto.LastName" class="text-danger"></span>
-	</div>
+		<div class="mb-3">
+			<label asp-for="UserEditDto.LastName" class="form-label text-black"></label>
+			<input asp-for="UserEditDto.LastName" class="form-control text-black" style="background-color: #f8f9fa; border: 1px solid #ced4da; border-radius: 4px;" />
+			<span asp-validation-for="UserEditDto.LastName" class="text-danger"></span>
+		</div>
 
-	<div class="mb-3">
-		<label asp-for="UserEditDto.Avatar" class="form-label text-black">Avatar</label>
-		<input type="file" name="avatar" class="form-control text-black" style="background-color: #f8f9fa; border: 1px solid #ced4da; border-radius: 4px;" />
-	</div>
+		<div class="mb-3">
+			<label class="form-label text-black">Avatar</label>
+			<input type="file" name="avatar" class="form-control text-black" style="background-color: #f8f9fa; border: 1px solid #ced4da; border-radius: 4px;" />
+		</div>
 
-	<div class="d-flex justify-content-around align-items-center mt-2">
-		<button type="submit" class="btn btn-primary">Save Changes</button>
-		@{
-			var session = HttpContextAccessor.HttpContext.Session;
-			var loggedInUser = session.GetString("LoggedInUser");
-			if (!string.IsNullOrEmpty(loggedInUser))
-			{
-				var user = JsonConvert.DeserializeObject<User>(loggedInUser);
-				bool artistFlag = false;
-
-				// Check if user is artist
-				foreach (var role in user.Roles)
+		<div class="d-flex justify-content-around align-items-center mt-2">
+			<button type="submit" class="btn btn-primary">Save Changes</button>
+			@{
+				var session = HttpContextAccessor.HttpContext.Session;
+				var loggedInUser = session.GetString("LoggedInUser");
+				if (!string.IsNullOrEmpty(loggedInUser))
 				{
-					if (role.UserRole == UserRole.ROLE_ARTIST)
+					var user = JsonConvert.DeserializeObject<User>(loggedInUser);
+					bool artistFlag = false;
+
+					// Check if user is artist
+					foreach (var role in user.Roles)
 					{
-						artistFlag = true;
+						if (role.UserRole == UserRole.ROLE_ARTIST)
+						{
+							artistFlag = true;
+						}
+					}
+
+					// Only show when user is not artist
+					if (!artistFlag)
+					{
+						<form method="post"><button type="submit" class="btn btn-warning" asp-page-handler="BecomeArtist">Become artist</button></form>
 					}
 				}
-
-				// Only show when user is not artist
-				if (!artistFlag)
-				{
-					<form method="post"><button type="submit" class="btn btn-primary" asp-page-handler="BecomeArtist">Become artist</button></form>
-				}
 			}
-		}
-	</div>
-</form>
+			<a asp-page="./Index" class="btn btn-primary">Back to profile</a>
+		</div>
+	</form>
+</div>

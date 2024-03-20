@@ -1,7 +1,9 @@
 ﻿using ImageSharingPlatform.Domain.Entities;
+using ImageSharingPlatform.Domain.Enums;
 using ImageSharingPlatform.Repository.Repositories;
 using ImageSharingPlatform.Repository.Repositories.Interfaces;
 using ImageSharingPlatform.Service.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,18 +39,32 @@ namespace ImageSharingPlatform.Service.Services
             return await _imageRequestRepository.GetAllAsync();
         }
 
-        public async Task<IEnumerable<ImageRequest>> GetAllImageRequestsDetailsAsync()
+        public async Task<IEnumerable<ImageRequest>> GetAllImageRequestsByArtistAsync(Guid artistId)
+        {
+            return await _imageRequestRepository.QueryHelper()
+                .Include(ir => ir.RequesterUser)
+                .Filter(ir => ir.ArtistId == artistId && ir.RequestStatus != RequestStatus.CANCELLED).GetAllAsync();
+        }
+
+        public async Task<IEnumerable<ImageRequest>> GetAllImageRequestsByUserAsync(Guid userId)
+		{
+            return await _imageRequestRepository.GetAllByUserIdAsync(userId);
+		}
+
+		public async Task<IEnumerable<ImageRequest>> GetAllImageRequestsDetailsAsync()
         {
             return await _imageRequestRepository.GetAllWithDetailsAsync();
         }
 
-        public async Task<ImageRequest> GetImageRequestById(Guid imageRequestId)
+        public async Task<ImageRequest> GetImageRequestByIdWithFullDetailsAsync(Guid imageRequestId)
         {
-            return await _imageRequestRepository.GetOneAsync(imageRequestId);
+            return await _imageRequestRepository.GetByIdWithFullDetails(imageRequestId);
         }
+
         public async Task<bool> ImageRequestExistsAsync(Expression<Func<ImageRequest, bool>> predicate)
         {
             return await _imageRequestRepository.Exists(predicate);
         }
+
     }
 }

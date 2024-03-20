@@ -16,5 +16,6 @@ namespace ImageSharingPlatform.Service.Services.Interfaces
         Task<ImageCategory> GetImageCategoryByIdAsync(Guid imageCategoryId);
         Task<bool> ImageCategoryExistsAsync(Expression<Func<ImageCategory, bool>> predicate);
         Task<IEnumerable<ImageCategory>> GetAllImageCategoriesAsync();
-    }
+		Task<ImageCategory> CheckCategoryName(string category);
+	}
 }

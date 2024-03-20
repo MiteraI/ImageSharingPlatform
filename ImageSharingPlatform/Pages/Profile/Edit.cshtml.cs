@@ -12,12 +12,16 @@ namespace ImageSharingPlatform.Pages.Profile
     {
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
+        private readonly ISubscriptionPackageService _subscriptionPackageService;
         private readonly IAzureBlobService _azureBlobService;
 
-        public EditModel(IMapper mapper, IUserService userService, IAzureBlobService azureBlobService)
+        public EditModel(IMapper mapper, IUserService userService
+            , ISubscriptionPackageService subscriptionPackageService
+            , IAzureBlobService azureBlobService)
         {
             _mapper = mapper;
             _userService = userService;
+            _subscriptionPackageService = subscriptionPackageService;
             _azureBlobService = azureBlobService;
         }
 
@@ -32,7 +36,7 @@ namespace ImageSharingPlatform.Pages.Profile
 
             if (user == null)
             {
-                return NotFound();
+                return Redirect("/Authentication/Login");
             }
 
             UserEditDto = _mapper.Map<UserEditDto>(user);
@@ -42,20 +46,27 @@ namespace ImageSharingPlatform.Pages.Profile
 
         public async Task<IActionResult> OnPostAsync(IFormFile avatar)
         {
+            ModelState.Remove("avatar");
+            ModelState.Remove("UserEditDto.Password");
             if (ModelState.IsValid)
             {
-                var updatedUser = _mapper.Map<User>(UserEditDto);
+                var userToUpdate = await _userService.GetUserByIdAsync(UserEditDto.Id);
 
                 if (avatar != null)
                 {
                     string avatarUrl = await _azureBlobService.UploadAvatar(avatar);
-                    updatedUser.AvatarUrl = avatarUrl;
+                    userToUpdate.AvatarUrl = avatarUrl;
                 }
 
-                await _userService.EditUser(updatedUser);
-                // Redirect to profile page or show success message
-                return RedirectToPage("/Profile/Index");
-            }
+                userToUpdate.Username = UserEditDto.Username;
+                userToUpdate.Email = UserEditDto.Email;
+                userToUpdate.FirstName = UserEditDto.FirstName;
+                userToUpdate.LastName = UserEditDto.LastName;
+
+                var updatedUser = await _userService.EditUser(userToUpdate);
+				var userJson = JsonConvert.SerializeObject(updatedUser);
+				HttpContext.Session.SetString("LoggedInUser", userJson);
+			}
 
             // If ModelState is not valid, return to the edit page with errors
             return Page();
@@ -65,6 +76,12 @@ namespace ImageSharingPlatform.Pages.Profile
         {
             Guid currentUserId = GetCurrentUserId();
             await _userService.UpdateRoleToArtist(currentUserId);
+            await _subscriptionPackageService.CreateSubscriptionPackage(new SubscriptionPackage
+            {
+                ArtistId = currentUserId,
+                Price = 100000,
+                Description = "Default package price for new artists"
+            });
             return RedirectToPage("/Authentication/Logout");
         }
 

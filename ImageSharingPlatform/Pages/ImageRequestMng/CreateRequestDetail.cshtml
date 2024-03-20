@@ -1,0 +1,51 @@
+﻿@page
+@model ImageSharingPlatform.Pages.ImageRequestMng.CreateRequestDetailModel
+@{
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card shadow-sm">
+                <div class="card-body p-5">
+                    <h3 class="card-title mb-4">Create Request Detail</h3>
+                    <form method="post" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                        <input type="hidden" asp-for="RequestDetail.RequestId" />
+
+                        <div class="mb-3">
+                            <label asp-for="RequestDetail.Title" class="form-label">Title</label>
+                            <input asp-for="RequestDetail.Title" class="form-control" placeholder="Enter title" />
+                            <span asp-validation-for="RequestDetail.Title" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="RequestDetail.Comment" class="form-label">Comment</label>
+                            <textarea asp-for="RequestDetail.Comment" class="form-control" rows="3" placeholder="Enter comment"></textarea>
+                            <span asp-validation-for="RequestDetail.Comment" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="RequestDetail.NewPrice" class="form-label">New Price</label>
+                            <input asp-for="RequestDetail.NewPrice" class="form-control" placeholder="Enter new price" />
+                            <span asp-validation-for="RequestDetail.NewPrice" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="RequestDetail.ExpectedTime" class="form-label">Expected Time</label>
+                            <input asp-for="RequestDetail.ExpectedTime" class="form-control" placeholder="YYYY-MM-DD or any format you prefer" />
+                            <span asp-validation-for="RequestDetail.ExpectedTime" class="text-danger"></span>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-success mt-3 submit-btn">Create</button>
+                            <a asp-page="Index" class="btn btn-outline-secondary mt-3 submit-btn">Back to List</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

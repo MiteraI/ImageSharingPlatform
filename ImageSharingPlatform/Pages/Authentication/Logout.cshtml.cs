@@ -5,10 +5,11 @@ namespace ImageSharingPlatform.Pages.Authentication
 {
     public class LogoutModel : PageModel
     {
-        public void OnGet()
+        public IActionResult OnGet()
         {
 			HttpContext.Session.Remove("LoggedInUser");
-            RedirectToPage("/Index");
+            TempData["SuccessMessage"] = "Logout successfully";
+            return Redirect("/Index");
 		}
 	}
 }

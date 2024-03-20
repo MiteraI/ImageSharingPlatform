@@ -18,11 +18,13 @@ namespace ImageSharingPlatform.Service.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IRoleRepository _roleRepository;
+        private readonly ITransactionRepository _transactionRepository;
 
-        public UserService(IUserRepository userRepository, IRoleRepository roleRepository)
+        public UserService(IUserRepository userRepository, IRoleRepository roleRepository, ITransactionRepository transactionRepository)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;
+            _transactionRepository = transactionRepository;
         }
 
         public virtual async Task<User> RegisterUser(User user)
@@ -38,10 +40,10 @@ namespace ImageSharingPlatform.Service.Services
 
         public async Task<User> LoginUser(string username, string password)
         {
-            var loginUser = await _userRepository.FindByUsername(username);
+            var loginUser = await _userRepository.QueryHelper().Include(u => u.Roles).GetOneAsync(u => u.Username.Equals(username));
             if (loginUser == null)
             {
-                throw new Exception("User not found");
+                throw new Exception("Username not found");
             }
             if (!PasswordHasher.VerifyPassword(loginUser.Password, password))
             {
@@ -53,7 +55,11 @@ namespace ImageSharingPlatform.Service.Services
 
         public async Task<User> CreateUser(User user)
         {
-            var newUser = _userRepository.Add(user);
+			user.Password = PasswordHasher.HashPassword(user.Password);
+			user.AvatarUrl = "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50";
+			var userRole = await _roleRepository.GetRoleByNameAsync(UserRole.ROLE_USER);
+			user.Roles.Add(userRole);
+			var newUser = _userRepository.Add(user);
             await _userRepository.SaveChangesAsync();
             return newUser;
         }
@@ -79,7 +85,7 @@ namespace ImageSharingPlatform.Service.Services
 
         public async Task<User> GetUserByIdAsync(Guid userId)
         {
-            return await _userRepository.GetOneAsync(userId);
+            return await _userRepository.QueryHelper().Include(u => u.Roles).GetOneAsync(u => u.Id.Equals(userId));
         }
 
         public async Task<bool> UserExistsAsync(Expression<Func<User, bool>> predicate)
@@ -92,20 +98,70 @@ namespace ImageSharingPlatform.Service.Services
             return await _userRepository.GetAllAsync();
         }
 
-		public async Task UpdateRoleToArtist(Guid userId)
-		{
+        public async Task<IEnumerable<User>> GetUserByRoles()
+        {
+            var result = await _userRepository.QueryHelper().Include(u => u.Roles).GetAllAsync();
+            return result;
+        }
+
+        public async Task UpdateRoleToArtist(Guid userId)
+        {
             User user = await _userRepository.GetOneIncludeRolesAsync(userId);
-			Role artistRole = await _roleRepository.GetRoleByNameAsync(UserRole.ROLE_ARTIST);
+            Role artistRole = await _roleRepository.GetRoleByNameAsync(UserRole.ROLE_ARTIST);
 
             // Check if user already has the artist role
             if (user.Roles.Any(r => r.UserRole == artistRole.UserRole))
             {
-				return;
-			}
+                return;
+            }
 
             user.Roles.Add(artistRole);
-			_userRepository.Update(user);
+            _userRepository.Update(user);
             await _userRepository.SaveChangesAsync();
+        }
+
+        public async Task IncreaseBalance(Guid userId, double amount, string description)
+        {
+			User user = await _userRepository.GetOneAsync(userId);
+			user.Balance += (long) amount;
+			_userRepository.Update(user);
+			_transactionRepository.Add(new Transaction
+			{
+				Amount = (long)amount,
+				TransactionDate = DateTime.Now,
+				TransactionType = TransactionType.INCREASE,
+                Description = description,
+				UserId = userId
+			});
+			await _userRepository.SaveChangesAsync();
+		}
+
+        public async Task DecreaseBalance(Guid userId, double amount, string description)
+        {
+            User user = await _userRepository.GetOneAsync(userId);
+            user.Balance -= (long)amount;
+            _userRepository.Update(user);
+            _transactionRepository.Add(new Transaction
+            {
+                Amount = (long)amount,
+                TransactionDate = DateTime.Now,
+                TransactionType = TransactionType.DECREASE,
+                Description = description,
+                UserId = userId
+            });
+            await _userRepository.SaveChangesAsync();
+        }
+
+		public async Task<bool> CheckDuplicateUsername(string username)
+		{
+			var user = await _userRepository.QueryHelper().GetOneAsync(u => u.Username.Equals(username));
+            return user == null ? false : true;
+		}
+
+		public async Task<bool> CheckDuplicateEmail(string email)
+		{
+			var user = await _userRepository.QueryHelper().GetOneAsync(u => u.Email.ToLower().Equals(email.ToLower()));
+			return user == null ? false : true;
 		}
 	}
 }

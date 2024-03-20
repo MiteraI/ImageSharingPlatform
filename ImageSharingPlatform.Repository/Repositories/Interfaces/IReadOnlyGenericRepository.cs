@@ -1,5 +1,6 @@
 ﻿using ImageSharingPlatform.Domain.Entities;
 using JHipsterNet.Core.Pagination;
+using PartyRentingPlatform.Domain.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +17,6 @@ namespace ImageSharingPlatform.Repository.Repositories.Interfaces
         Task<IPage<TEntity>> GetPageAsync(IPageable pageable);
         Task<bool> Exists(Expression<Func<TEntity, bool>> predicate);
         Task<int> CountAsync();
+        IFluentRepository<TEntity> QueryHelper();
     }
 }

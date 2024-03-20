@@ -23,6 +23,7 @@ namespace ImageSharingPlatform.Domain.Entities
         public DbSet<RequestDetail> RequestDetails { get; set; }
         public DbSet<SubscriptionPackage> SubscriptionPackages { get; set; }
         public DbSet<OwnedSubscription> OwnedSubscriptions { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
 
         public void Initialize(ApplicationDbContext context)
         {
@@ -152,7 +153,6 @@ namespace ImageSharingPlatform.Domain.Entities
                     {
                         Roles.Single(r => r.UserRole == UserRole.ROLE_ADMIN),
                         Roles.Single(r => r.UserRole == UserRole.ROLE_USER),
-                        Roles.Single(r => r.UserRole == UserRole.ROLE_ARTIST)
                     }
                 });
             context.SaveChanges();

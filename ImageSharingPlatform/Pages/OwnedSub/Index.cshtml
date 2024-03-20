@@ -1,0 +1,43 @@
+﻿@page
+@model ImageSharingPlatform.Pages.OwnedSub.IndexModel
+
+<p>
+    <h2>My Subscription Package</h2>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.OwnedSubscription[0].PurchasedTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OwnedSubscription[0].SubscriptionPackage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OwnedSubscription[0].User)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OwnedSubscription[0].SubscriptionPackage.Artist)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.OwnedSubscription) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PurchasedTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubscriptionPackage.ArtistId)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.User.Username)
+            </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SubscriptionPackage.Artist.Username)
+                </td>
+        </tr>
+}
+    </tbody>
+</table>

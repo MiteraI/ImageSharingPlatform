@@ -1,0 +1,117 @@
+﻿@page
+@model ImageSharingPlatform.Pages.Search.DetailsModel
+
+<div class="container">
+	<main role="main" class="pb-3">
+		<div class="card shadow border-0 my-2 col-12" style="padding-bottom:15px">
+			<div class="d-flex justify-content-between pt-4">
+				<div class="image-header">
+					<!-- Assuming you have a property ArtistName in your model -->
+					<a asp-page="/ArtistProfile/Index" asp-route-id="@Model.SharedImage.ArtistId"><h3>@Html.DisplayFor(model => model.SharedImage.Artist.FirstName) @Html.DisplayFor(model => model.SharedImage.Artist.LastName)</h3></a>
+				</div>
+				<div class="d-flex">
+					<div class="image-actions" style="margin-bottom:13px">
+						<!-- Add action buttons like Collect, Like, Edit in Canva, Free download here -->
+						<a href="@Model.SharedImage.ImageUrl" download="@Model.SharedImage.ImageName" class="btn btn-primary">Free Download</a>
+					</div>
+					<div>
+						<a href="/Search?query=" class="btn btn-outline-primary">Back</a>
+					</div>
+				</div>
+			</div>
+
+			<div class="container image-details d-flex justify-content-evenly">
+				<div class="image-container">
+					<img class="w-100" src="@Html.DisplayFor(model => model.SharedImage.ImageUrl)" class="image" />
+
+				</div>
+				<div>
+					<input type="hidden" asp-for="SharedImage.Id"/>
+					<input type="hidden" asp-for="SharedImage.ImageName" />
+					<h6>Image Name : @Html.DisplayFor(model => model.SharedImage.ImageName)</h6><br />
+					<h6>Image Category : @Html.DisplayFor(model => model.SharedImage.ImageCategory.CategoryName)</h6><br />
+					<h6>Description : @Html.DisplayFor(model => model.SharedImage.Description)</h6><br />
+					<h6>Created At : @Html.DisplayFor(model => model.SharedImage.CreatedAt)</h6>
+					<div class="d-flex" style="padding-top:7px">
+						<h6 style="padding: 15px 5px 0px 0px">Is Premium : </h6>
+						<p>@Html.DisplayFor(model => model.SharedImage.IsPremium)</p>
+					</div>
+				</div>
+			</div>
+			@*Comment section*@
+			<div class="container">
+				<div class="row">
+					<form method="post">
+						<input type="hidden" name="sharedImageId" value="@Model.SharedImage.Id" />
+						<div class="form-group">
+							<label asp-for="Review.Rating">Rating:</label>
+							<input type="number" class="form-control" asp-for="Review.Rating" min="1" max="5" required />
+							<span asp-validation-for="Review.Rating" class="text-danger"></span>
+						</div>
+						<div class="form-group">
+							<label asp-for="Review.Comment">Comment:</label>
+							<textarea class="form-control" asp-for="Review.Comment" rows="3"></textarea>
+							<span asp-validation-for="Review.Comment" class="text-danger"></span>
+						</div>
+						<button type="submit" class="btn btn-primary" style="float: right">Submit</button>
+					</form>
+				</div>
+			</div>
+			<div class="container">
+				@if (Model.SharedImage.Reviews.Any())
+				{
+					<h3>Comments</h3>
+					@foreach (var review in Model.SharedImage.Reviews)
+					{
+						<div class="card mb-3">
+							<div class="card-body">
+								<h5 class="card-title">Rating: @review.Rating</h5>
+								<p class="card-text">Comment: @review.Comment</p>
+								<p class="card-text">By: @review.User.Email</p>
+								<p class="card-text"><small class="text-muted">At: @review.CreatedAt</small></p>
+							</div>
+						</div>
+					}
+				}
+				else
+				{
+					<p>No comments yet.</p>
+				}
+			</div>
+		</div>
+	</main>
+</div>
+
+<style>
+	.image-details {
+		margin: auto;
+	}
+
+	.image-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 20px;
+	}
+
+		.image-header h3 {
+			margin: 0;
+		}
+
+	.image-container {
+		margin-bottom: 20px;
+		max-width: 350px;
+	}
+
+	.image {
+		width: 100%;
+		height: auto;
+		border: none;
+		box-shadow: none;
+	}
+
+	.image-actions {
+		display: flex;
+		justify-content: space-between;
+	}
+</style>

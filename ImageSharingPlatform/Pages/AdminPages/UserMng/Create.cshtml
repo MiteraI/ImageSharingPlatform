@@ -1,0 +1,59 @@
+﻿@page
+@model CreateModel
+
+<div class="container">
+    <main role="main" class="pb-3">
+        <h2 class="pt-4 pb-2 text-center">Create User</h2>
+        <hr />
+        <div class="row justify-content-center">
+            <div class="card shadow border-0 my-4 col-md-4">
+                <div class="card-body p-4">
+                    <form method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        <div class="form-group">
+                            <label asp-for="User.Username" class="control-label">Username <span class="text-danger">*</span></label>
+                            <input asp-for="User.Username" class="form-control" />
+                            <span asp-validation-for="User.Username" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="User.Password" class="control-label">Password <span class="text-danger">*</span></label>
+                            <input asp-for="User.Password" class="form-control" type="password" />
+                            <span asp-validation-for="User.Password" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="User.FirstName" class="control-label">First Name</label>
+                            <input asp-for="User.FirstName" class="form-control" />
+                            <span asp-validation-for="User.FirstName" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="User.LastName" class="control-label">Last Name</label>
+                            <input asp-for="User.LastName" class="form-control" />
+                            <span asp-validation-for="User.LastName" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="User.Email" class="control-label">Email <span class="text-danger">*</span></label>
+                            <input asp-for="User.Email" class="form-control" type="email" />
+                            <span asp-validation-for="User.Email" class="text-danger"></span>
+                        </div>
+                        <br/>
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary">Create</button>
+                            <a asp-page="./Index" class="btn btn-outline-secondary ml-2">
+                                Back to List
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

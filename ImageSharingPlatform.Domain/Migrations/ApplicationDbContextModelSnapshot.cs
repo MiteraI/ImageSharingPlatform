@@ -48,7 +48,7 @@ namespace ImageSharingPlatform.Domain.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ArtistId")
+                    b.Property<Guid>("ArtistId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreateTime")
@@ -59,6 +59,10 @@ namespace ImageSharingPlatform.Domain.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)")
                         .HasColumnName("description");
+
+                    b.Property<DateTime>("ExpectedTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("expected_time");
 
                     b.Property<byte[]>("ImageBlob")
                         .HasColumnType("varbinary(max)")
@@ -126,14 +130,17 @@ namespace ImageSharingPlatform.Domain.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("ExpectedTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("expected_time");
+
                     b.Property<double?>("NewPrice")
                         .HasColumnType("float");
 
-                    b.Property<Guid?>("RequestId")
+                    b.Property<Guid>("RequestId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("UserId")
@@ -145,7 +152,7 @@ namespace ImageSharingPlatform.Domain.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("RequestDetails", (string)null);
+                    b.ToTable("RequestDetails");
                 });
 
             modelBuilder.Entity("ImageSharingPlatform.Domain.Entities.Review", b =>
@@ -262,6 +269,35 @@ namespace ImageSharingPlatform.Domain.Migrations
                     b.ToTable("subscription_package", (string)null);
                 });
 
+            modelBuilder.Entity("ImageSharingPlatform.Domain.Entities.Transaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("TransactionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TransactionType")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Transactions");
+                });
+
             modelBuilder.Entity("ImageSharingPlatform.Domain.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -320,7 +356,7 @@ namespace ImageSharingPlatform.Domain.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("UserRole", (string)null);
+                    b.ToTable("UserRole");
                 });
 
             modelBuilder.Entity("ImageSharingPlatform.Domain.Entities.ImageRequest", b =>
@@ -328,7 +364,8 @@ namespace ImageSharingPlatform.Domain.Migrations
                     b.HasOne("ImageSharingPlatform.Domain.Entities.User", "Artist")
                         .WithMany()
                         .HasForeignKey("ArtistId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("ImageSharingPlatform.Domain.Entities.User", "RequesterUser")
                         .WithMany()
@@ -359,7 +396,9 @@ namespace ImageSharingPlatform.Domain.Migrations
                 {
                     b.HasOne("ImageSharingPlatform.Domain.Entities.ImageRequest", "Request")
                         .WithMany()
-                        .HasForeignKey("RequestId");
+                        .HasForeignKey("RequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ImageSharingPlatform.Domain.Entities.User", "User")
                         .WithMany()
@@ -408,6 +447,17 @@ namespace ImageSharingPlatform.Domain.Migrations
                         .HasForeignKey("ImageSharingPlatform.Domain.Entities.SubscriptionPackage", "ArtistId");
 
                     b.Navigation("Artist");
+                });
+
+            modelBuilder.Entity("ImageSharingPlatform.Domain.Entities.Transaction", b =>
+                {
+                    b.HasOne("ImageSharingPlatform.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("UserRole", b =>

@@ -1,0 +1,70 @@
+﻿@page
+@model ImageSharingPlatform.Pages.ArtistPages.MySharedImages.DeleteModel
+
+
+<div class="container">
+    <main role="main" class="pb-3">
+        <h2 class="pt-5 text-center">Are you sure you want to delete this?</h2>
+        <hr />
+        <div class="card shadow border-0 my-5">
+            <div class="card-body p-4">
+                <dl class="row">
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.SharedImage.ImageName)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.SharedImage.ImageName)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.SharedImage.ImageUrl)
+                    </dt>
+                    <dd class="col-sm-9">
+                        <img src="@Html.DisplayFor(model => model.SharedImage.ImageUrl)" class="img-fluid rounded" alt="Image preview" />
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.SharedImage.ImageCategory)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.SharedImage.ImageCategory.CategoryName)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.SharedImage.Description)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.SharedImage.Description)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.SharedImage.CreatedAt)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.SharedImage.CreatedAt)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.SharedImage.IsPremium)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.SharedImage.IsPremium)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.SharedImage.Artist)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.SharedImage.Artist.Username)
+                    </dd>
+                </dl>
+                <form method="post" class="pt-3">
+                    <input type="hidden" asp-for="SharedImage.Id" />
+                    <div class="text-center">
+                        <input type="submit" value="Delete" class="btn btn-danger me-2" />
+                        <a asp-page="./Index" class="btn btn-outline-primary">Back to List</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
+<style>
+    .img-fluid {
+        max-height: 500px
+    }
+</style>

@@ -1,0 +1,64 @@
+﻿@page
+@model CreateModel
+
+<div class="container">
+    <main role="main" class="pb-3">
+        <h2 class="pt-4 pb-2 text-center">Create Shared Image</h2>
+        <hr />
+        <div class="row justify-content-center">
+            <div class="card shadow border-0 my-4 col-lg-8">
+                <div class="card-body p-4">
+                    <form method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        <div class="form-group">
+                            <label asp-for="SharedImage.ImageName" class="control-label">Image Name <span class="text-danger">*</span></label>
+                            <input asp-for="SharedImage.ImageName" class="form-control" />
+                            <span asp-validation-for="SharedImage.ImageName" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="SharedImage.ImageCategoryId" class="control-label">Category Name <span class="text-danger">*</span></label>
+                            <select asp-for="SharedImage.ImageCategoryId" class="form-control" asp-items="ViewBag.ImageCategoryId"></select>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="SharedImage.Description" class="control-label">Description</label>
+                            <input asp-for="SharedImage.Description" class="form-control" />
+                            <span asp-validation-for="SharedImage.Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="SharedImage.CreatedAt" class="control-label">Created At</label>
+                            <input asp-for="SharedImage.CreatedAt" class="form-control" />
+                            <span asp-validation-for="SharedImage.CreatedAt" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group form-check">
+                            <input class="form-check-input" asp-for="SharedImage.IsPremium" id="IsPremiumCheck" />
+                            <label class="form-check-label" asp-for="SharedImage.IsPremium">Is Premium</label>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="SharedImage.ArtistId" class="control-label">Artist</label>
+                            <select asp-for="SharedImage.ArtistId" class="form-control" asp-items="ViewBag.ArtistId"></select>
+                        </div>
+                        <br/>
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary btn-block">Create</button>
+                            <a asp-page="./Index" class="btn btn-outline-secondary btn-block">
+                                Back to List
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

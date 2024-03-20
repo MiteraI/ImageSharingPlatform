@@ -12,9 +12,9 @@ namespace ImageSharingPlatform.Domain.Entities
         public string ImageName { get; set; }
         public string? ImageUrl { get; set; }
 
-        public Guid? ImageCategoryId { get; set; }
+        public Guid ImageCategoryId { get; set; }
 
-        public ImageCategory? ImageCategory { get; set; }
+        public ImageCategory ImageCategory { get; set; }
 
         [Column("description")]
         public string? Description { get; set; }
