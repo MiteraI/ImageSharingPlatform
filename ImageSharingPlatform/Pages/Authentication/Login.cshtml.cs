@@ -45,7 +45,7 @@ namespace ImageSharingPlatform.Pages.Authentication
                 }
                 catch (Exception ex)
                 {
-                    TempData["ErrorMessage"] = "An error occurred while attempting to login.";
+                    TempData["ErrorMessage"] = ex.Message;
                 }
             }
             else

@@ -60,7 +60,7 @@ namespace ImageSharingPlatform.Service.Services
 
         public async Task<SubscriptionPackage> GetSubscriptionPackageById(Guid subscriptionPackageId)
         {
-            return await _subscriptionPackageRepository.GetOneAsync(subscriptionPackageId);
+            return await _subscriptionPackageRepository.QueryHelper().Include(sp => sp.Artist).GetOneAsync(sp => sp.Id.Equals(subscriptionPackageId));
         }
 
         public async Task<bool> SubscriptionPackageExistsAsync(Expression<Func<SubscriptionPackage, bool>> predicate)
