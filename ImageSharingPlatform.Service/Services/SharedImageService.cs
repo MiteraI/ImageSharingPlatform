@@ -59,7 +59,10 @@ namespace ImageSharingPlatform.Service.Services
 
 		public async Task<SharedImage> GetSharedImageByIdAsync(Guid sharedImageId)
 		{
-			return await _sharedImageRepository.QueryHelper().Include(si => si.Reviews).GetOneAsync(si => si.Id.Equals(sharedImageId));
+			return await _sharedImageRepository.QueryHelper()
+				.Include(si => si.Reviews)
+				.Include(si => si.Artist)
+				.GetOneAsync(si => si.Id.Equals(sharedImageId));
 		}
 
 		public async Task<bool> SharedImageExistsAsync(Expression<Func<SharedImage, bool>> predicate)
