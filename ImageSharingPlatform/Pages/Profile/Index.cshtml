@@ -15,10 +15,10 @@
         <!-- Profile details column -->
         <div class="col-md-8">
             <div style="background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-                <h2>Welcome, @Model.User.FirstName @Model.User.LastName!</h2>
-                <p style="margin-bottom: 0; color: #666;">Email: @Model.User.Email</p>
-                <p style="color: #666;">Username: @Model.User.Username</p>
-                <p>Balance: @Model.User.Balance</p>
+                <h2>Welcome, @Model.User.FirstName @Model.User.LastName !</h2>
+                <p style="margin-bottom: 0; color: #666;">Email : @Model.User.Email</p>
+                <p style="color: #666;">Username : @Model.User.Username</p>
+                <p>Balance : @Model.User.Balance</p>
                 <!-- Payment success or failure messages -->
                 @if (ViewData["PaymentSuccess"] != null && (bool)ViewData["PaymentSuccess"])
                 {

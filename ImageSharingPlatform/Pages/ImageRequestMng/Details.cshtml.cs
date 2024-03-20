@@ -46,12 +46,21 @@ namespace ImageSharingPlatform.Pages.ImageRequestMng
             {
                 return NotFound();
             }
-            ImageRequest = await _imageRequestService.GetImageRequestByIdWithFullDetailsAsync(id);
+			var useraccount = JsonConvert.DeserializeObject<User>(userJson);
+			var userId = useraccount.Id;
+
+			ImageRequest = await _imageRequestService.GetImageRequestByIdWithFullDetailsAsync(id);
             if (ImageRequest == null)
             {
                 return NotFound();
             }
-            RequestDetail = (IList<RequestDetail>)await _requestDetailService.GetRequestDetailByRequetIdAsync(id);
+			if (userId != ImageRequest.RequesterUserId && userId != ImageRequest.ArtistId)
+			{
+				TempData["ErrorMessage"] = "You do not have permission to view this page.";
+				return RedirectToPage("./Index"); 
+			}
+
+			RequestDetail = (IList<RequestDetail>)await _requestDetailService.GetRequestDetailByRequetIdAsync(id);
 
             return Page();
         }
