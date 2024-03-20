@@ -46,6 +46,8 @@ namespace ImageSharingPlatform.Pages.Profile
 
         public async Task<IActionResult> OnPostAsync(IFormFile avatar)
         {
+            ModelState.Remove("avatar");
+            ModelState.Remove("UserEditDto.Password");
             if (ModelState.IsValid)
             {
                 var userToUpdate = await _userService.GetUserByIdAsync(UserEditDto.Id);
@@ -61,8 +63,10 @@ namespace ImageSharingPlatform.Pages.Profile
                 userToUpdate.FirstName = UserEditDto.FirstName;
                 userToUpdate.LastName = UserEditDto.LastName;
 
-                await _userService.EditUser(userToUpdate);
-            }
+                var updatedUser = await _userService.EditUser(userToUpdate);
+				var userJson = JsonConvert.SerializeObject(updatedUser);
+				HttpContext.Session.SetString("LoggedInUser", userJson);
+			}
 
             // If ModelState is not valid, return to the edit page with errors
             return Page();

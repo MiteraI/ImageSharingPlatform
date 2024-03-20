@@ -249,11 +249,11 @@ namespace ImageSharingPlatform.Pages.ImageRequestMng
             }
             else
             {
-                await _userService.DecreaseBalance(user.Id, editImageRequest.Price);
-                await _userService.IncreaseBalance(editImageRequest.ArtistId, editImageRequest.Price);
+                await _userService.DecreaseBalance(user.Id, editImageRequest.Price, $"You paid {editImageRequest.Price}VND for a request");
+                await _userService.IncreaseBalance(editImageRequest.ArtistId, editImageRequest.Price, $"You received {editImageRequest.Price}VND for a request from {user.Username}");
                 editImageRequest.RequestStatus = RequestStatus.SUCCESS;
                 await _imageRequestService.EditImageRequest(editImageRequest);
-                ViewData["SuccessMessage"] = "You have succesfully pay the image to the artist";
+                ViewData["SuccessMessage"] = "You have succesfully paid the artist";
                 return Redirect($"./Details?id={ImageRequest.Id.ToString()}");
             }
         }

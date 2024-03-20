@@ -43,7 +43,7 @@ namespace ImageSharingPlatform.Service.Services
             var loginUser = await _userRepository.QueryHelper().Include(u => u.Roles).GetOneAsync(u => u.Username.Equals(username));
             if (loginUser == null)
             {
-                throw new Exception("User not found");
+                throw new Exception("Username not found");
             }
             if (!PasswordHasher.VerifyPassword(loginUser.Password, password))
             {
@@ -120,7 +120,7 @@ namespace ImageSharingPlatform.Service.Services
             await _userRepository.SaveChangesAsync();
         }
 
-        public async Task IncreaseBalance(Guid userId, double amount)
+        public async Task IncreaseBalance(Guid userId, double amount, string description)
         {
 			User user = await _userRepository.GetOneAsync(userId);
 			user.Balance += (long) amount;
@@ -130,12 +130,13 @@ namespace ImageSharingPlatform.Service.Services
 				Amount = (long)amount,
 				TransactionDate = DateTime.Now,
 				TransactionType = TransactionType.INCREASE,
+                Description = description,
 				UserId = userId
 			});
 			await _userRepository.SaveChangesAsync();
 		}
 
-        public async Task DecreaseBalance(Guid userId, double amount)
+        public async Task DecreaseBalance(Guid userId, double amount, string description)
         {
             User user = await _userRepository.GetOneAsync(userId);
             user.Balance -= (long)amount;
@@ -145,6 +146,7 @@ namespace ImageSharingPlatform.Service.Services
                 Amount = (long)amount,
                 TransactionDate = DateTime.Now,
                 TransactionType = TransactionType.DECREASE,
+                Description = description,
                 UserId = userId
             });
             await _userRepository.SaveChangesAsync();

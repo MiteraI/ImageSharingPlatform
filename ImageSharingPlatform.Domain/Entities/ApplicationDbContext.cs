@@ -153,7 +153,6 @@ namespace ImageSharingPlatform.Domain.Entities
                     {
                         Roles.Single(r => r.UserRole == UserRole.ROLE_ADMIN),
                         Roles.Single(r => r.UserRole == UserRole.ROLE_USER),
-                        Roles.Single(r => r.UserRole == UserRole.ROLE_ARTIST)
                     }
                 });
             context.SaveChanges();

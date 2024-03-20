@@ -27,21 +27,21 @@ namespace ImageSharingPlatform.Pages.Profile
             if (!string.IsNullOrEmpty(responseCode) && !string.IsNullOrEmpty(amount) && responseCode == "00")
             {
                 ViewData["PaymentSuccess"] = true;
-                await _userService.IncreaseBalance(currentUserId, double.Parse(amount) / 100);
+                await _userService.IncreaseBalance(currentUserId, double.Parse(amount) / 100, $"You deposited {double.Parse(amount) / 100}VND");
             }
             else if (!string.IsNullOrEmpty(responseCode) && !string.IsNullOrEmpty(amount) && responseCode != "00")
             {
                 ViewData["PaymentSuccess"] = false;
             }
 
-			User = await _userService.GetUserByIdAsync(currentUserId);
+            User = await _userService.GetUserByIdAsync(currentUserId);
 
-			if (User == null)
-			{
-				return Redirect("/Authentication/Login");
-			}
+            if (User == null)
+            {
+                return Redirect("/Authentication/Login");
+            }
 
-			return Page();
+            return Page();
         }
 
         private Guid GetCurrentUserId()
@@ -49,8 +49,8 @@ namespace ImageSharingPlatform.Pages.Profile
             var userJson = HttpContext.Session.GetString("LoggedInUser");
 
             if (string.IsNullOrEmpty(userJson))
-            { 
-                return Guid.Empty; 
+            {
+                return Guid.Empty;
             }
 
             var loggedInUser = JsonConvert.DeserializeObject<User>(userJson);

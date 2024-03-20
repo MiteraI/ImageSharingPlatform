@@ -24,8 +24,8 @@ namespace ImageSharingPlatform.Service.Services.Interfaces
         Task<bool> UserExistsAsync(Expression<Func<User, bool>> predicate);
         Task<IEnumerable<User>> GetAllUsersAsync();
         Task<IEnumerable<User>> GetUserByRoles();
-        Task IncreaseBalance(Guid userId, double amount);
-        Task DecreaseBalance(Guid userId, double amount);
+        Task IncreaseBalance(Guid userId, double amount, string description);
+        Task DecreaseBalance(Guid userId, double amount, string description);
         Task<bool> CheckDuplicateUsername(string username);
         Task<bool> CheckDuplicateEmail(string email);
     }

@@ -91,8 +91,8 @@ namespace ImageSharingPlatform.Pages.ArtistProfile
 					else
 					{
 						await _ownedSubscriptionService.renewSubscription(existingSubscriptionPackage.Id);
-						await _userService.DecreaseBalance(user.Id, subscriptionPackage.Price);
-						await _userService.IncreaseBalance(subscriptionPackage.ArtistId.Value, subscriptionPackage.Price);
+						await _userService.DecreaseBalance(user.Id, subscriptionPackage.Price, $"You paid {subscriptionPackage.Price}VND to renew subscription to {subscriptionPackage.Artist.Username}");
+						await _userService.IncreaseBalance(subscriptionPackage.ArtistId.Value, subscriptionPackage.Price, $"You received {subscriptionPackage.Price}VND from subscription renewal from {user.Username}");
 						ViewData["PaymentSuccess"] = "Your subscription have been renewed";
 						return Page();
 					}
@@ -115,8 +115,8 @@ namespace ImageSharingPlatform.Pages.ArtistProfile
 					SubscriptionPackage = subscriptionPackage
 				};
 				await _ownedSubscriptionService.CreateOwnedSubscription(newOwnedSubscription);
-				await _userService.DecreaseBalance(user.Id, subscriptionPackage.Price);
-				await _userService.IncreaseBalance(subscriptionPackage.ArtistId.Value, subscriptionPackage.Price);
+				await _userService.DecreaseBalance(user.Id, subscriptionPackage.Price, $"You paid {subscriptionPackage.Price}VND to subscribe to {subscriptionPackage.Artist.Username}");
+				await _userService.IncreaseBalance(subscriptionPackage.ArtistId.Value, subscriptionPackage.Price, $"You received {subscriptionPackage.Price}VND for subscription from {user.Username}");
 				ViewData["PaymentSuccess"] = "You have succesfully subscribed to the artist";
 				return Page();
 			}
