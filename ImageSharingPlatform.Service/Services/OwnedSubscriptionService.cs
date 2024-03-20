@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ImageSharingPlatform.Service.Services
 {
-    public class OwnedSubscriptionService : IOwnedSubscriptionService
+	public class OwnedSubscriptionService : IOwnedSubscriptionService
     {
         private readonly IOwnedSubscriptionRepository _ownedSubscriptionRepository;
 
@@ -26,7 +26,14 @@ namespace ImageSharingPlatform.Service.Services
             return newOwnedSubscription;
         }
 
-        public async Task<IEnumerable<OwnedSubscription>> GetAllOwnedSubscriptionsAsync()
+        public async Task<IEnumerable<OwnedSubscription>> GetAllOwnedSubscriptionForUser(Guid userId)
+        {
+            return await _ownedSubscriptionRepository.QueryHelper()
+                .Include(os => os.SubscriptionPackage.Artist)
+                .Filter(os => os.UserId.Equals(userId)).GetAllAsync();
+        }
+
+		public async Task<IEnumerable<OwnedSubscription>> GetAllOwnedSubscriptionsAsync()
         {
             return await _ownedSubscriptionRepository.GetAllOwnedSubscriptionPackageAsync();
         }

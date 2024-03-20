@@ -45,6 +45,11 @@ namespace ImageSharingPlatform.Service.Services
 			var newSharedImage = await _sharedImageRepository.GetOneAsync(sharedImageId);
 			if (newSharedImage != null)
 			{
+				var comments = await _reviewRepository.QueryHelper().Filter(r => r.SharedImageId.Equals(sharedImageId)).GetAllAsync();
+				foreach (var comment in comments)
+				{
+					await _reviewRepository.DeleteAsync(comment);
+				}
 				await _sharedImageRepository.DeleteAsync(newSharedImage);
 				await _sharedImageRepository.SaveChangesAsync();
 				return newSharedImage;
