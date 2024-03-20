@@ -204,7 +204,7 @@ namespace ImageSharingPlatform.Pages.ImageRequestMng
             await _imageRequestService.EditImageRequest(editImageRequest);
 
             TempData["SuccessMessage"] = "Upload Image Request successfully <3";
-            return Redirect("./Index");
+            return Redirect("/ReceivedImageRequest/ReceivedImageRequest");
         }
 
         public async Task<IActionResult> OnPostPayToDownLoadAsync(Guid id)
@@ -251,9 +251,9 @@ namespace ImageSharingPlatform.Pages.ImageRequestMng
             {
                 await _userService.DecreaseBalance(user.Id, editImageRequest.Price, $"You paid {editImageRequest.Price}VND for a request");
                 await _userService.IncreaseBalance(editImageRequest.ArtistId, editImageRequest.Price, $"You received {editImageRequest.Price}VND for a request from {user.Username}");
+                TempData["SuccessMessage"] = "You have succesfully paid the artist";
                 editImageRequest.RequestStatus = RequestStatus.SUCCESS;
                 await _imageRequestService.EditImageRequest(editImageRequest);
-                ViewData["SuccessMessage"] = "You have succesfully paid the artist";
                 return Redirect($"./Details?id={ImageRequest.Id.ToString()}");
             }
         }
