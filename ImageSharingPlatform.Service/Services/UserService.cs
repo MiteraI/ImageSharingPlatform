@@ -55,7 +55,11 @@ namespace ImageSharingPlatform.Service.Services
 
         public async Task<User> CreateUser(User user)
         {
-            var newUser = _userRepository.Add(user);
+			user.Password = PasswordHasher.HashPassword(user.Password);
+			user.AvatarUrl = "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50";
+			var userRole = await _roleRepository.GetRoleByNameAsync(UserRole.ROLE_USER);
+			user.Roles.Add(userRole);
+			var newUser = _userRepository.Add(user);
             await _userRepository.SaveChangesAsync();
             return newUser;
         }

@@ -38,7 +38,7 @@
     <div class="container">
         <h2 style="padding-top:25px">My Images</h2>
         <hr />
-        <a asp-page="Create" class="btn btn-dark m-2">Create New Image</a>
+        <a asp-page="Create" class="btn btn-success m-2">Create New Image</a>
         <div class="row">
             @foreach (var item in (IList<SharedImage>)Model.SharedImages.Content)
             {

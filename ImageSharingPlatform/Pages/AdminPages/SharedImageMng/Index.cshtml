@@ -1,15 +1,17 @@
 ﻿@page
 @model IndexModel
 
-<div class="container">
+<div class="container my-5">
     <main role="main" class="pb-3">
-        <h2 style="padding-top:25px">Shared Image</h2>
+        <h2 class="text-center mt-3 mb-4">Shared Image</h2>
         <hr />
-        <a asp-page="Create" class="btn btn-dark">Create New Image</a>
-        <div class="card shadow border-0 my-2 col-12">
+        <div class="text-right mb-3">
+            <a asp-page="Create" class="btn btn-success">Create New Image</a>
+        </div>
+        <div class="card shadow border-0">
             <div class="card-body p-4">
                 <table class="table table-hover">
-                    <thead>
+                    <thead class="thead-light">
                         <tr>
                             <th>
                                 @Html.DisplayNameFor(model => model.SharedImage[0].ImageName)
@@ -32,7 +34,7 @@
                             <th>
                                 @Html.DisplayNameFor(model => model.SharedImage[0].Artist)
                             </th>
-                            <th></th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -40,10 +42,10 @@
                         {
                             <tr>
                                 <td>
-                                    <a asp-page="./Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.ImageName)</a>
+                                    @Html.DisplayFor(modelItem => item.ImageName)
                                 </td>
                                 <td>
-                                    <img class="img-fluid rounded" src="@Html.DisplayFor(modelItem => item.ImageUrl)" />
+                                    <img class="img-thumbnail" style="width: 60px; height: 60px;" src="@Html.DisplayFor(modelItem => item.ImageUrl)" alt="Image" />
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.ImageCategory.CategoryName)
@@ -60,9 +62,10 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Artist.Username)
                                 </td>
-                                <td style="white-space: nowrap;">
-                                    <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-outline-primary">Edit</a> |
-                                    <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Delete</a>
+                                <td>
+                                    <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Edit</a>
+                                    <a asp-page="./Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">Details</a>
+                                    <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Delete</a>
                                 </td>
                             </tr>
                         }
@@ -72,8 +75,3 @@
         </div>
     </main>
 </div>
-<style>
-    .img-fluid {
-        height:100px
-    }
-</style>

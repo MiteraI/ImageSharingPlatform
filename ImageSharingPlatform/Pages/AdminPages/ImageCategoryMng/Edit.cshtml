@@ -1,50 +1,43 @@
 ﻿@page
 @model EditModel
 
-<div class="container">
+<div class="container my-5">
     <main role="main" class="pb-3">
-        <h2 style="padding-top:25px">Edit Image Category</h2>
+        <h2 class="text-center my-4">Edit Image Category</h2>
         <hr />
-        <div class="col-12 d-flex justify-content-center">
-            <div class="card shadow border-0 my-2 col-8">
+        <div class="row justify-content-center">
+            <div class="card shadow border-0 my-2 col-md-4">
                 <div class="card-body p-4">
                     <form method="post">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <div class="col-12">
-                            <div class="border p-3">
-                                <label asp-for="ImageCategory.CategoryName" class="control-label"></label>
-                                <div class="form-floating py-2 col-12">
-                                    <input asp-for="ImageCategory.CategoryName" class="form-control" style="padding-top:0; padding-bottom:0;" />
-                                    <span asp-validation-for="ImageCategory.CategoryName" class="text-danger"></span>
-                                </div>
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        <div class="form-group mb-3">
+                            <label asp-for="ImageCategory.CategoryName" class="control-label">Category Name <span class="text-danger">*</span></label>
+                            <input asp-for="ImageCategory.CategoryName" class="form-control" />
+                            <span asp-validation-for="ImageCategory.CategoryName" class="text-danger"></span>
+                        </div>
 
-                                <label asp-for="ImageCategory.Description" class="control-label"></label>
-                                <div class="form-floating py-2 col-12">
-                                    <input asp-for="ImageCategory.Description" class="form-control" style="padding-top:0; padding-bottom:0;" />
-                                    <span asp-validation-for="ImageCategory.Description" class="text-danger"></span>
-                                </div>
-                                <input type="hidden" asp-for="ImageCategory.Id" />
-                                <div class="row pt-2">
-                                    <div class="col-6 col-md-2">
-                                        <input type="submit" value="Save" class="btn btn-primary" />
-                                    </div>
-                                    <div class="col-6 col-md-3">
-                                        <a asp-page="./Index" class="btn btn-outline-primary border form-control">
-                                            Back to List
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="form-group mb-3">
+                            <label asp-for="ImageCategory.Description" class="control-label">Description</label>
+                            <input asp-for="ImageCategory.Description" class="form-control" />
+                            <span asp-validation-for="ImageCategory.Description" class="text-danger"></span>
+                        </div>
+                        <input type="hidden" asp-for="ImageCategory.Id" />
+                        <div class="d-flex justify-content-center">
+                            <input type="submit" value="Save" class="btn btn-primary btn-block" />
+                            <a asp-page="./Index" class="btn btn-outline-primary btn-block">
+                                Back to List
+                            </a>
                         </div>
                     </form>
                 </div>
             </div>
-
         </div>
     </main>
 </div>
 
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

@@ -1,46 +1,35 @@
 ﻿@page
 @model CreateModel
 
-<div class="container">
+<div class="container my-5">
     <main role="main" class="pb-3">
-        <h2 style="padding-top:25px">ImageCategory</h2>
+        <h2 class="pt-3 text-center">Image Category</h2>
         <hr />
-        <div class="col-12 d-flex justify-content-center">
-            <div class="card shadow border-0 my-2 col-8">
+        <div class="row justify-content-center">
+            <div class="card shadow border-0 my-2 col-md-4">
                 <div class="card-body p-4">
                     <form method="post">
-                        @* enctype="multipart/form-data" *@
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        @* <input asp-for="ImageCategory.Id" hidden> *@
-                        <div class="col-12">
-                            <div class="border p-3">
-                                <label asp-for="ImageCategory.CategoryName" class="control-label"></label>
-                                <div class="form-floating py-2 col-12">
-                                    <input asp-for="ImageCategory.CategoryName" class="form-control" style="padding-top:0; padding-bottom:0;" />
-                                    <span asp-validation-for="ImageCategory.CategoryName" class="text-danger"></span>
-                                </div>
+                        <div class="mb-3">
+                            <label asp-for="ImageCategory.CategoryName" class="form-label">Category Name <span class="text-danger">*</span></label>
+                            <input asp-for="ImageCategory.CategoryName" class="form-control" />
+                            <span asp-validation-for="ImageCategory.CategoryName" class="text-danger"></span>
+                        </div>
 
-                                <label asp-for="ImageCategory.Description" class="control-label"></label>
-                                <div class="form-floating py-2 col-12">
-                                    <input asp-for="ImageCategory.Description" class="form-control" style="padding-top:0; padding-bottom:0;" />
-                                    <span asp-validation-for="ImageCategory.Description" class="text-danger"></span>
-                                </div>
-                                <div class="row pt-2">
-                                    <div class="col-6 col-md-3">
-                                        <button type="submit" class="btn btn-primary form-control">Create</button>
-                                    </div>
-                                    <div class="col-6 col-md-3">
-                                        <a asp-page="./Index" class="btn btn-outline-primary border form-control">
-                                            Back to List
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="mb-3">
+                            <label asp-for="ImageCategory.Description" class="form-label">Description</label>
+                            <input asp-for="ImageCategory.Description" class="form-control" />
+                            <span asp-validation-for="ImageCategory.Description" class="text-danger"></span>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary mr-2">Create</button>
+                            <a asp-page="./Index" class="btn btn-outline-primary">
+                                Back to List
+                            </a>
                         </div>
                     </form>
-                   </div>
+                </div>
             </div>
-        
         </div>
     </main>
 </div>
