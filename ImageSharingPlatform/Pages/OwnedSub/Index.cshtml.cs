@@ -29,29 +29,15 @@ namespace ImageSharingPlatform.Pages.OwnedSub
 
         public async Task<IActionResult> OnGetAsync()
         {
-            var users = await _userService.GetAllUsersAsync();
-
-            ViewData["ArtistId"] = new SelectList(users, "Id", "Email");
-
             var userJson = HttpContext.Session.GetString("LoggedInUser");
-            var useraccount = JsonConvert.DeserializeObject<User>(userJson);
-
-            var userId = useraccount.Id;
-
-            if (userId == Guid.Empty)
+            if (string.IsNullOrEmpty(userJson))
             {
-                return NotFound("User not found.");
-            }
+				return Redirect("/Authentication/Login");
+			}
 
-            var user = await _userService.GetUserByIdAsync(userId);
-            if (user == null)
-            {
-                return NotFound("User not found.");
-            }
+            var userAccount = JsonConvert.DeserializeObject<User>(userJson);
 
-
-            OwnedSubscription = (IList<OwnedSubscription>)await _ownedSubscriptionService.GetAllOwnedSubscriptionsAsync();
-
+            OwnedSubscription = (IList<OwnedSubscription>)await _ownedSubscriptionService.GetAllOwnedSubscriptionForUser(userAccount.Id);
 
             return Page();
         }

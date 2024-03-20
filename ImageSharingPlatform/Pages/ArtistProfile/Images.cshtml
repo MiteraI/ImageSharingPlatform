@@ -12,7 +12,11 @@
 			@ViewData["Subscription"]
 		</div>
 	}
-	<h2>You are viewing @Model.Artist.FirstName @Model.Artist.LastName's shared images</h2>
+	<h2>
+		You are viewing <a asp-page="/ArtistProfile/Index" asp-route-id="@Model.Artist.Id">
+			@Html.DisplayFor(model => model.Artist.FirstName) @Html.DisplayFor(model => model.Artist.LastName)
+		</a>'s shared images
+	</h2>
 	<div class="row">
 		@foreach (var item in Model.SharedImages)
 		{

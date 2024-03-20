@@ -61,8 +61,16 @@ namespace ImageSharingPlatform.Pages.ArtistPages.MySubscriptionPackage
                 return Page();
             }
 
-            try
+			var userJson = HttpContext.Session.GetString("LoggedInUser");
+			if (string.IsNullOrEmpty(userJson))
+			{
+				return Redirect("/Authentication/Login");
+			}
+			var userAccount = JsonConvert.DeserializeObject<User>(userJson);
+
+			try
             {
+                SubscriptionPackage.ArtistId = userAccount.Id;
                 await _subscriptionPackageService.EditSubscriptionPackage(SubscriptionPackage);
             }
             catch (DbUpdateConcurrencyException)

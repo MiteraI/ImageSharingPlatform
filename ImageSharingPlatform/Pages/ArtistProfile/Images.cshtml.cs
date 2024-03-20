@@ -79,6 +79,7 @@ namespace ImageSharingPlatform.Pages.ArtistProfile
                         // If the subscription has expired, show the images that are not premium
                         ViewData["Subscription"] = "Your subscription has expired. Please renew your subscription to view premium images";
                         SharedImages = (List<SharedImage>)await _sharedImageService.FindSharedImageByArtistId(id, false);
+                        return Page();
                     } 
 
                     SharedImages = (List<SharedImage>)await _sharedImageService.FindSharedImageByArtistId(id, true);

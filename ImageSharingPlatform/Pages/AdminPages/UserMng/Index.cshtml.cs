@@ -39,7 +39,8 @@ namespace ImageSharingPlatform.Pages.AdminPages.UserMng
 
                 if (isAdmin)
                 {
-                    User = _userService.GetAllUsersAsync().Result.ToList();
+					var users = await _userService.GetAllUsersAsync();
+                    User = users.Where(u => u.Id != userAccount.Id).ToList();
                 }
                 else
                 {
