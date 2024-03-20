@@ -66,7 +66,12 @@ namespace ImageSharingPlatform.Pages.Search
 				return Redirect("/Authentication/Login");
 			}
 			var userAccount = JsonConvert.DeserializeObject<User>(userJson);
-            ModelState.Remove("ImageCategory");
+            if (string.IsNullOrEmpty(Review.Comment))
+            {
+                TempData["ErrorMessage"] = "Review must have comment";
+				return Redirect($"./Details?id={SharedImage.Id}");
+			}
+			ModelState.Remove("ImageCategory");
             ModelState.Remove("ImageName");
             if (ModelState.IsValid)
 			{

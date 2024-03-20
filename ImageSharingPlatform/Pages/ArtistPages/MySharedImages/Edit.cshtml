@@ -16,12 +16,12 @@
                             <span asp-validation-for="SharedImage.ImageName" class="text-danger"></span>
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-3 visually-hidden">
                             <label for="uploadImage" class="form-label">Upload image</label>
                             <input type="file" id="uploadImage" name="uploadImage" class="form-control" />
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-3 visually-hidden">
                             <label asp-for="SharedImage.ImageCategoryId" class="form-label">Image Category</label>
                             <input asp-for="SharedImage.ImageCategoryId" class="form-control" readonly />
                             <span asp-validation-for="SharedImage.ImageCategoryId" class="text-danger"></span>
@@ -33,13 +33,13 @@
                             <span asp-validation-for="SharedImage.Description" class="text-danger"></span>
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-3 visually-hidden">
                             <label asp-for="SharedImage.CreatedAt" class="form-label">Create At</label>
                             <input asp-for="SharedImage.CreatedAt" class="form-control" readonly />
                             <span asp-validation-for="SharedImage.CreatedAt" class="text-danger"></span>
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-3 visually-hidden">
                             <label asp-for="SharedImage.ArtistId" class="form-label">Artist</label>
                             <input asp-for="SharedImage.ArtistId" class="form-control" readonly />
                             <span asp-validation-for="SharedImage.ArtistId" class="text-danger"></span>
