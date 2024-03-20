@@ -9,43 +9,43 @@
             <div class="card-body p-4">
                 <dl class="row">
                     <dt class="col-sm-3">
-                        @Html.DisplayNameFor(model => model.SharedImage.ImageName)
+                        Image Name
                     </dt>
                     <dd class="col-sm-9">
                         @Html.DisplayFor(model => model.SharedImage.ImageName)
                     </dd>
                     <dt class="col-sm-3">
-                        @Html.DisplayNameFor(model => model.SharedImage.ImageUrl)
+                        Image
                     </dt>
                     <dd class="col-sm-9">
                         <img src="@Html.DisplayFor(model => model.SharedImage.ImageUrl)" class="img-fluid rounded" alt="Image preview" />
                     </dd>
                     <dt class="col-sm-3">
-                        @Html.DisplayNameFor(model => model.SharedImage.ImageCategory)
+                        Image Category
                     </dt>
                     <dd class="col-sm-9">
                         @Html.DisplayFor(model => model.SharedImage.ImageCategory.CategoryName)
                     </dd>
                     <dt class="col-sm-3">
-                        @Html.DisplayNameFor(model => model.SharedImage.Description)
+                        Description
                     </dt>
                     <dd class="col-sm-9">
                         @Html.DisplayFor(model => model.SharedImage.Description)
                     </dd>
                     <dt class="col-sm-3">
-                        @Html.DisplayNameFor(model => model.SharedImage.CreatedAt)
+                        Created At
                     </dt>
                     <dd class="col-sm-9">
                         @Html.DisplayFor(model => model.SharedImage.CreatedAt)
                     </dd>
                     <dt class="col-sm-3">
-                        @Html.DisplayNameFor(model => model.SharedImage.IsPremium)
+                        Premium
                     </dt>
                     <dd class="col-sm-9">
                         @Html.DisplayFor(model => model.SharedImage.IsPremium)
                     </dd>
                     <dt class="col-sm-3">
-                        @Html.DisplayNameFor(model => model.SharedImage.Artist)
+                        Artist
                     </dt>
                     <dd class="col-sm-9">
                         @Html.DisplayFor(model => model.SharedImage.Artist.Username)
