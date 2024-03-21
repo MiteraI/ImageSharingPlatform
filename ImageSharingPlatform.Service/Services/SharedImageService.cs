@@ -45,6 +45,11 @@ namespace ImageSharingPlatform.Service.Services
 			var newSharedImage = await _sharedImageRepository.GetOneAsync(sharedImageId);
 			if (newSharedImage != null)
 			{
+				var comments = await _reviewRepository.QueryHelper().Filter(r => r.SharedImageId.Equals(sharedImageId)).GetAllAsync();
+				foreach (var comment in comments)
+				{
+					await _reviewRepository.DeleteAsync(comment);
+				}
 				await _sharedImageRepository.DeleteAsync(newSharedImage);
 				await _sharedImageRepository.SaveChangesAsync();
 				return newSharedImage;
@@ -54,7 +59,10 @@ namespace ImageSharingPlatform.Service.Services
 
 		public async Task<SharedImage> GetSharedImageByIdAsync(Guid sharedImageId)
 		{
-			return await _sharedImageRepository.QueryHelper().Include(si => si.Reviews).GetOneAsync(si => si.Id.Equals(sharedImageId));
+			return await _sharedImageRepository.QueryHelper()
+				.Include(si => si.Reviews)
+				.Include(si => si.Artist)
+				.GetOneAsync(si => si.Id.Equals(sharedImageId));
 		}
 
 		public async Task<bool> SharedImageExistsAsync(Expression<Func<SharedImage, bool>> predicate)

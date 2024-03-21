@@ -3,7 +3,6 @@
 @{
 }
 <style>
-    /* Optional: Custom CSS for further styling */
     .card {
         border-radius: 10px;
     }
@@ -13,19 +12,17 @@
     }
 
     .btn-primary {
-        background-color: #007bff; /* Customize the button color if needed */
-        border: none; /* Removes default border (optional) */
+        background-color: #007bff;
+        border: none;
     }
 
-    /* Enhances the shadow effect on hover */
     .card:hover {
         transform: translateY(-5px);
         box-shadow: 0 12px 20px -10px rgba(0,0,0,.25);
     }
 
-    /* Ensures the form elements are adequately spaced and visually appealing */
     .form-control, .btn {
-        height: 48px; /* Increases the height for better visibility and touch */
+        height: 48px; 
     }
 </style>
 <body>
@@ -41,8 +38,9 @@
                                 <div class="input-group">
                                     <span class="input-group-text">$</span>
                                     <input asp-for="Money" class="form-control" placeholder="Enter amount" />
-                                    <span asp-validation-for="Money" class="text-danger"></span>
+                                    
                                 </div>
+                                <span asp-validation-for="Money" class="text-danger"></span>
                             </div>
                             <div class="d-grid gap-2">
                                 <input type="submit" value="Deposit" class="btn btn-success btn-lg" />

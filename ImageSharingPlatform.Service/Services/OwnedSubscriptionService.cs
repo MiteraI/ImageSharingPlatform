@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ImageSharingPlatform.Service.Services
 {
-    public class OwnedSubscriptionService : IOwnedSubscriptionService
+	public class OwnedSubscriptionService : IOwnedSubscriptionService
     {
         private readonly IOwnedSubscriptionRepository _ownedSubscriptionRepository;
 
@@ -26,7 +26,14 @@ namespace ImageSharingPlatform.Service.Services
             return newOwnedSubscription;
         }
 
-        public async Task<IEnumerable<OwnedSubscription>> GetAllOwnedSubscriptionsAsync()
+        public async Task<IEnumerable<OwnedSubscription>> GetAllOwnedSubscriptionForUser(Guid userId)
+        {
+            return await _ownedSubscriptionRepository.QueryHelper()
+                .Include(os => os.SubscriptionPackage.Artist)
+                .Filter(os => os.UserId.Equals(userId)).GetAllAsync();
+        }
+
+		public async Task<IEnumerable<OwnedSubscription>> GetAllOwnedSubscriptionsAsync()
         {
             return await _ownedSubscriptionRepository.GetAllOwnedSubscriptionPackageAsync();
         }
@@ -40,13 +47,12 @@ namespace ImageSharingPlatform.Service.Services
         public async Task<OwnedSubscription> GetUserOwnedSubscriptionPackage(Guid? userId, Guid? packageId)
         {
 			return await _ownedSubscriptionRepository.QueryHelper()
-				.Filter(os => os.SubscriptionPackageId.Equals(packageId))
-				.GetOneAsync(os => os.UserId.Equals(userId));
+				.GetOneAsync(os => os.UserId.Equals(userId) && os.SubscriptionPackageId.Equals(packageId));
 		}
 
         public async Task renewSubscription(Guid? packageId)
         {
-            var existingSubscriptionPackage = await _ownedSubscriptionRepository.GetBySubscriptionPackageIdAsync(packageId);
+            var existingSubscriptionPackage = await _ownedSubscriptionRepository.QueryHelper().GetOneAsync(os => os.Id.Equals(packageId));
             if (existingSubscriptionPackage != null)
             {
                 if (DateTime.Now > existingSubscriptionPackage.PurchasedTime.AddDays(30))

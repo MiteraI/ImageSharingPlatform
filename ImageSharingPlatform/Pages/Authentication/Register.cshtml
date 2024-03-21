@@ -18,14 +18,17 @@
 		<div>
 			<label asp-for="InputUser.Password" class="form-label text-black"></label>
 			<input asp-for="InputUser.Password" class="form-control text-black" style="background-color: #f8f9fa; border: 1px solid #ced4da; border-radius: 4px;" />
+			<span asp-validation-for="InputUser.Password" class="text-danger"></span>
 		</div>
 		<div>
 			<label asp-for="InputUser.FirstName" type="text" class="form-label text-black"></label>
 			<input asp-for="InputUser.FirstName" class="form-control text-black" style="background-color: #f8f9fa; border: 1px solid #ced4da; border-radius: 4px;" />
+			<span asp-validation-for="InputUser.FirstName" class="text-danger"></span>
 		</div>
 		<div>
 			<label asp-for="InputUser.LastName" type="text" class="form-label text-black"></label>
 			<input asp-for="InputUser.LastName" class="form-control text-black" style="background-color: #f8f9fa; border: 1px solid #ced4da; border-radius: 4px;" />
+			<span asp-validation-for="InputUser.LastName" class="text-danger"></span>
 		</div>
 		<div>
 			<label asp-for="InputUser.Email" type="email" class="form-label text-black"></label>
@@ -33,8 +36,8 @@
 			<span asp-validation-for="InputUser.Email" class="text-danger"></span>
 		</div>
 		<div class="d-flex justify-content-around align-items-center mt-2">
-			<button type="submit" class="btn btn-primary">Register</button>
-			<a class="btn btn-primary" asp-page="/Authentication/Login">Login</a>
+			<button type="submit" class="btn btn-success">Register</button>
+			<a class="btn btn-primary" asp-page="/Authentication/Login">Back to login</a>
 		</div>
 		
 	</form>

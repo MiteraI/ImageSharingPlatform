@@ -20,7 +20,7 @@
                 <dt class="col-sm-4">Status of request</dt>
                 <dd class="col-sm-8"> <span class="badge badge-pill @GetStatusClass(Model.ImageRequest.RequestStatus)">@Html.DisplayFor(modelItem => Model.ImageRequest.RequestStatus)</span></dd>
 
-                <dt class="col-sm-4">Image:</dt>
+                <dt class="col-sm-4">Image</dt>
                 <dd class="col-sm-8">
                     @if (userId == Model.ImageRequest.RequesterUserId && Model.ImageRequest.ImageBlob != null && Model.ImageRequest.RequestStatus == RequestStatus.SUCCESS)
                     {
@@ -30,10 +30,11 @@
                     {
                         <p>Please pay the image fee to download your own image request! Thank you</p>
                     }
-                    else
+
+                    @if (userId == Model.ImageRequest.ArtistId && Model.ImageRequest.ImageBlob != null)
                     {
-                        <p>No image available</p>
-                    }
+                        <img src="@ImageSrc(Model.ImageRequest.ImageBlob)" alt="Request Image" class="img-fluid" />
+                    } 
                 </dd>
 
                 <dt class="col-sm-4">@Html.DisplayNameFor(model => model.ImageRequest.Title)</dt>
@@ -139,7 +140,7 @@
                     </form>
                 </div>
                 <div>
-                    <a asp-page="./CreateRequestDetail" asp-route-id="@Model.ImageRequest.Id" class="btn btn-outline-info">Create Request Detail</a>
+                    <a asp-page="./CreateRequestDetail" asp-route-id="@Model.ImageRequest.Id" class="btn btn-outline-info">Create Negotiating Request</a>
                 </div>
             }
             else if (userId != Model.ImageRequest.RequesterUserId && Model.ImageRequest.RequestStatus == RequestStatus.ACCEPTED)

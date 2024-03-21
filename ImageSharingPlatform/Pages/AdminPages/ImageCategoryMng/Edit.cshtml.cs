@@ -87,14 +87,20 @@ namespace ImageSharingPlatform.Pages.AdminPages.ImageCategoryMng
                     isModified = true;
                 }
 
-                if (isModified)
+				if (currentImageCategory.Description != ImageCategory.Description)
+				{
+					currentImageCategory.Description = ImageCategory.Description;
+					isModified = true;
+				}
+
+				if (isModified)
                 {
                     _imageCategoryService.EditImageCategory(currentImageCategory);
                     TempData["SuccessMessage"] = "Category is edited successfully!";
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = "No information has been modified.";
+                    TempData["SuccessMessage"] = "No information has been modified.";
                 }
             }
             catch (DbUpdateConcurrencyException)

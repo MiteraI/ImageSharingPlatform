@@ -48,8 +48,8 @@ namespace ImageSharingPlatform.Pages.Authentication
 
             var user = _mapper.Map<User>(InputUser);
             user = await _userService.RegisterUser(user);
-
-            return Redirect("/Authentication/Login");
+            TempData["SuccessMessage"] = "Register Successfully <3";
+             return Redirect("/Authentication/Login");
         }
     }
 }

@@ -46,12 +46,21 @@ namespace ImageSharingPlatform.Pages.ImageRequestMng
             {
                 return NotFound();
             }
-            ImageRequest = await _imageRequestService.GetImageRequestByIdWithFullDetailsAsync(id);
+			var useraccount = JsonConvert.DeserializeObject<User>(userJson);
+			var userId = useraccount.Id;
+
+			ImageRequest = await _imageRequestService.GetImageRequestByIdWithFullDetailsAsync(id);
             if (ImageRequest == null)
             {
                 return NotFound();
             }
-            RequestDetail = (IList<RequestDetail>)await _requestDetailService.GetRequestDetailByRequetIdAsync(id);
+			if (userId != ImageRequest.RequesterUserId && userId != ImageRequest.ArtistId)
+			{
+				TempData["ErrorMessage"] = "You do not have permission to view this page.";
+				return RedirectToPage("./Index"); 
+			}
+
+			RequestDetail = (IList<RequestDetail>)await _requestDetailService.GetRequestDetailByRequetIdAsync(id);
 
             return Page();
         }
@@ -195,7 +204,7 @@ namespace ImageSharingPlatform.Pages.ImageRequestMng
             await _imageRequestService.EditImageRequest(editImageRequest);
 
             TempData["SuccessMessage"] = "Upload Image Request successfully <3";
-            return Redirect("./Index");
+            return Redirect("/ReceivedImageRequest/ReceivedImageRequest");
         }
 
         public async Task<IActionResult> OnPostPayToDownLoadAsync(Guid id)
@@ -242,9 +251,9 @@ namespace ImageSharingPlatform.Pages.ImageRequestMng
             {
                 await _userService.DecreaseBalance(user.Id, editImageRequest.Price, $"You paid {editImageRequest.Price}VND for a request");
                 await _userService.IncreaseBalance(editImageRequest.ArtistId, editImageRequest.Price, $"You received {editImageRequest.Price}VND for a request from {user.Username}");
+                TempData["SuccessMessage"] = "You have succesfully paid the artist";
                 editImageRequest.RequestStatus = RequestStatus.SUCCESS;
                 await _imageRequestService.EditImageRequest(editImageRequest);
-                ViewData["SuccessMessage"] = "You have succesfully paid the artist";
                 return Redirect($"./Details?id={ImageRequest.Id.ToString()}");
             }
         }
