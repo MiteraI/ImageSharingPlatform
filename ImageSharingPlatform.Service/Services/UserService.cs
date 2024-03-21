@@ -15,147 +15,156 @@ using ImageSharingPlatform.Domain.Enums;
 namespace ImageSharingPlatform.Service.Services
 {
 	public class UserService : IUserService
-    {
-        private readonly IUserRepository _userRepository;
-        private readonly IRoleRepository _roleRepository;
-        private readonly ITransactionRepository _transactionRepository;
+	{
+		private readonly IUserRepository _userRepository;
+		private readonly IRoleRepository _roleRepository;
+		private readonly ITransactionRepository _transactionRepository;
 
-        public UserService(IUserRepository userRepository, IRoleRepository roleRepository, ITransactionRepository transactionRepository)
-        {
-            _userRepository = userRepository;
-            _roleRepository = roleRepository;
-            _transactionRepository = transactionRepository;
-        }
+		public UserService(IUserRepository userRepository, IRoleRepository roleRepository, ITransactionRepository transactionRepository)
+		{
+			_userRepository = userRepository;
+			_roleRepository = roleRepository;
+			_transactionRepository = transactionRepository;
+		}
 
-        public virtual async Task<User> RegisterUser(User user)
-        {
-            user.Password = PasswordHasher.HashPassword(user.Password);
-            user.AvatarUrl = "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50";
-            var userRole = await _roleRepository.GetRoleByNameAsync(UserRole.ROLE_USER);
-            user.Roles.Add(userRole);
-            var newUser = _userRepository.Add(user);
-            await _userRepository.SaveChangesAsync();
-            return newUser;
-        }
-
-        public async Task<User> LoginUser(string username, string password)
-        {
-            var loginUser = await _userRepository.QueryHelper().Include(u => u.Roles).GetOneAsync(u => u.Username.Equals(username));
-            if (loginUser == null)
-            {
-                throw new Exception("Username not found");
-            }
-            if (!PasswordHasher.VerifyPassword(loginUser.Password, password))
-            {
-                throw new Exception("Invalid password");
-            }
-            loginUser.Password = null;
-            return loginUser;
-        }
-
-        public async Task<User> CreateUser(User user)
-        {
+		public virtual async Task<User> RegisterUser(User user)
+		{
 			user.Password = PasswordHasher.HashPassword(user.Password);
 			user.AvatarUrl = "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50";
 			var userRole = await _roleRepository.GetRoleByNameAsync(UserRole.ROLE_USER);
 			user.Roles.Add(userRole);
 			var newUser = _userRepository.Add(user);
-            await _userRepository.SaveChangesAsync();
-            return newUser;
-        }
+			await _userRepository.SaveChangesAsync();
+			return newUser;
+		}
 
-        public async Task<User> EditUser(User user)
-        {
-            var newUser = _userRepository.Update(user);
-            await _userRepository.SaveChangesAsync();
-            return newUser;
-        }
+		public async Task<User> LoginUser(string username, string password)
+		{
+			var loginUser = await _userRepository.QueryHelper().Include(u => u.Roles).GetOneAsync(u => u.Username.Equals(username));
+			if (loginUser == null)
+			{
+				throw new Exception("Username not found");
+			}
+			if (!PasswordHasher.VerifyPassword(loginUser.Password, password))
+			{
+				throw new Exception("Invalid password");
+			}
+			loginUser.Password = null;
+			return loginUser;
+		}
 
-        public async Task<User> DeleteUser(Guid userId)
-        {
-            var user = await _userRepository.GetOneAsync(userId);
-            if (user != null)
-            {
-                await _userRepository.DeleteAsync(user);
-                await _userRepository.SaveChangesAsync();
-                return user;
-            }
-            throw new Exception("User not found");
-        }
+		public async Task<User> CreateUser(User user)
+		{
+			user.Password = PasswordHasher.HashPassword(user.Password);
+			user.AvatarUrl = "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50";
+			var userRole = await _roleRepository.GetRoleByNameAsync(UserRole.ROLE_USER);
+			user.Roles.Add(userRole);
+			var newUser = _userRepository.Add(user);
+			await _userRepository.SaveChangesAsync();
+			return newUser;
+		}
 
-        public async Task<User> GetUserByIdAsync(Guid userId)
-        {
-            return await _userRepository.QueryHelper().Include(u => u.Roles).GetOneAsync(u => u.Id.Equals(userId));
-        }
+		public async Task<User> EditUser(User user)
+		{
+			var newUser = _userRepository.Update(user);
+			//Throw error if username or email already exists
+			if (await _userRepository.Exists(u => u.Username.Equals(user.Username) && !u.Id.Equals(user.Id)))
+			{
+				throw new Exception("Username already exists");
+			}
+			if (await _userRepository.Exists(u => u.Email.Equals(user.Email) && !u.Id.Equals(user.Id)))
+			{
+				throw new Exception("Email already exists");
+			}
+			await _userRepository.SaveChangesAsync();
+			return newUser;
+		}
 
-        public async Task<bool> UserExistsAsync(Expression<Func<User, bool>> predicate)
-        {
-            return await _userRepository.Exists(predicate);
-        }
+		public async Task<User> DeleteUser(Guid userId)
+		{
+			var user = await _userRepository.GetOneAsync(userId);
+			if (user != null)
+			{
+				await _userRepository.DeleteAsync(user);
+				await _userRepository.SaveChangesAsync();
+				return user;
+			}
+			throw new Exception("User not found");
+		}
 
-        public async Task<IEnumerable<User>> GetAllUsersAsync()
-        {
-            return await _userRepository.GetAllAsync();
-        }
+		public async Task<User> GetUserByIdAsync(Guid userId)
+		{
+			return await _userRepository.QueryHelper().Include(u => u.Roles).GetOneAsync(u => u.Id.Equals(userId));
+		}
 
-        public async Task<IEnumerable<User>> GetUserByRoles()
-        {
-            var result = await _userRepository.QueryHelper().Include(u => u.Roles).GetAllAsync();
-            return result;
-        }
+		public async Task<bool> UserExistsAsync(Expression<Func<User, bool>> predicate)
+		{
+			return await _userRepository.Exists(predicate);
+		}
 
-        public async Task UpdateRoleToArtist(Guid userId)
-        {
-            User user = await _userRepository.GetOneIncludeRolesAsync(userId);
-            Role artistRole = await _roleRepository.GetRoleByNameAsync(UserRole.ROLE_ARTIST);
+		public async Task<IEnumerable<User>> GetAllUsersAsync()
+		{
+			return await _userRepository.GetAllAsync();
+		}
 
-            // Check if user already has the artist role
-            if (user.Roles.Any(r => r.UserRole == artistRole.UserRole))
-            {
-                return;
-            }
+		public async Task<IEnumerable<User>> GetUserByRoles()
+		{
+			var result = await _userRepository.QueryHelper().Include(u => u.Roles).GetAllAsync();
+			return result;
+		}
 
-            user.Roles.Add(artistRole);
-            _userRepository.Update(user);
-            await _userRepository.SaveChangesAsync();
-        }
+		public async Task UpdateRoleToArtist(Guid userId)
+		{
+			User user = await _userRepository.GetOneIncludeRolesAsync(userId);
+			Role artistRole = await _roleRepository.GetRoleByNameAsync(UserRole.ROLE_ARTIST);
 
-        public async Task IncreaseBalance(Guid userId, double amount, string description)
-        {
+			// Check if user already has the artist role
+			if (user.Roles.Any(r => r.UserRole == artistRole.UserRole))
+			{
+				return;
+			}
+
+			user.Roles.Add(artistRole);
+			_userRepository.Update(user);
+			await _userRepository.SaveChangesAsync();
+		}
+
+		public async Task IncreaseBalance(Guid userId, double amount, string description)
+		{
 			User user = await _userRepository.GetOneAsync(userId);
-			user.Balance += (long) amount;
+			user.Balance += (long)amount;
 			_userRepository.Update(user);
 			_transactionRepository.Add(new Transaction
 			{
 				Amount = (long)amount,
 				TransactionDate = DateTime.Now,
 				TransactionType = TransactionType.INCREASE,
-                Description = description,
+				Description = description,
 				UserId = userId
 			});
 			await _userRepository.SaveChangesAsync();
 		}
 
-        public async Task DecreaseBalance(Guid userId, double amount, string description)
-        {
-            User user = await _userRepository.GetOneAsync(userId);
-            user.Balance -= (long)amount;
-            _userRepository.Update(user);
-            _transactionRepository.Add(new Transaction
-            {
-                Amount = (long)amount,
-                TransactionDate = DateTime.Now,
-                TransactionType = TransactionType.DECREASE,
-                Description = description,
-                UserId = userId
-            });
-            await _userRepository.SaveChangesAsync();
-        }
+		public async Task DecreaseBalance(Guid userId, double amount, string description)
+		{
+			User user = await _userRepository.GetOneAsync(userId);
+			user.Balance -= (long)amount;
+			_userRepository.Update(user);
+			_transactionRepository.Add(new Transaction
+			{
+				Amount = (long)amount,
+				TransactionDate = DateTime.Now,
+				TransactionType = TransactionType.DECREASE,
+				Description = description,
+				UserId = userId
+			});
+			await _userRepository.SaveChangesAsync();
+		}
 
 		public async Task<bool> CheckDuplicateUsername(string username)
 		{
 			var user = await _userRepository.QueryHelper().GetOneAsync(u => u.Username.Equals(username));
-            return user == null ? false : true;
+			return user == null ? false : true;
 		}
 
 		public async Task<bool> CheckDuplicateEmail(string email)
